@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Text.RegularExpressions;
 using System.Collections;
+using UnityEngine.Networking;
 
 
 public class SignUpManager : MonoBehaviour
@@ -44,6 +45,8 @@ public class SignUpManager : MonoBehaviour
 
         }
 
+        StartCoroutine(SignUpCoroutine(Nick.text, ID.text, PW.text, Email.text));
+
         /*
         else if (아이디 검사했는데 있는 메일인 경우)
         {
@@ -74,5 +77,38 @@ public class SignUpManager : MonoBehaviour
         EmptyBox.SetActive(true);
         yield return new WaitForSeconds(1f);
         EmptyBox.SetActive(false);
+    }
+
+    private IEnumerator SignUpCoroutine(string _nick, string _id, string _pw, string _email)
+    {
+        string signUpUri = "http://127.0.0.1/gameSignUp.php";
+
+        WWWForm form = new WWWForm();
+        form.AddField("SignUpNick", _nick);
+        form.AddField("SignUpID", _id);
+        form.AddField("SignUpPW", _pw);
+        form.AddField("SignUpEmail", _email);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(signUpUri, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.DataProcessingError)
+            {
+                Debug.Log(www.error);
+            }
+            else if (www.downloadHandler.text == "IDError")
+            {
+                // IDError일때 실행됨.
+                IDMessage.gameObject.SetActive(true);
+                IDMessage.enabled = true;
+                Debug.Log(www.downloadHandler.text);
+            }
+            else
+            {
+                // 아무오류 안나면 실행됨.
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
     }
 }
