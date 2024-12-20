@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
+using System.Collections;
 
 public class LoginManager : MonoBehaviour
 {
@@ -36,22 +38,54 @@ public class LoginManager : MonoBehaviour
 
     public void Check()
     {
+        // 아이디가 비었을때
         if(Id.text == "")
         {
             popup.SetActive(true);
             textBox.text = dialogs[0];
         }
+        // 패스워드가 비었을때
         else if (Pw.text == "")
         {
             popup.SetActive(true);
             textBox.text = dialogs[1];
         }
-       // DB 비교
-       // else if ()
+
+        // DB 실행
+        StartCoroutine(LoginCoroutine(Id.text, Pw.text));
     }
 
     public void onClickXBtn() {
 
         popup.SetActive(false);
+    }
+
+    private IEnumerator LoginCoroutine(string _id, string _pw)
+    {
+        string loginUri = "http://127.0.0.1/gameLogin.php";
+
+        WWWForm form = new WWWForm();
+        form.AddField("LoginID", _id);
+        form.AddField("LoginPW", _pw);
+
+        using (UnityWebRequest www = UnityWebRequest.Post(loginUri, form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.DataProcessingError)
+            {
+                Debug.Log(www.error);
+            }
+            else if (www.downloadHandler.text == "IDError" || www.downloadHandler.text == "PWError")
+            {
+                // IDError or PWError일때 실행됨.
+                Debug.Log(www.downloadHandler.text);
+            }
+            else
+            {
+                // 아무 오류안나면 실행됨.
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
     }
 }
