@@ -4,14 +4,23 @@ public class Cube1Levers : MonoBehaviour
 {
     public Cube1LeversController leverControl;
 
+
+    public GameObject[] Levers;
+
+    //판정결과
+    private bool LeverResult = false;
+    //정답 각도
+
     [SerializeField] private float Speed = 0f;
 
     private void Update()
     {
-        Vector2 input = leverControl.GetLeverInput();
-        Vector3 move = new Vector3(input.x, 0, input.y);
 
-        transform.Translate(move * Speed * Time.deltaTime, Space.World);
+    }
+
+
+    private void TheResult()
+    {
 
     }
 }
