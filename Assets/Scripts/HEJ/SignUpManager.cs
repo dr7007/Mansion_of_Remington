@@ -104,6 +104,13 @@ public class SignUpManager : MonoBehaviour
                 IDMessage.enabled = true;
                 Debug.Log(www.downloadHandler.text);
             }
+            else if (www.downloadHandler.text == "EmailError")
+            {
+                // IDError일때 실행됨.
+                EmailMessage.gameObject.SetActive(true);
+                EmailMessage.enabled = true;
+                Debug.Log(www.downloadHandler.text);
+            }
             else
             {
                 // 아무오류 안나면 실행됨.
