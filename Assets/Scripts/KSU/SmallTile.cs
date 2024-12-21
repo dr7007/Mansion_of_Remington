@@ -39,7 +39,6 @@ public class SmallTile : MonoBehaviour
     {
         if (gameObject.name == _name)
         {
-            Debug.Log("Exit»£√‚µ " + gameObject.name);
             Color color = gameObject.GetComponent<Renderer>().material.color;
             color.a = 0f;
             gameObject.GetComponent<Renderer>().material.color = color;
