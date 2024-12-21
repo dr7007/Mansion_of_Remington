@@ -6,19 +6,16 @@ public class BigChessBoard : MonoBehaviour
     [SerializeField] private GameObject tilePrefab;
     public float tileSize = 1f;   
     public int boardSize = 8;
-    public float spacing = 0.535f;
-    public float startPos = -5.4f;
+    public float spacing = 0.5f;
+    public float startPos = -5.25f;
     public int[] paths = { 1, 2, 3, 4, 3, 2, 10, 18, 26, 27, 28, 36, 44, 52, 60, 61, 62, 63, 64};
     public int currentIdx = 1;
     public bool clear = false;
-    public float scale = 200f;
     private List<GameObject> tiles = new List<GameObject>();
 
     private void Awake()
     {
-        startPos = -5.4f * (scale / 200f);
-        spacing = 0.535f * (scale / 200f);
-        tileSize = 1 * (scale / 200f);
+
     }
 
     private void Start()
@@ -47,13 +44,13 @@ public class BigChessBoard : MonoBehaviour
             for (int col = 0; col < boardSize; col++)
             {
                 // 각 타일의 위치 계산
-                Vector3 position = new Vector3(startPos + col * (tileSize + spacing), 0f , startPos + row * (tileSize + spacing));
+                Vector3 position = new Vector3(startPos + col * (tileSize + spacing), 0.6f , startPos + row * (tileSize + spacing));
 
                 // 타일을 생성하고 위치를 지정
                 GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
                 tile.name = "" + (row * boardSize + col + 1);  // 번호를 이름으로 지정
 
-                tile.transform.localScale = new Vector3(0.005f, 0.1f, 0.005f); 
+                tile.transform.localScale = new Vector3(1f, 1f, 1f); 
 
                 // 타일 리스트에 추가
                 tiles.Add(tile);
