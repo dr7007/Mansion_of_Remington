@@ -81,7 +81,7 @@ public class SignUpManager : MonoBehaviour
 
     private IEnumerator SignUpCoroutine(string _nick, string _id, string _pw, string _email)
     {
-        string signUpUri = "http://127.0.0.1/gameSignUp.php";
+        string signUpUri = "http://34.47.102.147/gameSignUp.php";
 
         WWWForm form = new WWWForm();
         form.AddField("SignUpNick", _nick);

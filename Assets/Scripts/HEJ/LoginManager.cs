@@ -62,7 +62,7 @@ public class LoginManager : MonoBehaviour
 
     private IEnumerator LoginCoroutine(string _id, string _pw)
     {
-        string loginUri = "http://127.0.0.1/gameLogin.php";
+        string loginUri = "http://34.47.102.147/gameLogin.php";
 
         WWWForm form = new WWWForm();
         form.AddField("LoginID", _id);
