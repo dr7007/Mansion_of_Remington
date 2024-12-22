@@ -278,10 +278,10 @@ MonoBehaviour:
   - {fileID: 1882589251}
   - {fileID: 979003717}
   gResList:
-  - {fileID: 122059750}
-  - {fileID: 1346504345}
-  - {fileID: 1838560541}
   - {fileID: 1443478230}
+  - {fileID: 122059750}
+  - {fileID: 1838560541}
+  - {fileID: 1346504345}
 --- !u!4 &951861468
 Transform:
   m_ObjectHideFlags: 0
@@ -966,6 +966,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 62532580814519022, guid: 207ad197482bae44488674e19a8f9821, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 62532580814519022, guid: 207ad197482bae44488674e19a8f9821, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.42
+      objectReference: {fileID: 0}
     - target: {fileID: 696092371127611841, guid: 207ad197482bae44488674e19a8f9821, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.35
@@ -1029,6 +1037,14 @@ PrefabInstance:
     - target: {fileID: 3207132526108449065, guid: 207ad197482bae44488674e19a8f9821, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311128300458599144, guid: 207ad197482bae44488674e19a8f9821, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311128300458599144, guid: 207ad197482bae44488674e19a8f9821, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 3453586855171523934, guid: 207ad197482bae44488674e19a8f9821, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1364,7 +1380,7 @@ Light:
   m_Type: 2
   m_Color: {r: 0, g: 0.18980193, b: 1, a: 1}
   m_Intensity: 500
-  m_Range: 1
+  m_Range: 0.97531027
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
