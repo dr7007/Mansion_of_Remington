@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class LobyManager : MonoBehaviourPunCallbacks
 {
@@ -27,6 +28,8 @@ public class LobyManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField roomCode;
 
     [SerializeField] private Canvas selectCanvas;
+
+    private bool firstEnter = false;
 
 
 
@@ -62,7 +65,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
         else
         {
             // 방생성
-            PhotonNetwork.CreateRoom(roomCode.text);
+            CreatePhotonRoom(roomCode.text);
         }
     }
 
@@ -158,23 +161,44 @@ public class LobyManager : MonoBehaviourPunCallbacks
         errorText.text = "";
     }
 
-    // 로비 입장 성공시 호출
-    public override void OnJoinedLobby()
+
+    private void CreatePhotonRoom(string _roomname)
     {
-        Debug.Log("로비입장 성공!");
+        RoomOptions roomOptions = new RoomOptions();
+
+        roomOptions.MaxPlayers = 2;
+        PhotonNetwork.CreateRoom(_roomname, roomOptions, TypedLobby.Default);
     }
 
     // 룸 갱신 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log(contentRoom);
-        // 기존에 있던 방들 삭제
-        Transform[] children = contentRoom.transform.GetComponentsInChildren<Transform>();
-        foreach (Transform child in children)
+        Transform[] children2 = contentRoom.transform.GetComponentsInChildren<Transform>();
+
+        List<Transform> childrenList = new List<Transform>();
+
+        // 자식중에 프리펩만 가져오도록 수정
+        foreach (Transform child in children2)
         {
-            Destroy(child.gameObject);
+            if (child.tag == "P_List")
+            {
+                childrenList.Add(child);
+            }
         }
 
+        Transform[] children = childrenList.ToArray();
+
+        // 처음 들어갔을때 방정보들 setting
+        if (firstEnter)
+        {
+            foreach (Transform child in children)
+            {
+                Destroy(child.gameObject);
+            }
+            firstEnter = false;
+        }
+
+        // 방생성
         foreach (RoomInfo room in roomList)
         {
             // 각 방에 대해 프리팹 인스턴스화
@@ -187,11 +211,42 @@ public class LobyManager : MonoBehaviourPunCallbacks
                 roomNameText.text = "Room: " + room.Name;
             }
 
-            // 1번째 자식에 플레이어 이름 넣기
+            // 1번째 자식에 플레이어 수 넣기
             TMP_Text playerNameText = roomItem.transform.GetChild(1).GetComponent<TMP_Text>();
             if (playerNameText != null)
             {
                 playerNameText.text = "Players: " + room.PlayerCount + "/" + room.MaxPlayers;
+            }
+        }
+
+        children2 = contentRoom.transform.GetComponentsInChildren<Transform>();
+
+        childrenList = new List<Transform>();
+
+        // 자식중에 프리펩만 가져오도록 수정
+        foreach (Transform child in children2)
+        {
+            if (child.tag == "P_List")
+            {
+                childrenList.Add(child);
+            }
+        }
+
+        children = childrenList.ToArray();
+
+        if (!firstEnter) // 실시간 방 상태 전달함.
+        {
+            // 플레이어 카운트0 (방나간 상태)
+            if (roomList[0].PlayerCount == 0)
+            {
+                foreach (Transform child in children)
+                {
+                    if ("Room: " + roomList[0].Name == child.GetChild(0).GetComponent<TMP_Text>().text)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                }
             }
         }
     }
@@ -202,6 +257,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
         Debug.Log("방이 성공적으로 생성되었습니다.");
     }
 
+    // 룸 들어가면 호출
     public override void OnJoinedRoom()
     {
         Debug.Log("방에 성공적으로 들어감");
@@ -211,5 +267,19 @@ public class LobyManager : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short errorCode, string errorMessage)
     {
         Debug.LogError("방 생성 실패! 에러 코드: " + errorCode + ", 메시지: " + errorMessage);
+    }
+
+    // 로비 입장 성공시 호출
+    public override void OnJoinedLobby()
+    {
+        firstEnter = true;
+        Debug.Log("로비입장 성공!");
+    }
+
+    // 로비 나가면 호출
+    public override void OnLeftLobby()
+    {
+        firstEnter = false;
+        Debug.Log("로비 나감!");
     }
 }
