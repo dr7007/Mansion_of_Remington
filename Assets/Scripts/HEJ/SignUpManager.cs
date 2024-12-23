@@ -47,20 +47,6 @@ public class SignUpManager : MonoBehaviour
 
         StartCoroutine(SignUpCoroutine(Nick.text, ID.text, PW.text, Email.text));
 
-        /*
-        else if (아이디 검사했는데 있는 메일인 경우)
-        {
-             IDMessage.enabled = true;
-             
-        }
-
-        else if(메일 검사했는데 있는 메일인 경우)
-        {
-            EmailMessage.enabled = true;
-        }
-        */
-
-
     }
     public void OpenPopUp()
     {

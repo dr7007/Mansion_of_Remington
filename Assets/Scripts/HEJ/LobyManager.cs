@@ -1,10 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
+using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LobyManager : MonoBehaviour
+public class LobyManager : MonoBehaviourPunCallbacks
 {
     private string[] dialogs;
     public Button[] buttonList;
@@ -13,6 +16,8 @@ public class LobyManager : MonoBehaviour
     [SerializeField] private GameObject findPopup;
     [SerializeField] private GameObject codePopup;
     [SerializeField] private GameObject errorPopup;
+    [SerializeField] private GameObject roomPrefab;
+    [SerializeField] private GameObject contentRoom;
 
     [SerializeField] private Button joinBtn;
     [SerializeField] private Button codeBtn;
@@ -22,6 +27,7 @@ public class LobyManager : MonoBehaviour
     [SerializeField] private TMP_InputField roomCode;
 
     [SerializeField] private Canvas selectCanvas;
+
 
 
     private void Start()
@@ -56,6 +62,7 @@ public class LobyManager : MonoBehaviour
         else
         {
             // 방생성
+            PhotonNetwork.CreateRoom(roomCode.text);
         }
     }
 
@@ -65,14 +72,27 @@ public class LobyManager : MonoBehaviour
         createPopup.SetActive(false);
         codePopup.SetActive(false);
         findPopup.SetActive(true);
+
+        // 로비로 들어가기
+        PhotonNetwork.JoinLobby();
+    }
+
+    // 로그아웃 눌렀을때
+    public void LoginOut()
+    {
+        // 포톤 서버와 연결끊기
+        PhotonNetwork.Disconnect();
+
+        // 다시 로비씬으로
+        // 스크립트 이름이 SceneManager면 화나요
+        UnityEngine.SceneManagement.SceneManager.LoadScene("HEJ_Scene");
     }
 
 
-
     ///////////////////////////방찾기 - 코드로 방찾기 부분///////////////////////////////
-  
 
-    
+
+
     // 코드로 방찾기
     public void CodePopUp()
     {
@@ -138,5 +158,58 @@ public class LobyManager : MonoBehaviour
         errorText.text = "";
     }
 
+    // 로비 입장 성공시 호출
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("로비입장 성공!");
+    }
 
+    // 룸 갱신 함수
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        Debug.Log(contentRoom);
+        // 기존에 있던 방들 삭제
+        Transform[] children = contentRoom.transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child in children)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (RoomInfo room in roomList)
+        {
+            // 각 방에 대해 프리팹 인스턴스화
+            GameObject roomItem = Instantiate(roomPrefab, contentRoom.transform);
+
+            // 0번째 자식에 룸 이름 넣기
+            TMP_Text roomNameText = roomItem.transform.GetChild(0).GetComponent<TMP_Text>();
+            if (roomNameText != null)
+            {
+                roomNameText.text = "Room: " + room.Name;
+            }
+
+            // 1번째 자식에 플레이어 이름 넣기
+            TMP_Text playerNameText = roomItem.transform.GetChild(1).GetComponent<TMP_Text>();
+            if (playerNameText != null)
+            {
+                playerNameText.text = "Players: " + room.PlayerCount + "/" + room.MaxPlayers;
+            }
+        }
+    }
+
+    // 방 생성 성공 시 호출되는 콜백
+    public override void OnCreatedRoom()
+    {
+        Debug.Log("방이 성공적으로 생성되었습니다.");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("방에 성공적으로 들어감");
+    }
+
+    // 방 생성 실패 시 호출되는 콜백
+    public override void OnCreateRoomFailed(short errorCode, string errorMessage)
+    {
+        Debug.LogError("방 생성 실패! 에러 코드: " + errorCode + ", 메시지: " + errorMessage);
+    }
 }

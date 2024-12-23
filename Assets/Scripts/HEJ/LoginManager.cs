@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using System.Collections;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class LoginManager : MonoBehaviour
+public class LoginManager : MonoBehaviourPunCallbacks
 {
     private Button Signin;
     private string[] dialogs;
@@ -51,8 +53,6 @@ public class LoginManager : MonoBehaviour
 
         // DB 비교
         StartCoroutine(LoginCoroutine(Id.text, Pw.text));
-
-       // else if ()
     }
 
     public void onClickXBtn() {
@@ -76,16 +76,45 @@ public class LoginManager : MonoBehaviour
             {
                 Debug.Log(www.error);
             }
-            else if (www.downloadHandler.text == "IDError" || www.downloadHandler.text == "PWError")
+            // 아이디 불일치
+            else if (www.downloadHandler.text == "IDError")
             {
-                // IDError or PWError일때 실행됨.
-                Debug.Log(www.downloadHandler.text);
+                popup.SetActive(true);
+                textBox.text = dialogs[0];
             }
+            // PW 불일치
+            else if (www.downloadHandler.text == "PWError")
+            {
+                popup.SetActive(true);
+                textBox.text = dialogs[1];
+            }
+            // 로그인 됨.
             else
             {
-                // 아무 오류안나면 실행됨.
-                Debug.Log(www.downloadHandler.text);
+                // 포톤 서버와 연결을 함.
+                PhotonNetwork.ConnectUsingSettings();
+
+                // 연결이 됬다면 다음 씬으로 넘어가고 안됬으면 그냥 오류뛰우기
+                Debug.Log("DB와 ID,PW에는 문제없이 로그인됨.");
             }
         }
     }
+
+    // 서버와 연결이 성공시
+    public override void OnConnectedToMaster()
+    {
+        // 다음 씬으로 넘어가도록 하면 될듯.
+        Debug.Log("서버 연결 성공");
+
+        // 스크립트 이름이 SceneManager면 화나요
+        UnityEngine.SceneManagement.SceneManager.LoadScene("HEJ_Scene2");
+    }
+
+    // 서버와 연결이 실패시
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("서버 연결 실패! 원인: " + cause.ToString());
+        // 에러창 하나 뛰어야 할듯.
+    }
+
 }
