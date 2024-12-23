@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PadLock : MonoBehaviour
 {
+    public delegate void PadClearCallback();
+    public PadClearCallback padClear; // clear했을때 콜백되는 함수.
+
     public TMP_Text text2;  // TMP_Text 컴포넌트를 연결
     public List<PadInteraction> padInteractions;
     public string password;
     private int currentValue = 0; // 숫자의 비트값 (초기값 0000)
+    private bool clear = false;
 
 
     private void Start()
@@ -22,9 +26,10 @@ public class PadLock : MonoBehaviour
 
     private void Update()
     {
-        if (text2.text == password)
+        if (text2.text == password && !clear)
         {
-            Debug.Log("패턴 맞음!");
+            clear = true;
+            padClear?.Invoke();
         }
     }
 

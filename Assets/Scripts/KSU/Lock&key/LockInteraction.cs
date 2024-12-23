@@ -3,17 +3,14 @@ using UnityEngine;
 public class LockInteraction : MonoBehaviour
 {
     public bool IsInteraction = false;
+    public GResponse res;
 
-    private void Update()
+    private void Start()
     {
-        if (IsInteraction)
-        {
-            Interaction();
-            IsInteraction = false;
-        }
+        res.OnResponseCallback += Interaction;
     }
 
-    private void Interaction()
+    private void Interaction(bool _state)
     {
         // ÀÚ¹°¼è open
         Transform childTransform = transform.GetChild(0);

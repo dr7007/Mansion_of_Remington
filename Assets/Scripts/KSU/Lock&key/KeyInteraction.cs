@@ -11,6 +11,7 @@ public class KeyInteraction : MonoBehaviour
     public float lerpTime = 0f;
     public LayerMask interactionLayer = 0;
     public List<GameObject> detectedObjects = new List<GameObject>();
+    public GCondition solve;
 
     private void Update()
     {
@@ -94,6 +95,6 @@ public class KeyInteraction : MonoBehaviour
         }
 
         // 이제 lock의 interaction호출 (자물쇠 열리도록)
-        detectedObjects[0].GetComponent<LockInteraction>().IsInteraction = true;
+        solve.OnSolved(true);
     }
 }

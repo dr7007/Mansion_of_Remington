@@ -39,8 +39,6 @@ public class DrawerInteraction : MonoBehaviour
 
             transform.position = Vector3.Lerp(startPos, targetPos, lerpValue);
 
-            Debug.Log(Mathf.Lerp(transform.position.x, transform.position.x + interactionDis, lerpValue));
-
             yield return null;
         }
 
