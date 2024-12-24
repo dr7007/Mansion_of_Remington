@@ -4,12 +4,11 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class LobyManager : MonoBehaviourPunCallbacks
 {
+    // 오류 메세지 팝업 변수
     private string[] dialogs;
     public Button[] buttonList;
 
@@ -19,35 +18,45 @@ public class LobyManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject errorPopup;
     [SerializeField] private GameObject roomPrefab;
     [SerializeField] private GameObject contentRoom;
-
     [SerializeField] private Button joinBtn;
     [SerializeField] private Button codeBtn;
-
     [SerializeField] private TextMeshProUGUI errorText;
-
     [SerializeField] private TMP_InputField roomCode;
-
-    [SerializeField] private Canvas selectCanvas;
-
+    [SerializeField] private GameObject roomScene;
+    [SerializeField] private TMP_InputField joinRoomCode;
     private bool firstEnter = false;
 
-
+    // 방안 관련 변수들
+    [SerializeField] private TMP_Text inRoomCode;
+    [SerializeField] private TMP_Text[] userNicks = new TMP_Text[2];
+    [SerializeField] private TMP_Text womanName;
+    [SerializeField] private TMP_Text boyName;
+    [SerializeField] private Button boyBtn;
+    [SerializeField] private Button womanBtn;
+    [SerializeField] private Button roomStart;
+    private bool boySelected = false;
+    private bool womanSelected = false;
+    private bool callOneTime = false;
+    private string clickedRoomInfo = "";
 
     private void Start()
     {
         dialogs = new string[] {
             "Room Code Not Found!",
             "This Room is Full!",
+            "This Room is Exist"
         };
         joinBtn.onClick.AddListener(ClickJoin);
     }
 
     private void Update()
     {
-
+        RoomStartBtnOnOff();
     }
 
-    // 방 만들기 눌렀을때
+    #region 방만들기 버튼관련
+
+    // 방만들기 팝업을 뛰움("방만들기" 눌렀을때 실행)
     public void OpenCreatePopUP()
     {
         createPopup.SetActive(true);
@@ -55,7 +64,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
         findPopup.SetActive(false);
     }
 
-    // 방 만들기 - 코드 입력 후 확인
+    // 방을 생성함(Create버튼 눌렀을때 실행)
     public void CreateRoom()
     {
         if(roomCode.text.Length < 5)
@@ -69,7 +78,11 @@ public class LobyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    // 방 찾기 눌렀을때
+    #endregion
+
+    #region 방찾기 버튼 관련
+
+    // JoinLobby 창을 뛰움(방찾기 버튼 눌렀을때 실행)
     public void FindPopUP()
     {
         createPopup.SetActive(false);
@@ -80,7 +93,115 @@ public class LobyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-    // 로그아웃 눌렀을때
+    // 로비 방에 참가.(Join버튼 눌렀을때 실행)
+    private void ClickJoin()
+    {
+        if (clickedRoomInfo == "")
+        {
+            Debug.Log("방을 선택 안함.");
+        }
+        else
+        {
+            PhotonNetwork.JoinRoom(clickedRoomInfo);
+        }
+    }
+
+    #region 코드로 방찾기 관련
+    // 코드 입력창을 뛰움(RoomCode 클릭시 실행)
+    public void CodePopUp()
+    {
+        codePopup.SetActive(true);
+    }
+
+    // 코드 입력창을 닫음(X 클릭시 실행)
+    public void CodePopUpClose()
+    {
+        codePopup.SetActive(false);
+    }
+
+    // 확인 버튼 눌렀을 때
+    public void CheckCode()
+    {
+        PhotonNetwork.JoinRoom(joinRoomCode.text);
+    }
+    #endregion
+
+    #region 방안에서 작동하는 버튼 관련
+
+    // 기자 그림 눌렀을때
+    // 더이상 선택못하고(비활성화), 선택한 플레이어의 닉네임의 알파값을 바꿈.
+    public void ClickWoman()
+    {
+        womanBtn.interactable = false;
+        womanSelected = true;
+
+        // 선택한 플레이어의 닉네임 알파값 조정
+        SetAlphaUserNick(0.5f, PhotonNetwork.NickName);
+
+        // text이름 바꾸기
+        womanName.text = PhotonNetwork.NickName;
+
+        // 동기화를 위한 RPC
+        photonView.RPC("WomanClicked", RpcTarget.Others, PhotonNetwork.NickName);
+    }
+
+    // 소년 그림 눌렀을때
+    public void ClickBoy()
+    {
+        boyBtn.interactable = false;
+        boySelected = true;
+
+        // 선택한 플레이어의 닉네임 알파값 조정
+        SetAlphaUserNick(0.5f, PhotonNetwork.NickName);
+
+        // 이름 바꿔야함.
+        boyName.text = PhotonNetwork.NickName;
+
+        // 동기화를 위한 RPC
+        photonView.RPC("BoyClicked", RpcTarget.Others, PhotonNetwork.NickName);
+    }
+
+    // 가운데 대기화면 눌렀을때
+    public void ClickWait()
+    {
+        if (boySelected && PhotonNetwork.NickName == boyName.text)
+        {
+            boySelected = false;
+            boyBtn.interactable = true;
+            boyName.text = "";
+
+            // 선택한 플레이어의 닉네임 알파값 조정
+            SetAlphaUserNick(1f, PhotonNetwork.NickName);
+
+            // 동기화를 위한 RPC
+            photonView.RPC("BoyWaitClicked", RpcTarget.Others, PhotonNetwork.NickName);
+        }
+        else if (womanSelected && PhotonNetwork.NickName == womanName.text)
+        {
+            womanSelected = false;
+            womanBtn.interactable = true;
+            womanName.text = "";
+
+            // 선택한 플레이어의 닉네임 알파값 조정
+            SetAlphaUserNick(1f, PhotonNetwork.NickName);
+
+            // 동기화를 위한 RPC
+            photonView.RPC("WomanWaitClicked", RpcTarget.Others, PhotonNetwork.NickName);
+        }
+    }
+
+    // 게임 시작 버튼 눌렀을때
+    public void ClickRoomStart()
+    {
+        // 다음씬으로 넘어가도록 설정하면 될듯.
+    }
+
+    #endregion
+
+    #endregion
+
+    #region 로그아웃 버튼 관련
+    // 로그아웃 버튼 눌렀을때
     public void LoginOut()
     {
         // 포톤 서버와 연결끊기
@@ -91,77 +212,10 @@ public class LobyManager : MonoBehaviourPunCallbacks
         UnityEngine.SceneManagement.SceneManager.LoadScene("HEJ_Scene");
     }
 
+    #endregion
 
-    ///////////////////////////방찾기 - 코드로 방찾기 부분///////////////////////////////
-
-
-
-    // 코드로 방찾기
-    public void CodePopUp()
-    {
-        codePopup.SetActive(true);
-    }
-    // 코드방팝업 닫기
-    public void CodePopUpClose()
-    {
-        codePopup.SetActive(false);
-
-    }
-
-    // 확인 버튼 눌렀을 때
-    public void CheckCode()
-    {
-        // 통과 - canvas 캐릭터 고르는 부분으로 넘김
-        //selectCanvas.enabled = true;
-
-        // 통과 안된경우
-
-        // 1. 코드를 못찾은 경우
-        // errorText.text = dialogs[0];
-        // StartCoroutine(ErrorPopup());
-
-        // 2. 인원이 다 찼을 때
-        // errorText.text = dialogs[1];
-        // StartCoroutine(ErrorPopup());
-
-    }
-
-
-    ////////////////////////방찾기 - 조인 버튼 부분//////////////////////////////////
-    /*
-        목록을 누르지 않고 조인버튼을 누른경우 - 에러팝업창
-        목록을 누르고 조인 버튼을 누른 경우 - 1. 자리있음 - 캐릭터 선택 창으로 넘어감 / 2. 인원 초과 - 에러 팝업창
-    */
-
-    // 방 목록 눌렀을 때 호출될 함수
-    // 인스펙터 창에서 직접 호출하는 경우
-    public void ClickList()
-    {
-
-    }
-    // 만약에 배열 사용하는 거면 반복문 돌리고 AddListener 사용
-    // 배열[i].onClick.AddListener(() => { (함수); });
-    
-    //조인버튼 눌렀을 때 함수
-    private void ClickJoin()
-    {
-        
-    }
-
-   
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // 에러 팝업창 코루틴
-    private IEnumerator ErrorPopup()
-    {
-        errorPopup.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        errorPopup.SetActive(false);
-        errorText.text = "";
-    }
-
-
+    #region 네트워크 관련 함수들
+    // 네트워크 상에서 방을 만들어줌.
     private void CreatePhotonRoom(string _roomname)
     {
         RoomOptions roomOptions = new RoomOptions();
@@ -170,30 +224,22 @@ public class LobyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(_roomname, roomOptions, TypedLobby.Default);
     }
 
+    #endregion
+
+    #region 네트워크 콜백 함수들
+
     // 룸 갱신 함수
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Transform[] children2 = contentRoom.transform.GetComponentsInChildren<Transform>();
+        // 현재 있는 프리펩을 다 들고와서
+        CheckClickRoom[] prefabs = contentRoom.transform.GetComponentsInChildren<CheckClickRoom>();
 
-        List<Transform> childrenList = new List<Transform>();
-
-        // 자식중에 프리펩만 가져오도록 수정
-        foreach (Transform child in children2)
-        {
-            if (child.tag == "P_List")
-            {
-                childrenList.Add(child);
-            }
-        }
-
-        Transform[] children = childrenList.ToArray();
-
-        // 처음 들어갔을때 방정보들 setting
+        // 처음 들어갔을때 방정보 리셋시킴
         if (firstEnter)
         {
-            foreach (Transform child in children)
+            foreach (CheckClickRoom prefab in prefabs)
             {
-                Destroy(child.gameObject);
+                Destroy(roomPrefab.gameObject);
             }
             firstEnter = false;
         }
@@ -203,6 +249,9 @@ public class LobyManager : MonoBehaviourPunCallbacks
         {
             // 각 방에 대해 프리팹 인스턴스화
             GameObject roomItem = Instantiate(roomPrefab, contentRoom.transform);
+
+            // 프리펩이 클릭됬을때 호출되는 함수등록
+            roomItem.GetComponent<CheckClickRoom>().roomClickedCallback += SetRoomInfo;
 
             // 0번째 자식에 룸 이름 넣기
             TMP_Text roomNameText = roomItem.transform.GetChild(0).GetComponent<TMP_Text>();
@@ -219,31 +268,20 @@ public class LobyManager : MonoBehaviourPunCallbacks
             }
         }
 
-        children2 = contentRoom.transform.GetComponentsInChildren<Transform>();
+        // 현재 있는 프리펩을 다 들고와서
+        prefabs = contentRoom.transform.GetComponentsInChildren<CheckClickRoom>();
 
-        childrenList = new List<Transform>();
-
-        // 자식중에 프리펩만 가져오도록 수정
-        foreach (Transform child in children2)
-        {
-            if (child.tag == "P_List")
-            {
-                childrenList.Add(child);
-            }
-        }
-
-        children = childrenList.ToArray();
-
-        if (!firstEnter) // 실시간 방 상태 전달함.
+        // 실시간 방 상태 전달함.
+        if (!firstEnter && roomList.Count != 0)
         {
             // 플레이어 카운트0 (방나간 상태)
             if (roomList[0].PlayerCount == 0)
             {
-                foreach (Transform child in children)
+                foreach (CheckClickRoom prefab in prefabs)
                 {
-                    if ("Room: " + roomList[0].Name == child.GetChild(0).GetComponent<TMP_Text>().text)
+                    if ("Room: " + roomList[0].Name == prefab.transform.GetChild(0).GetComponent<TMP_Text>().text)
                     {
-                        Destroy(child.gameObject);
+                        Destroy(prefab.gameObject);
                     }
 
                 }
@@ -261,11 +299,46 @@ public class LobyManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("방에 성공적으로 들어감");
+
+        // 씬을 뛰우면 될듯
+        roomScene.SetActive(true);
+
+        // 씬을 플레이어 정보와 동기화 시키는 something이 필요함.
+        // 필요한 정보 : 플레이어 닉네임, 룸코드
+        SetRoom();
+    }
+
+    // 룸 들어가기 실패시 호출
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        // 코드가 잘못됬을때 호출
+        if (returnCode == 32758)
+        {
+            errorText.text = dialogs[0];
+            StartCoroutine(ErrorPopup());
+        }
+
+        // 인원이 다 찼을때 호출
+        if (returnCode == 32765)
+        {
+            errorText.text = dialogs[1];
+            StartCoroutine(ErrorPopup());
+        }
+
+        // 방 인원 꽉찼을때 호출
+
+        Debug.LogError("방 입장 실패! 에러 코드: " + returnCode + ", 메시지: " + message);
     }
 
     // 방 생성 실패 시 호출되는 콜백
     public override void OnCreateRoomFailed(short errorCode, string errorMessage)
     {
+        if (errorCode == 32766)
+        {
+            // 에러창 뛰우기
+            errorText.text = dialogs[2];
+            StartCoroutine(ErrorPopup());
+        }
         Debug.LogError("방 생성 실패! 에러 코드: " + errorCode + ", 메시지: " + errorMessage);
     }
 
@@ -281,5 +354,136 @@ public class LobyManager : MonoBehaviourPunCallbacks
     {
         firstEnter = false;
         Debug.Log("로비 나감!");
+    }
+
+    // 플레이어가 방에 들어올때 호출되는 함수
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        SetRoom();
+    }
+
+    // 플레이어가 방에 나갈때 호출되는 함수
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        SetRoom();
+    }
+
+    #endregion
+
+    #region 콜백받는 rpc 함수들
+
+    [PunRPC]
+    private void WomanClicked(string _name)
+    {
+        womanBtn.interactable = false;
+        womanSelected = true;
+
+        // 선택한 플레이어의 닉네임 알파값 조정
+        SetAlphaUserNick(0.5f, _name);
+
+        womanName.text = _name;
+    }
+
+    [PunRPC]
+    private void BoyClicked(string _name)
+    {
+        boyBtn.interactable = false;
+        boySelected = true;
+
+        // 선택한 플레이어의 닉네임 알파값 조정
+        SetAlphaUserNick(0.5f, _name);
+
+        boyName.text = _name;
+    }
+
+    [PunRPC]
+    private void BoyWaitClicked(string _name)
+    {
+        boySelected = false;
+        boyBtn.interactable = true;
+        boyName.text = "";
+
+        // 선택한 플레이어의 닉네임 알파값 조정
+        SetAlphaUserNick(1f, _name);
+    }
+
+    [PunRPC]
+    private void WomanWaitClicked(string _name)
+    {
+        womanSelected = false;
+        womanBtn.interactable = true;
+        womanName.text = "";
+
+        // 선택한 플레이어의 닉네임 알파값 조정
+        SetAlphaUserNick(1f, _name);
+    }
+
+    #endregion
+
+    // 방입장 에러 팝업창 코루틴
+    private IEnumerator ErrorPopup()
+    {
+        errorPopup.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        errorPopup.SetActive(false);
+        errorText.text = "";
+    }
+
+    // 방 들어가면 방세팅(룸코드, 플레이어 nick)
+    private void SetRoom()
+    { 
+        // 방이름 설정
+        inRoomCode.text = PhotonNetwork.CurrentRoom.Name;
+
+        // 이름 설정
+        for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+        {
+            userNicks[i].text = PhotonNetwork.PlayerList[i].NickName;
+        }
+    }
+
+    // 플레이어의 닉네임 알파값 조정 (방 안의 플레이어 alpha값만 조정가능)
+    private void SetAlphaUserNick(float _alpha, string _name)
+    {
+        for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++)
+        {
+            if (userNicks[i].text == _name)
+            {
+                Color currentColor = userNicks[i].color;
+                currentColor.a = _alpha;
+                userNicks[i].color = currentColor;
+            }
+        }
+    }
+
+    // 방안에 시작버튼 활성화 비활성화를 결정함.
+    private void RoomStartBtnOnOff()
+    {
+        if ((boySelected && womanSelected) && !callOneTime)
+        {
+            roomStart.interactable = true;
+            callOneTime = true;
+
+            Color currentColor = roomStart.image.color;
+            currentColor.a = 1f;
+            roomStart.image.color = currentColor;
+        }
+        else if ((!boySelected || !womanSelected) && callOneTime)
+        {
+            roomStart.interactable = false;
+            callOneTime = false;
+
+            Color currentColor = roomStart.image.color;
+            currentColor.a = 0.5f;
+            roomStart.image.color = currentColor;
+        }
+    }
+
+    // RoomInfo를 설정
+    private void SetRoomInfo(string _roomName)
+    {
+        Debug.Log("콜백 호출됨 : " + _roomName);
+
+        clickedRoomInfo = _roomName;
     }
 }
