@@ -47,20 +47,6 @@ public class SignUpManager : MonoBehaviour
 
         StartCoroutine(SignUpCoroutine(Nick.text, ID.text, PW.text, Email.text));
 
-        /*
-        else if (아이디 검사했는데 있는 메일인 경우)
-        {
-             IDMessage.enabled = true;
-             
-        }
-
-        else if(메일 검사했는데 있는 메일인 경우)
-        {
-            EmailMessage.enabled = true;
-        }
-        */
-
-
     }
     public void OpenPopUp()
     {
@@ -81,7 +67,7 @@ public class SignUpManager : MonoBehaviour
 
     private IEnumerator SignUpCoroutine(string _nick, string _id, string _pw, string _email)
     {
-        string signUpUri = "http://127.0.0.1/gameSignUp.php";
+        string signUpUri = "http://34.47.102.147/gameSignUp.php";
 
         WWWForm form = new WWWForm();
         form.AddField("SignUpNick", _nick);
