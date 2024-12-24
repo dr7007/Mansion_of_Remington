@@ -228,6 +228,10 @@ PrefabInstance:
       propertyPath: InteractionName
       value: P_Lock
       objectReference: {fileID: 0}
+    - target: {fileID: 5580330353857077822, guid: 609cad5eb478dd849beaf2705286bdf7, type: 3}
+      propertyPath: interactionLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 6202248377633566000, guid: 609cad5eb478dd849beaf2705286bdf7, type: 3}
       propertyPath: m_Name
       value: P_Key

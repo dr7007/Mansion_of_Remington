@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class GCondition : MonoBehaviour
+public class GCondition : MonoBehaviourPun
 {
     public delegate void JudgeSolvedCondition(bool _state);
 
@@ -13,6 +14,13 @@ public class GCondition : MonoBehaviour
     }
 
     public void OnSolved(bool _isSolved)
+    {
+        OnSolvedCallback?.Invoke(_isSolved);
+        photonView.RPC("OnSolvedRPC", RpcTarget.Others, _isSolved);
+    }
+
+    [PunRPC]
+    public void OnSolvedRPC(bool _isSolved)
     {
         OnSolvedCallback?.Invoke(_isSolved);
     }
