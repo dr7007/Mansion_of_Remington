@@ -10,6 +10,8 @@ public class HookAttach : MonoBehaviour
     private Vector3 onRopePos = Vector3.zero;
     [SerializeField]
     private float lerpratio = 0.003f;
+    [SerializeField]
+    private Rope ropeGo = null;
 
     private bool isArrived = false;
 
@@ -21,10 +23,14 @@ public class HookAttach : MonoBehaviour
         get { return hookAttachCallback; }
         set { hookAttachCallback = value; }
     }
+    private void Awake()
+    {
+        ropeGo = GetComponentInChildren<Rope>();
+    }
 
     private void Start()
     {
-        transform.position = noRopePos;
+        transform.localPosition = noRopePos;
         onRopePos = noRopePos + 5*Vector3.up;
     }
 
@@ -43,13 +49,13 @@ public class HookAttach : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         while(!isArrived)
         {
-            if((transform.position - onRopePos).magnitude <= 0.1f)
+            if((transform.localPosition - onRopePos).magnitude <= 0.1f)
             {
                 isArrived = true;
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, onRopePos, lerpratio);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, onRopePos, lerpratio);
                 yield return null;
             }
         }

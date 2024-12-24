@@ -8,7 +8,7 @@ public class Rope : MonoBehaviour
     private Rigidbody rb = null;
     private HookAttach hook = null;
     private Transform parentTr = null;
-    
+
 
 
     private void Awake()
@@ -21,16 +21,17 @@ public class Rope : MonoBehaviour
     private void Start()
     {
         hook.HookAttachCallback = SetAttach;
-        
+
     }
 
     private void SetAttach()
     {
         rb.isKinematic = true;
         grabinter.enabled = false;
-        parentTr.position = hook.transform.position;
-        gameObject.transform.position = hook.transform.position - 0.4f * Vector3.up;
-        gameObject.transform.rotation = Quaternion.identity;
         parentTr.SetParent(hook.transform);
+        parentTr.localPosition = Vector3.zero;
+        gameObject.transform.rotation = Quaternion.identity;
+        transform.localPosition = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
 }
