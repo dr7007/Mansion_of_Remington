@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 3
   tags:
   - Anchor
+  - Dog
+  - Mouse
+  - ChessButton
+  - AnimalPlayButton
+  - Handle
   layers:
   - Default
   - TransparentFX
