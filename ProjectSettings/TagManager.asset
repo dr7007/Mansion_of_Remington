@@ -10,6 +10,7 @@ TagManager:
   - ChessButton
   - AnimalPlayButton
   - Handle
+  - Interaction
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Water
   - UI
   - Test
-  - 
+  - Interaction
   - 
   - 
   - 
