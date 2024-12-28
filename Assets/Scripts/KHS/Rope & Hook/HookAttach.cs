@@ -10,6 +10,8 @@ public class HookAttach : MonoBehaviour
     private Vector3 onRopePos = Vector3.zero;
     [SerializeField]
     private float lerpratio = 0.003f;
+    [SerializeField]
+    private GameObject ropeGo = null;
 
     private bool isArrived = false;
 
@@ -24,7 +26,7 @@ public class HookAttach : MonoBehaviour
 
     private void Start()
     {
-        transform.position = noRopePos;
+        transform.localPosition = noRopePos;
         onRopePos = noRopePos + 5*Vector3.up;
     }
 
@@ -34,6 +36,7 @@ public class HookAttach : MonoBehaviour
         {
             Debug.Log("Rope Attact!");
             hookAttachCallback?.Invoke();
+            ropeGo.SetActive(true);
             StartCoroutine(StayPositionMove());
         }
     }
