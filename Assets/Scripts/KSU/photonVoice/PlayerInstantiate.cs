@@ -5,10 +5,12 @@ public class PlayerInstantiate : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private GameObject playerPrefab;
+    [SerializeField]
+    private Vector3 instantiatePos;
 
     private void SpawnPlayer()
     {
-        PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity, 0);
+        PhotonNetwork.Instantiate(playerPrefab.name, instantiatePos, Quaternion.identity, 0);
     }
 
     public override void OnJoinedRoom()

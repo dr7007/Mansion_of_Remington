@@ -52,8 +52,6 @@ public class SmallTile : MonoBehaviourPun
         }
     }
 
-
-
     [PunRPC]
     private void CorrectRPC(string _name)
     {
