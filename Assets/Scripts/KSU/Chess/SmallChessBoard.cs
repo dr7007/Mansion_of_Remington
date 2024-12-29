@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using System.Collections;
+using static UnityEngine.Rendering.DebugUI.Table;
 
-public class SmallChessBoard : MonoBehaviour
+public class SmallChessBoard : MonoBehaviourPunCallbacks
 {
     [SerializeField] private GameObject tilePrefab;
     public float tileSize = 1f;
@@ -18,7 +21,6 @@ public class SmallChessBoard : MonoBehaviour
     {
         tiles.Clear();
         Reset();
-        CreateTiles();
     }
 
     private void Update()
@@ -46,7 +48,13 @@ public class SmallChessBoard : MonoBehaviour
                 Vector3 position = transform.TransformPoint(localPosition);
 
                 // 타일을 생성하고 위치를 지정
-                GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                GameObject tile = PhotonNetwork.Instantiate(tilePrefab.name, position, Quaternion.identity);
+
+                // 동기화(자식으로 추가하는거)
+                photonView.RPC("SetParentRPC", RpcTarget.OthersBuffered, tile.GetComponent<PhotonView>().ViewID, row, col);
+
+                tile.transform.SetParent(transform);
+
                 tile.name = "" + (row * boardSize + col + 1);  // 번호를 이름으로 지정
 
                 tile.transform.localScale = new Vector3(1f, 0.2f, 1f);
@@ -83,5 +91,51 @@ public class SmallChessBoard : MonoBehaviour
         }
         tiles.Clear();
     }
+
+    public override void OnJoinedRoom()
+    {
+        StartCoroutine(JoinRoomDelayCoroutine());
+    }
+
+    private IEnumerator JoinRoomDelayCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            Debug.Log("소년 방입장 호출됨");
+            CreateTiles();
+        }
+    }
+
+    [PunRPC]
+    private void SetParentRPC(int _viewID, int _row, int _col)
+    {
+        Debug.Log("RPC호출됨");
+
+        PhotonView photonView = PhotonView.Find(_viewID);
+
+        GameObject tile = photonView.gameObject;
+
+        tile.transform.SetParent(transform);
+
+        tile.name = "" + (_row * boardSize + _col + 1);  // 번호를 이름으로 지정
+
+        tile.transform.localScale = new Vector3(1f, 0.2f, 1f);
+        tile.transform.localRotation = Quaternion.identity;
+
+        // 타일 리스트에 추가
+        tiles.Add(tile);
+
+        // 번호를 타일의 상단에 표시할 경우 (옵션)
+        // 번호 텍스트를 만들고, 타일에 추가할 수 있습니다.
+        // 텍스트는 필요 없다면 생략 가능합니다.
+        if (tile.GetComponentInChildren<TextMesh>() != null)
+        {
+            TextMesh textMesh = tile.GetComponentInChildren<TextMesh>();
+            textMesh.text = (_row * boardSize + _col + 1).ToString();
+        }
+    }
+
 
 }
