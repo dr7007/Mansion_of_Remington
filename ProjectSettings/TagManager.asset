@@ -11,6 +11,8 @@ TagManager:
   - AnimalPlayButton
   - Handle
   - Interaction
+  - TempKey
+  - Chain
   layers:
   - Default
   - TransparentFX
