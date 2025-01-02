@@ -1,0 +1,86 @@
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.InputSystem.XR;
+using Unity.XR.CoreUtils;
+
+public class CheckEvent : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject leftHandVisable;
+    [SerializeField]
+    private GameObject rightHandVisable;
+    [SerializeField]
+    private GameObject player;
+
+
+    // 그랩했을때 호출됨.
+    public void GrabOn(SelectEnterEventArgs args)
+    {
+        Debug.Log("GrabOn 호출됨 : " + args.interactableObject.transform.name);
+        string hand = args.interactorObject.handedness.ToString();
+
+        // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
+        if (args.interactableObject.transform.gameObject.tag == "NotMove")
+        {
+            // 움직임을 따라다니는 track을 비활성화
+            CheckHand(hand).GetComponent<TrackedPoseDriver>().enabled = false;
+
+            // 해당 위치에 hand를 붙여줌.
+            args.interactableObject.transform.gameObject.GetComponent<AttachHand>().hand = CheckHand(hand);
+
+            // 자식으로 붙여줌.
+            args.interactableObject.transform.gameObject.GetComponent<AttachHand>().SetChildHand();
+
+            // 그랩 된 상태
+            args.interactableObject.transform.gameObject.GetComponent<AttachHand>().grapping = true;
+        }
+        else
+        {
+            // 그랩한 손 안보이게 함.
+            CheckHand(hand).SetActive(false);
+        }
+    }
+
+    // 그랩 놓았을때 호출됨.
+    public void GrabOff(SelectExitEventArgs args)
+    {
+        Debug.Log("GrabOff 호출됨");
+        string hand = args.interactorObject.handedness.ToString();
+
+        // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
+        if (args.interactableObject.transform.gameObject.tag == "NotMove")
+        {
+            // 그랩 해제
+            args.interactableObject.transform.gameObject.GetComponent<AttachHand>().grapping = false;
+
+            // 움직임을 따라다니는 track을 활성화
+            CheckHand(hand).GetComponent<TrackedPoseDriver>().enabled = true;
+
+            // 해당 위치에 hand를 초기화
+            args.interactableObject.transform.gameObject.GetComponent<AttachHand>().hand = null;
+
+            // 다시 플레이어 자식으로 만들기
+            CheckHand(hand).transform.SetParent(player.transform);
+        }
+        else
+        {
+            // 그랩한 손 안보이게 함.
+            CheckHand(hand).SetActive(false);
+        }
+    }
+
+    // 어떤 손으로 잡았는지 확인
+    private GameObject CheckHand(string _name)
+    {
+        if (_name == "Left")
+        {
+            return leftHandVisable;
+        }
+        else if (_name == "Right")
+        {
+            return rightHandVisable;
+        }
+
+        return null;
+    }
+}
