@@ -6,9 +6,13 @@ public class PlayerCameraController : MonoBehaviour
 {
     public Transform leftController;
     public GameObject leftPhysicalCamera; // 왼쪽 컨트롤러에 장착된 "물리 카메라"
+    public GameObject leftAffordance;
+    public GameObject leftControllerVisual;
 
     [SerializeField]
     private InputActionReference xrControllerAction = null;
+    [SerializeField]
+    private Vector3 camOffset = Vector3.zero;
 
     private bool isLeftCameraActive = false;
 
@@ -16,6 +20,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         // 초기 상태: "카메라" 비활성화
         leftPhysicalCamera.SetActive(false);
+        leftPhysicalCamera.transform.localPosition = camOffset;
     }
 
     private void OnEnable()
@@ -48,6 +53,8 @@ public class PlayerCameraController : MonoBehaviour
             isLeftCameraActive = !isLeftCameraActive;
 
             leftPhysicalCamera.SetActive(isLeftCameraActive);
+            leftAffordance.SetActive(!isLeftCameraActive);
+            leftControllerVisual.SetActive(!isLeftCameraActive);
         }
     }
 }
