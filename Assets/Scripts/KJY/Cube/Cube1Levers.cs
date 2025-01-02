@@ -90,10 +90,10 @@ public class Cube1Levers : MonoBehaviour
             StopCoroutine(SaveTheValue());
 
 
-            StopCoroutine(levers[0].LeverControl());
-            StopCoroutine(levers[1].LeverControl());
-            StopCoroutine(levers[2].LeverControl());
-            StopCoroutine(levers[3].LeverControl());
+            //StopCoroutine(levers[0].LeverControl());
+            //StopCoroutine(levers[1].LeverControl());
+            //StopCoroutine(levers[2].LeverControl());
+            //StopCoroutine(levers[3].LeverControl());
             
         }
 
