@@ -4,15 +4,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    public Transform leftController;
     public GameObject leftPhysicalCamera; // 왼쪽 컨트롤러에 장착된 "물리 카메라"
-    public GameObject leftAffordance;
-    public GameObject leftControllerVisual;
+    public GameObject leftController;
 
     [SerializeField]
     private InputActionReference xrControllerAction = null;
     [SerializeField]
     private Vector3 camOffset = Vector3.zero;
+
 
     private bool isLeftCameraActive = false;
 
@@ -39,22 +38,18 @@ public class PlayerCameraController : MonoBehaviour
     private void OnXButtonPressed(InputAction.CallbackContext context)
     {
         Debug.Log("X Pressed");
-        TogglePhysicalCamera(true);
+        TogglePhysicalCamera();
     }
     private void OnXButtonReleased(InputAction.CallbackContext context)
     {
         Debug.Log("X Released");
     }
 
-    void TogglePhysicalCamera(bool isLeft)
+    void TogglePhysicalCamera()
     {
-        if (isLeft)
-        {
-            isLeftCameraActive = !isLeftCameraActive;
+        isLeftCameraActive = !isLeftCameraActive;
 
-            leftPhysicalCamera.SetActive(isLeftCameraActive);
-            leftAffordance.SetActive(!isLeftCameraActive);
-            leftControllerVisual.SetActive(!isLeftCameraActive);
-        }
+        leftPhysicalCamera.SetActive(isLeftCameraActive);
+        leftController.SetActive(!isLeftCameraActive);
     }
 }

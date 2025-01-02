@@ -12,12 +12,17 @@ public class CameraScreen : MonoBehaviour
     [SerializeField]
     private InputActionReference xrControllerAction = null;
 
-    private void Awake()
+    private bool isPast = false;
+
+
+    public bool IsPast
     {
-        screenMR = GetComponent<MeshRenderer>();
+        get { return isPast; }
     }
+
     private void Start()
     {
+        isPast = false;
         screenMR.material.SetTexture("_BaseMap", presentScreen);
         screenMR.material.SetTexture("_EmissionMap", presentScreen);
     }
@@ -35,10 +40,27 @@ public class CameraScreen : MonoBehaviour
         xrControllerAction.action.Disable();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("Q Pressed");
+            if (screenMR.isVisible)
+            {
+                isPast = !isPast;
+                ChangeRenderTex();
+            }
+        }
+    }
+
     private void OnAButtonPressed(InputAction.CallbackContext context)
     {
         Debug.Log("A Pressed");
-        ChangeRenderTex();
+        if (screenMR.isVisible)
+        {
+            isPast = !isPast;
+            ChangeRenderTex();
+        }
     }
     private void OnAButtonReleased(InputAction.CallbackContext context)
     {
@@ -47,17 +69,15 @@ public class CameraScreen : MonoBehaviour
 
     private void ChangeRenderTex()
     {
-        if(screenMR.material.GetTexture("_BaseMap") == presentScreen)
+        if(isPast)
         {
-            Debug.Log("past");
-            screenMR.material.SetTexture("_BaseMap", pastScreen);
-            screenMR.material.SetTexture("_EmissionMap", pastScreen);
-        }
-        else if(screenMR.material.GetTexture("_BaseMap") == pastScreen)
-        {
-            Debug.Log("Current");
             screenMR.material.SetTexture("_BaseMap", presentScreen);
             screenMR.material.SetTexture("_EmissionMap", presentScreen);
+        }
+        else if(!isPast)
+        {
+            screenMR.material.SetTexture("_BaseMap", pastScreen);
+            screenMR.material.SetTexture("_EmissionMap", pastScreen);
         }
         else
         {
