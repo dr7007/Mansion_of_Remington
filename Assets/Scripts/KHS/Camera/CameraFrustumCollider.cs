@@ -5,10 +5,11 @@ public class CameraFrustumCollider : MonoBehaviour
 {
     public Camera targetCamera;  // 대상 카메라
     public float detectionDistance = 2f;  // 제한 거리
+    
 
     public CameraScreen camScreen;
 
-    public bool colliderActive = false;
+    private bool typeofCam = false;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class CameraFrustumCollider : MonoBehaviour
     }
     private void Start()
     {
+        if()
         if (targetCamera == null)
         {
             targetCamera = GetComponent<Camera>();
@@ -97,5 +99,7 @@ public class CameraFrustumCollider : MonoBehaviour
         meshCollider.sharedMesh = mesh;
         meshCollider.convex = true;  // Trigger로 사용하려면 Convex 설정 필요
         meshCollider.isTrigger = true;
+
+        
     }
 }

@@ -11,6 +11,7 @@ public class PlayerCameraController : MonoBehaviour
     private InputActionReference xrControllerAction = null;
     [SerializeField]
     private Vector3 camOffset = Vector3.zero;
+    
 
 
     private bool isLeftCameraActive = false;

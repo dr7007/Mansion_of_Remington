@@ -13,5 +13,11 @@ public class CaptureManager : MonoBehaviour
     [Header("TransList")]
     public List<GameObject> transCallbackList;
 
-    
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+
+        }
+    }
 }
