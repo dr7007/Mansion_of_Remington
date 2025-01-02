@@ -12,13 +12,17 @@ public class KeyInteraction : MonoBehaviour
     public LayerMask interactionLayer = 0;
     public List<GameObject> detectedObjects = new List<GameObject>();
     public GCondition solve;
-
     private void Update()
     {
         DetectInteraction();
+    }
 
-        if (canInteraction && Input.GetKeyDown(KeyCode.E))
+    private void OnTriggerEnter(Collider other)
+    {
+        if (canInteraction && other.gameObject == detectedObjects[0])
         {
+            // ±×·¦ È°¼ºÈ­ false
+
             StartCoroutine(Interaction());
         }
     }

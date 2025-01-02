@@ -101,6 +101,7 @@ public class SignUpManager : MonoBehaviour
             {
                 // 아무오류 안나면 실행됨.
                 Debug.Log(www.downloadHandler.text);
+                SignUpBox.SetActive(false);
             }
         }
     }

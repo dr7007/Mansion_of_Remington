@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class SmallTile : MonoBehaviour
+public class SmallTile : MonoBehaviourPun
 {
 
     private SmallChessBoard board;
@@ -19,6 +20,8 @@ public class SmallTile : MonoBehaviour
             color.a = 1f;
             board.currentIdx++;
             gameObject.GetComponent<Renderer>().material.color = color;
+
+            photonView.RPC("CorrectRPC", RpcTarget.Others, _name);
         }
     }
 
@@ -32,6 +35,8 @@ public class SmallTile : MonoBehaviour
             gameObject.GetComponent<Renderer>().material.color = color;
 
             board.Reset();
+
+            photonView.RPC("WrongRPC", RpcTarget.Others, _name);
         }
     }
 
@@ -42,8 +47,47 @@ public class SmallTile : MonoBehaviour
             Color color = gameObject.GetComponent<Renderer>().material.color;
             color.a = 0f;
             gameObject.GetComponent<Renderer>().material.color = color;
+
+            photonView.RPC("ExitRPC", RpcTarget.Others, _name);
         }
     }
 
+    [PunRPC]
+    private void CorrectRPC(string _name)
+    {
+        if (gameObject.name == _name)
+        {
+            Color color = gameObject.GetComponent<Renderer>().material.color;
+            color = Color.green;
+            color.a = 1f;
+            board.currentIdx++;
+            gameObject.GetComponent<Renderer>().material.color = color;
+        }
+    }
+
+    [PunRPC]
+    private void WrongRPC(string _name)
+    {
+        if (gameObject.name == _name)
+        {
+            Color color = gameObject.GetComponent<Renderer>().material.color;
+            color = Color.red;
+            color.a = 1f;
+            gameObject.GetComponent<Renderer>().material.color = color;
+
+            board.Reset();
+        }
+    }
+
+    [PunRPC]
+    private void ExitRPC(string _name)
+    {
+        if (gameObject.name == _name)
+        {
+            Color color = gameObject.GetComponent<Renderer>().material.color;
+            color.a = 0f;
+            gameObject.GetComponent<Renderer>().material.color = color;
+        }
+    }
 
 }

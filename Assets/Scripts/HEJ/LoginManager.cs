@@ -18,14 +18,12 @@ public class LoginManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject popup;
     [SerializeField] private TextMeshProUGUI textBox;
 
+    private string playerNick;
+
     private void Awake()
     {
         
         Signin = GetComponent<Button>();
-    }
-    private void Update()
-    {
-        //dsada
     }
 
     private void Start()
@@ -91,10 +89,13 @@ public class LoginManager : MonoBehaviourPunCallbacks
             // 로그인 됨.
             else
             {
+                // echo한 nick을 playerNick에 저장
+                playerNick = www.downloadHandler.text;
+
                 // 포톤 서버와 연결을 함.
                 PhotonNetwork.ConnectUsingSettings();
 
-                // 연결이 됬다면 다음 씬으로 넘어가고 안됬으면 그냥 오류뛰우기
+                // 포톤 연결이 됬다면 다음 씬으로 넘어가고 안됬으면 그냥 오류뛰우기
                 Debug.Log("DB와 ID,PW에는 문제없이 로그인됨.");
             }
         }
@@ -106,6 +107,9 @@ public class LoginManager : MonoBehaviourPunCallbacks
         // 다음 씬으로 넘어가도록 하면 될듯.
         Debug.Log("서버 연결 성공");
 
+        // 닉네임 설정
+        PhotonNetwork.NickName = playerNick;
+
         // 스크립트 이름이 SceneManager면 화나요
         UnityEngine.SceneManagement.SceneManager.LoadScene("HEJ_Scene2");
     }
@@ -114,7 +118,6 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         Debug.Log("서버 연결 실패! 원인: " + cause.ToString());
-        // 에러창 하나 뛰어야 할듯.
     }
 
 }
