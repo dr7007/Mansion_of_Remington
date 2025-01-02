@@ -11,7 +11,7 @@ public class PadLock : MonoBehaviour
     public List<PadInteraction> padInteractions;
     public string password;
     private int currentValue = 0; // 숫자의 비트값 (초기값 0000)
-    private bool clear = false;
+    public bool clear = false;
 
 
     private void Start()

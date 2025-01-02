@@ -5910,6 +5910,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e749695b89d09a4b830e5c3fd2aee2a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2110467091}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2e749695b89d09a4b830e5c3fd2aee2a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2110467094}
   m_SourcePrefab: {fileID: 100100000, guid: 2e749695b89d09a4b830e5c3fd2aee2a, type: 3}
 --- !u!1 &2110467082 stripped
 GameObject:
@@ -6125,6 +6128,29 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.03
   m_Center: {x: 0, y: 0.007831144, z: 2.7821813e-17}
+--- !u!114 &2110467094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110467082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0a1302d0d134fa8a2a5b3bf4aec3c20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PermittedDisplacementAxes: 2
+  m_ConstrainedAxisDisplacementMode: 1
+  m_TwoHandedRotationMode: 1
+  m_AllowOneHandedScaling: 1
+  m_AllowTwoHandedScaling: 0
+  m_OneHandedScaleSpeed: 0.5
+  m_ThresholdMoveRatioForScale: 0.05
+  m_ClampScaling: 1
+  m_MinimumScaleRatio: 0.25
+  m_MaximumScaleRatio: 2
+  m_ScaleMultiplier: 0.25
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
