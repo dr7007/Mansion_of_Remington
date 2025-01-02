@@ -7,13 +7,26 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class Cube1LeversController : MonoBehaviour
 {
 
-    public Transform leverBase; // 레버의 기준점
-    [SerializeField] private float maxAngle = 80f; 
-    [SerializeField] private float minAngle = -80f; 
+    //public Transform leverBase; // 레버의 기준점
+    //[SerializeField] private float maxAngle = 80f; 
+    //[SerializeField] private float minAngle = -80f; 
 
-
+    // 현재 angle값을 넣어주면 될듯
     public float AngleX = 0f;
-    public float AngleY = 0f;
+    public float AngleZ = 0f;
+
+
+    // 조이스틱의 회전값을 가져옴.
+    public Transform joystick;
+
+    private void Update()
+    {
+        AngleX = joystick.localRotation.eulerAngles.x;
+        AngleZ = joystick.localRotation.eulerAngles.z;
+    }
+
+
+
 
     //void Update()
     //{

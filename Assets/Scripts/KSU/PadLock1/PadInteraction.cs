@@ -5,15 +5,7 @@ public class PadInteraction : MonoBehaviour
     public delegate void PadInteractionCallback(string _name);
     public PadInteractionCallback padCallback;
 
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0)) // ÁÂÅ¬¸¯ (0 = ¿ÞÂÊ ¹öÆ°)
-        {
-            Interaction();
-        }
-    }
-
-    private void Interaction()
+    public void Interaction()
     {
         padCallback?.Invoke(gameObject.name);
     }

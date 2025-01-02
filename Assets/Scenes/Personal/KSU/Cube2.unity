@@ -1607,7 +1607,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7746391373018419498, guid: 860bccd76e470be4b845d55062296631, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 1698082543114472777, guid: 860bccd76e470be4b845d55062296631, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 860bccd76e470be4b845d55062296631, type: 3}
@@ -2834,7 +2834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef10befeb467594eb735ec4f60abf4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectPos: {x: -0.34, y: 1.1, z: 4}
+  detectPos: {fileID: 1625549636}
   detectAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   detectRange: {x: 0.15, y: 0.15, z: 0.15}
   detectGONames:
@@ -2854,8 +2854,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625549634}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8107838, y: -1.2846044, z: -3.6132162}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.714, y: -0.219, z: 0.446}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2925,7 +2925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef10befeb467594eb735ec4f60abf4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectPos: {x: 0.18, y: 1.1, z: 4}
+  detectPos: {fileID: 1681329026}
   detectAngle: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   detectRange: {x: 0.15, y: 0.15, z: 0.15}
   detectGONames:
@@ -2945,8 +2945,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681329024}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.8107838, y: -1.2846044, z: -3.6132162}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.209, y: -0.223, z: 0.443}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3078,6 +3078,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateGo: {fileID: 476380767}
   rotateTime: 1
+  monkeyBtn: {fileID: 0}
+  pigBtn: {fileID: 0}
 --- !u!114 &1701529559
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using Photon.Pun;
 
-public class AnimalBoard : MonoBehaviour
+public class AnimalBoard : MonoBehaviourPun
 {
+    public delegate void AnimalBoardDelegate(string _animal);
+    public AnimalBoardDelegate animalBtnCallback;
+
     [SerializeField]
     private GameObject rotateGo; // µ¹¸± ÀåÄ¡
     [SerializeField]
@@ -11,7 +15,6 @@ public class AnimalBoard : MonoBehaviour
     private GameObject monkeyBtn;
     [SerializeField]
     private GameObject pigBtn;
-
 
     private GResponse res;
 
@@ -46,5 +49,29 @@ public class AnimalBoard : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    // ¸ùÅ° ¹öÆ° ´­·¶À»¶§
+    private void PressMonkeyBtn()
+    {
+        photonView.RPC("PressMonkeyBtnRPC", RpcTarget.Others);
+    }
+
+    // Áã ¹öÆ° ´­·¶À»¶§
+    private void PressMouseBtn()
+    {
+        photonView.RPC("PressMouseBtnRPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    private void PressMonkeyBtnRPC()
+    {
+        animalBtnCallback?.Invoke("Monkey");
+    }
+
+    [PunRPC]
+    private void PressMouseBtnRPC()
+    {
+        animalBtnCallback?.Invoke("Mouse");
     }
 }
