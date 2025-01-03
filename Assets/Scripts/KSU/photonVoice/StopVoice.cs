@@ -1,15 +1,15 @@
-using Photon.Voice.Unity;
+//using Photon.Voice.Unity;
 using UnityEngine;
 using Photon.Pun;
 
 public class StopVoice : MonoBehaviourPunCallbacks
 {
-    private Recorder recorder;
+   // private Recorder recorder;
     private bool recorderOn = true;
 
     private void Start()
     {
-        recorder = FindFirstObjectByType<Recorder>();
+        //recorder = FindFirstObjectByType<Recorder>();
     }
 
     private void Update()
@@ -25,14 +25,14 @@ public class StopVoice : MonoBehaviourPunCallbacks
     {
         if (recorderOn)
         {
-            recorder.RecordingEnabled = false;
+           // recorder.RecordingEnabled = false;
             recorderOn = false;
 
             Debug.Log("格家府 On");
         }
         else
         {
-            recorder.RecordingEnabled = true;
+            //recorder.RecordingEnabled = true;
             recorderOn = true;
 
             Debug.Log("格家府 Off");
@@ -46,14 +46,14 @@ public class StopVoice : MonoBehaviourPunCallbacks
     {
         if (recorderOn)
         {
-            recorder.RecordingEnabled = false;
+           // recorder.RecordingEnabled = false;
             recorderOn = false;
 
             Debug.Log("格家府 Off");
         }
         else
         {
-            recorder.RecordingEnabled = true;
+            //recorder.RecordingEnabled = true;
             recorderOn = true;
 
             Debug.Log("格家府 On");
