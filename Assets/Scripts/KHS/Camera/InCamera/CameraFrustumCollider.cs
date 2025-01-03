@@ -60,7 +60,7 @@ public class CameraFrustumCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider _collider)
     {
-        if(_collider.CompareTag(captureTag))
+        if(_collider?.GetComponent<GeneratePhoto>())
         {
             onTriggerCap.Add(_collider.gameObject);
             onTriggerCap.Sort((a, b) =>
@@ -71,18 +71,25 @@ public class CameraFrustumCollider : MonoBehaviour
                 return priorityA.CompareTo(priorityB);
             });
         }
-        if (_collider.CompareTag(transferTag))
+        if (_collider?.GetComponent<TransferPhoto>())
         {
             onTriggerTrans.Add(_collider.gameObject);
+            onTriggerTrans.Sort((a, b) =>
+            {
+                int priorityA = a.GetComponent<TransferPhoto>()?.gimmickPriority ?? int.MaxValue;
+                int priorityB = b.GetComponent<TransferPhoto>()?.gimmickPriority ?? int.MaxValue;
+
+                return priorityA.CompareTo(priorityB);
+            });
         }
     }
     private void OnTriggerExit(Collider _collider)
     {
-        if (_collider.CompareTag(captureTag))
+        if (_collider?.GetComponent<GeneratePhoto>())
         {
             onTriggerCap.Remove(_collider.gameObject);
         }
-        if (_collider.CompareTag(transferTag))
+        if (_collider?.GetComponent<TransferPhoto>())
         {
             onTriggerTrans.Remove(_collider.gameObject);
         }
@@ -165,6 +172,7 @@ public class CameraFrustumCollider : MonoBehaviour
         {
             Debug.Log("Capture On");
             onTriggerCap[0].GetComponent<GeneratePhoto>().OnPhoto();
+            onTriggerCap[0].gameObject.SetActive(false);
             onTriggerCap.RemoveAt(0);
         }
         else
@@ -177,6 +185,9 @@ public class CameraFrustumCollider : MonoBehaviour
         if (onTriggerTrans.Count > 0)
         {
             Debug.Log("Transfer On");
+            onTriggerTrans[0].GetComponent<TransferPhoto>().OnTransfer();
+            onTriggerTrans[0].gameObject.SetActive(false);
+            onTriggerTrans.RemoveAt(0);
         }
         else
         {

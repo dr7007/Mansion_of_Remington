@@ -13,8 +13,6 @@ TagManager:
   - Interaction
   - TempKey
   - Chain
-  - CaptureTarget
-  - TransferTarget
   layers:
   - Default
   - TransparentFX

@@ -16,16 +16,12 @@ public class ManageSystem : MonoBehaviour
 
     public List<GResponse> gResList = null;
 
-    private int i = 0;
-
     private void Start()
     {
-        foreach(GCondition condition in gConList)
+        for(int i = 0; i < gConList.Count; ++i)
         {
-            condition.OnSolvedCallback = gResList[i].OnResponse;
-            ++i;
+            gConList[i].OnSolvedCallback = gResList[i].OnResponse;
         }
-        i = 0;
     }
 
 }
