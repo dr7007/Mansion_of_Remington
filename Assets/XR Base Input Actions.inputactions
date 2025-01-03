@@ -1,0 +1,54 @@
+{
+    "name": "XR Base Input Actions",
+    "maps": [
+        {
+            "name": "XRControllerActions",
+            "id": "0fcbc238-4bbf-49b2-818d-61570bb19eea",
+            "actions": [
+                {
+                    "name": "AButton",
+                    "type": "Button",
+                    "id": "9aa54750-ebf4-43b5-820c-f4837e6a0f39",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "XButton",
+                    "type": "Button",
+                    "id": "ede5feda-ea42-4157-9938-dad2ddb5270c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a6ba6568-405a-443c-a539-d1179faf2290",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a00829c-4b1a-4c5b-965d-f93e3084fe0d",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
