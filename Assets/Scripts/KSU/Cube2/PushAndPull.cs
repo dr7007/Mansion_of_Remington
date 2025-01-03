@@ -74,7 +74,7 @@ public class PushAndPull : MonoBehaviour
                     targetGo.transform.eulerAngles = detectAngle;
 
                     // 중력 off
-                    targetGo.GetComponent<Rigidbody>().useGravity = false;
+                    // targetGo.GetComponent<Rigidbody>().useGravity = false;
 
                     // 상호작용되던 물리작용 off
                     targetGo.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;

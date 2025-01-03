@@ -11,10 +11,6 @@ public class AnimalBoard : MonoBehaviourPun
     private GameObject rotateGo; // 돌릴 장치
     [SerializeField]
     private float rotateTime; // 돌리는데 걸리는 시간
-    [SerializeField]
-    private GameObject monkeyBtn;
-    [SerializeField]
-    private GameObject mouseBtn;
 
     private GResponse res;
 
@@ -52,13 +48,14 @@ public class AnimalBoard : MonoBehaviourPun
     }
 
     // 몽키 버튼 눌렀을때
-    private void PressMonkeyBtn()
+    public void PressMonkeyBtn()
     {
+        Debug.Log("몽키");
         photonView.RPC("PressMonkeyBtnRPC", RpcTarget.Others);
     }
 
     // 쥐 버튼 눌렀을때
-    private void PressMouseBtn()
+    public void PressMouseBtn()
     {
         photonView.RPC("PressMouseBtnRPC", RpcTarget.Others);
     }
