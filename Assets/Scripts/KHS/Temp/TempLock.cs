@@ -17,15 +17,6 @@ public class TempLock : MonoBehaviour
         mat = GetComponentInChildren<MeshRenderer>().material;
         conTrigger = GetComponent<GCondition>();
     }
-    private void UnLockEffect()
-    {
-        isLock = false;
-        isSolve = true;
-        conTrigger.OnSolved(isSolve);
-
-        mat.EnableKeyword("_EMISSION");
-
-    }
 
     private void Start()
     {
@@ -48,6 +39,15 @@ public class TempLock : MonoBehaviour
         }
     }
 
+    private void UnLockEffect()
+    {
+        isLock = false;
+        isSolve = true;
+        conTrigger.OnSolved(isSolve);
+
+        mat.EnableKeyword("_EMISSION");
+
+    }
     private void LockEffect()
     {
         isLock = true;

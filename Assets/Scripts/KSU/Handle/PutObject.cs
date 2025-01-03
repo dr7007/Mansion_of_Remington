@@ -6,7 +6,7 @@ public class PutObject : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("오브젝트 붙일 위치")]
-    private Vector3 detectPos;
+    private Transform detectPos;
     [SerializeField]
     [Tooltip("탐지 범위(박스 콜라이더)")]
     private Vector3 detectRange;
@@ -14,10 +14,14 @@ public class PutObject : MonoBehaviour
     [Tooltip("탐지할 오브젝트 이름")]
     private string detectGOName;
     [SerializeField]
+    [Tooltip("오브젝트 붙였을때 각도")]
+    private Vector3 detectAngle;
+    [SerializeField]
     [Tooltip("탐지할 물체의 layer")]
     private LayerMask detectLayer;
 
     private bool detected = false;
+    public GameObject key;
 
     private void Update()
     {
@@ -30,7 +34,7 @@ public class PutObject : MonoBehaviour
     // 감지를 하면 물체 위치를 옮기는 함수
     private void Detect()
     {
-        Collider[] detectColliders = Physics.OverlapBox(detectPos, detectRange, Quaternion.identity, detectLayer);
+        Collider[] detectColliders = Physics.OverlapBox(detectPos.position, detectRange, Quaternion.identity, detectLayer);
 
         foreach (Collider collider in detectColliders)
         {
@@ -42,8 +46,10 @@ public class PutObject : MonoBehaviour
                 targetGo.GetComponent<XRGrabInteractable>().enabled = false;
 
                 // 위치를 옮김.
-                targetGo.transform.position = detectPos;
-                targetGo.transform.rotation = Quaternion.identity;
+                targetGo.transform.position = detectPos.position;
+
+                // 회전값
+                targetGo.transform.eulerAngles = detectAngle;
 
                 // 중력 off
                 targetGo.GetComponent<Rigidbody>().useGravity = false;
@@ -59,18 +65,22 @@ public class PutObject : MonoBehaviour
 
                 // 탐지됨.(update 호출 off)
                 detected = true;
+
+                key.GetComponent<KeyInteraction>().inserted = true;
             }
         }
     }
 
     private void OnDrawGizmos()
     {
+        if (detectPos == null) return;
+
         // detectrange만큼 빨간색으로 보이게
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(detectPos, detectRange);
+        Gizmos.DrawWireCube(detectPos.position, detectRange);
 
         // detectpos위치를 보여줌
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(detectPos, 0.1f);
+        Gizmos.DrawSphere(detectPos.position, 0.1f);
     }
 }

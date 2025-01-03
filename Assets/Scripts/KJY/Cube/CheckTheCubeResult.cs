@@ -108,21 +108,21 @@ public class CheckTheCubeResult : MonoBehaviour
         //클릭하면 레번태그인 경우 겜오브젝트 파괴하고 인벤토리에 
         Debug.Log("TheFinalResult 실행됨"); 
         
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("D");
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Debug.Log("D");
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
 
-            if(Physics.Raycast(ray, out hit))
-            {
-                if(hit.transform.gameObject.tag == "Handle")
-                {
-                    Debug.Log("This is  " + hit.transform.gameObject.tag);
-                    Destroy(hit.transform.gameObject);
-                }
-            }
-        }
+        //    if(Physics.Raycast(ray, out hit))
+        //    {
+        //        if(hit.transform.gameObject.tag == "Handle")
+        //        {
+        //            Debug.Log("This is  " + hit.transform.gameObject.tag);
+        //            Destroy(hit.transform.gameObject);
+        //        }
+        //    }
+        //}
 
         //레버가 인벤토리에 들어간다.
 

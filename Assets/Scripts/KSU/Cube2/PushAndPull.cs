@@ -6,10 +6,10 @@ public class PushAndPull : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("오브젝트 붙일 위치")]
-    private Vector3 detectPos;
+    private Transform detectPos;
     [SerializeField]
     [Tooltip("오브젝트 붙였을때 각도")]
-    private Quaternion detectAngle;
+    private Vector3 detectAngle;
     [SerializeField]
     [Tooltip("탐지 범위(박스 콜라이더)")]
     private Vector3 detectRange;
@@ -53,7 +53,7 @@ public class PushAndPull : MonoBehaviour
     // Push(넣기)
     private void Push()
     {
-        Collider[] detectColliders = Physics.OverlapBox(detectPos, detectRange, Quaternion.identity, detectLayer);
+        Collider[] detectColliders = Physics.OverlapBox(detectPos.position, detectRange, Quaternion.identity, detectLayer);
 
         foreach (Collider collider in detectColliders)
         {
@@ -70,11 +70,11 @@ public class PushAndPull : MonoBehaviour
                     StartCoroutine(EnabledGrabCoroutine(targetGo));
 
                     // 위치를 옮김.
-                    targetGo.transform.position = detectPos;
-                    targetGo.transform.rotation = detectAngle;
+                    targetGo.transform.position = detectPos.position;
+                    targetGo.transform.eulerAngles = detectAngle;
 
                     // 중력 off
-                    targetGo.GetComponent<Rigidbody>().useGravity = false;
+                    // targetGo.GetComponent<Rigidbody>().useGravity = false;
 
                     // 상호작용되던 물리작용 off
                     targetGo.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
@@ -123,10 +123,10 @@ public class PushAndPull : MonoBehaviour
     {
         // detectrange만큼 빨간색으로 보이게
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(detectPos, detectRange);
+        Gizmos.DrawWireCube(detectPos.position, detectRange);
 
         // detectpos위치를 보여줌
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(detectPos, 0.1f);
+        Gizmos.DrawSphere(detectPos.position, 0.1f);
     }
 }

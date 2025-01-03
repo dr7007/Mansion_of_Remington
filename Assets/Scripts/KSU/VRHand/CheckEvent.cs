@@ -44,7 +44,7 @@ public class CheckEvent : MonoBehaviour
     // 그랩 놓았을때 호출됨.
     public void GrabOff(SelectExitEventArgs args)
     {
-        Debug.Log("GrabOff 호출됨");
+        Debug.Log("GrabOff 호출됨" + args.interactorObject.handedness.ToString());
         string hand = args.interactorObject.handedness.ToString();
 
         // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
@@ -65,7 +65,7 @@ public class CheckEvent : MonoBehaviour
         else
         {
             // 그랩한 손 안보이게 함.
-            CheckHand(hand).SetActive(false);
+            CheckHand(hand).SetActive(true);
         }
     }
 

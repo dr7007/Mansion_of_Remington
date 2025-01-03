@@ -7,7 +7,7 @@ public class PadLock : MonoBehaviour
     public delegate void PadClearCallback();
     public PadClearCallback padClear; // clear했을때 콜백되는 함수.
 
-    public TMP_Text text2;  // TMP_Text 컴포넌트를 연결
+    public TMP_Text text;  // TMP_Text 컴포넌트를 연결
     public List<PadInteraction> padInteractions;
     public string password;
     private int currentValue = 0; // 숫자의 비트값 (초기값 0000)
@@ -16,7 +16,7 @@ public class PadLock : MonoBehaviour
 
     private void Start()
     {
-        text2.text = "0000";
+        text.text = "0000";
 
         foreach (PadInteraction pad in padInteractions)
         {
@@ -26,7 +26,7 @@ public class PadLock : MonoBehaviour
 
     private void Update()
     {
-        if (text2.text == password && !clear)
+        if (text.text == password && !clear)
         {
             clear = true;
             padClear?.Invoke();
@@ -89,6 +89,6 @@ public class PadLock : MonoBehaviour
         currentValue = thousands * 1000 + hundreds * 100 + tens * 10 + ones;
 
         // 텍스트를 4자리 숫자로 표시 (예: 0000, 1000, 0100)
-        text2.text = currentValue.ToString("D4");
+        text.text = currentValue.ToString("D4");
     }
 }
