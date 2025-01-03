@@ -1,24 +1,42 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshCollider))]
 public class CameraFrustumCollider : MonoBehaviour
 {
     public Camera targetCamera;  // 대상 카메라
     public float detectionDistance = 2f;  // 제한 거리
-    
+
+    private MeshFilter meshFilter = null;
+    private MeshCollider meshCollider = null;
 
     public CameraScreen camScreen;
 
-    private bool typeofCam = false;
+    public const string captureTag = "CaptureTarget";
+    public const string transferTag = "TransferTarget";
+    public KeyCode captureKey = KeyCode.F;
+    public KeyCode transferKey = KeyCode.E;
+    [SerializeField]
+    private HashSet<GameObject> onTriggerCap = new HashSet<GameObject>();
+    [SerializeField]
+    private HashSet<GameObject> onTriggerTrans = new HashSet<GameObject>();
+
+    [SerializeField]
+    private bool presentCam = false;
 
     private void Awake()
     {
         targetCamera = GetComponent<Camera>();
         camScreen = FindAnyObjectByType<CameraScreen>();
+        meshFilter = GetComponent<MeshFilter>();
+        meshCollider = GetComponent<MeshCollider>();
     }
     private void Start()
     {
-        if()
+        if(transform.name == "PresentCamera")
+        {
+            presentCam = true;
+        }
         if (targetCamera == null)
         {
             targetCamera = GetComponent<Camera>();
@@ -31,22 +49,38 @@ public class CameraFrustumCollider : MonoBehaviour
         }
 
         CreateFrustumMesh();
+        FrustumColliderSwitch();
+        camScreen.ScreenChangeCallback += FrustumColliderSwitch;
+        camScreen.CaptureCallback += OnCapture;
+        camScreen.TransferCallback += OnTransfer;
     }
+
 
     private void OnTriggerEnter(Collider _collider)
     {
-        
+        if(_collider.CompareTag(captureTag))
+        {
+            onTriggerCap.Add(_collider.gameObject);
+        }
+        else if (_collider.CompareTag(transferTag))
+        {
+            onTriggerTrans.Add(_collider.gameObject);
+        }
     }
     private void OnTriggerExit(Collider _collider)
     {
-
+        if (_collider.CompareTag(captureTag))
+        {
+            onTriggerCap.Remove(_collider.gameObject);
+        }
+        else if (_collider.CompareTag(transferTag))
+        {
+            onTriggerTrans.Remove(_collider.gameObject);
+        }
     }
 
     private void CreateFrustumMesh()
     {
-        MeshFilter meshFilter = GetComponent<MeshFilter>();
-        MeshCollider meshCollider = GetComponent<MeshCollider>();
-
         // 카메라 Frustum의 8개 꼭짓점 계산
         Vector3[] corners = new Vector3[8];
 
@@ -99,7 +133,31 @@ public class CameraFrustumCollider : MonoBehaviour
         meshCollider.sharedMesh = mesh;
         meshCollider.convex = true;  // Trigger로 사용하려면 Convex 설정 필요
         meshCollider.isTrigger = true;
-
+    }
+    private void FrustumColliderSwitch()
+    {
         
+        if(camScreen.IsPast == presentCam)
+        {
+            meshCollider.enabled = false;
+        }
+        else
+        {
+            meshCollider.enabled = true;
+        }
+    }
+    private void OnCapture()
+    {
+        if (onTriggerCap.Count > 0)
+            Debug.Log("Capture On");
+        else
+            Debug.Log("No Capture");
+    }
+    private void OnTransfer()
+    {
+        if (onTriggerTrans.Count > 0)
+            Debug.Log("Transfer On");
+        else
+            Debug.Log("No Transfer");
     }
 }

@@ -3,6 +3,34 @@ using UnityEngine.InputSystem;
 
 public class CameraScreen : MonoBehaviour
 {
+    #region
+
+    public delegate void ScreenChangeDelegate();
+    public delegate void CaptureDelegate();
+    public delegate void TransferDelegate();
+
+    private ScreenChangeDelegate screenChangeCallback;
+    private CaptureDelegate captureCallback;
+    private TransferDelegate transferCallback;
+
+    public ScreenChangeDelegate ScreenChangeCallback
+    {
+        get { return screenChangeCallback; }
+        set { screenChangeCallback = value; }
+    }
+    public CaptureDelegate CaptureCallback
+    {
+        get { return captureCallback; }
+        set { captureCallback = value; }
+    }
+    public TransferDelegate TransferCallback
+    {
+        get { return transferCallback; }
+        set { transferCallback = value; }
+    }
+
+    #endregion
+
     [SerializeField]
     private MeshRenderer screenMR = null;
     [SerializeField]
@@ -48,8 +76,19 @@ public class CameraScreen : MonoBehaviour
             if (screenMR.isVisible)
             {
                 isPast = !isPast;
+                ScreenChangeCallback?.Invoke();
                 ChangeRenderTex();
             }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E Pressed");
+            TransferCallback?.Invoke();
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("F Pressed");
+            CaptureCallback?.Invoke();
         }
     }
 
@@ -59,6 +98,7 @@ public class CameraScreen : MonoBehaviour
         if (screenMR.isVisible)
         {
             isPast = !isPast;
+            ScreenChangeCallback?.Invoke();
             ChangeRenderTex();
         }
     }
@@ -69,12 +109,12 @@ public class CameraScreen : MonoBehaviour
 
     private void ChangeRenderTex()
     {
-        if(isPast)
+        if(!isPast)
         {
             screenMR.material.SetTexture("_BaseMap", presentScreen);
             screenMR.material.SetTexture("_EmissionMap", presentScreen);
         }
-        else if(!isPast)
+        else if(isPast)
         {
             screenMR.material.SetTexture("_BaseMap", pastScreen);
             screenMR.material.SetTexture("_EmissionMap", pastScreen);
