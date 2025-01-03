@@ -64,7 +64,6 @@ public class CheckEvent : MonoBehaviour
         }
         else
         {
-            Debug.Log("1");
             // 그랩한 손 안보이게 함.
             CheckHand(hand).SetActive(true);
         }

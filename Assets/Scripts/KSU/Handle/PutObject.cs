@@ -15,7 +15,7 @@ public class PutObject : MonoBehaviour
     private string detectGOName;
     [SerializeField]
     [Tooltip("오브젝트 붙였을때 각도")]
-    private Quaternion detectAngle;
+    private Vector3 detectAngle;
     [SerializeField]
     [Tooltip("탐지할 물체의 layer")]
     private LayerMask detectLayer;
@@ -47,7 +47,9 @@ public class PutObject : MonoBehaviour
 
                 // 위치를 옮김.
                 targetGo.transform.position = detectPos.position;
-                targetGo.transform.rotation = detectAngle;
+
+                // 회전값
+                targetGo.transform.eulerAngles = detectAngle;
 
                 // 중력 off
                 targetGo.GetComponent<Rigidbody>().useGravity = false;
@@ -71,6 +73,8 @@ public class PutObject : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (detectPos == null) return;
+
         // detectrange만큼 빨간색으로 보이게
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(detectPos.position, detectRange);

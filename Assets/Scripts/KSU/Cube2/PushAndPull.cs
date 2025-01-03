@@ -9,7 +9,7 @@ public class PushAndPull : MonoBehaviour
     private Transform detectPos;
     [SerializeField]
     [Tooltip("오브젝트 붙였을때 각도")]
-    private Quaternion detectAngle;
+    private Vector3 detectAngle;
     [SerializeField]
     [Tooltip("탐지 범위(박스 콜라이더)")]
     private Vector3 detectRange;
@@ -71,7 +71,7 @@ public class PushAndPull : MonoBehaviour
 
                     // 위치를 옮김.
                     targetGo.transform.position = detectPos.position;
-                    targetGo.transform.rotation = detectAngle;
+                    targetGo.transform.eulerAngles = detectAngle;
 
                     // 중력 off
                     targetGo.GetComponent<Rigidbody>().useGravity = false;

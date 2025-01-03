@@ -5,12 +5,12 @@ public class AnimalCheck : MonoBehaviour
     [SerializeField]
     private GameObject monkeyPos;
     [SerializeField]
-    private GameObject pigPos;
+    private GameObject mousePos;
     [SerializeField]
     private GameObject board;
 
     private PushAndPull monkey;
-    private PushAndPull pig;
+    private PushAndPull mouse;
     private bool activeOnce = false;
 
     private GCondition solve;
@@ -18,7 +18,7 @@ public class AnimalCheck : MonoBehaviour
     private void Start()
     {
         monkey = monkeyPos.GetComponent<PushAndPull>();
-        pig = pigPos.GetComponent<PushAndPull>();
+        mouse = mousePos.GetComponent<PushAndPull>();
         solve = GetComponent<GCondition>();
     }
 
@@ -26,9 +26,9 @@ public class AnimalCheck : MonoBehaviour
     {
         if(!activeOnce)
         {
-            if (monkey.curGO == null || pig.curGO == null) return;
+            if (monkey.curGO == null || mouse.curGO == null) return;
 
-            if (monkey.curGO.name == "MONKEY" && pig.curGO.name == "PIG")
+            if (monkey.curGO.name == "P_Monkey" && mouse.curGO.name == "P_Mouse")
             {
                 activeOnce = true;
 
@@ -36,7 +36,7 @@ public class AnimalCheck : MonoBehaviour
                 solve.OnSolved(true);
 
                 monkey.curGO.SetActive(false);
-                pig.curGO.SetActive(false);
+                mouse.curGO.SetActive(false);
             }
         }
     }

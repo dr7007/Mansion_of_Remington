@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2729803714454260900}
   - component: {fileID: 524310527979759975}
   - component: {fileID: 62280519051123934}
+  - component: {fileID: 4623667300887130898}
   m_Layer: 0
   m_Name: P_Key
   m_TagString: Untagged
@@ -291,6 +292,22 @@ MonoBehaviour:
   m_OnValueChange:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4623667300887130898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4268272184870484288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a48a48d6dc234f844a389f3fca272762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openAngle: 70
+  keyTr: {fileID: 8534299166014872950}
+  lockGo: {fileID: 0}
+  inserted: 0
 --- !u!1001 &663974670332348689
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -341,7 +358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6202248377633566000, guid: 609cad5eb478dd849beaf2705286bdf7, type: 3}
       propertyPath: m_Name
-      value: P_Key
+      value: Key
       objectReference: {fileID: 0}
     - target: {fileID: 9176368662766867559, guid: 609cad5eb478dd849beaf2705286bdf7, type: 3}
       propertyPath: m_LocalRotation.w

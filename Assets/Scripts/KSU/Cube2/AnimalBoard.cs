@@ -14,7 +14,7 @@ public class AnimalBoard : MonoBehaviourPun
     [SerializeField]
     private GameObject monkeyBtn;
     [SerializeField]
-    private GameObject pigBtn;
+    private GameObject mouseBtn;
 
     private GResponse res;
 
