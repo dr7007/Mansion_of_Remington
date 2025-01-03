@@ -13,19 +13,8 @@ public class GResponse : MonoBehaviour
     }
     #endregion
 
-    private ManageSystem manager = null;
-
-    private void Awake()
-    {
-        manager = FindFirstObjectByType<ManageSystem>();
-    }
-
     public void OnResponse(bool _isSolved)
     {
         OnResponseCallback?.Invoke(_isSolved);
     }
-
-
-
-
 }
