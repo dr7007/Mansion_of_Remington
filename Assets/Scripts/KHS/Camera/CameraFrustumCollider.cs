@@ -16,13 +16,15 @@ public class CameraFrustumCollider : MonoBehaviour
     public const string transferTag = "TransferTarget";
     public KeyCode captureKey = KeyCode.F;
     public KeyCode transferKey = KeyCode.E;
+
     [SerializeField]
-    private HashSet<GameObject> onTriggerCap = new HashSet<GameObject>();
+    private List<GameObject> onTriggerCap = new List<GameObject>();
     [SerializeField]
-    private HashSet<GameObject> onTriggerTrans = new HashSet<GameObject>();
+    private List<GameObject> onTriggerTrans = new List<GameObject>();
 
     [SerializeField]
     private bool presentCam = false;
+
 
     private void Awake()
     {
@@ -61,8 +63,15 @@ public class CameraFrustumCollider : MonoBehaviour
         if(_collider.CompareTag(captureTag))
         {
             onTriggerCap.Add(_collider.gameObject);
+            onTriggerCap.Sort((a, b) =>
+            {
+                int priorityA = a.GetComponent<GeneratePhoto>()?.gimmickPriority ?? int.MaxValue;
+                int priorityB = b.GetComponent<GeneratePhoto>()?.gimmickPriority ?? int.MaxValue;
+
+                return priorityA.CompareTo(priorityB);
+            });
         }
-        else if (_collider.CompareTag(transferTag))
+        if (_collider.CompareTag(transferTag))
         {
             onTriggerTrans.Add(_collider.gameObject);
         }
@@ -73,7 +82,7 @@ public class CameraFrustumCollider : MonoBehaviour
         {
             onTriggerCap.Remove(_collider.gameObject);
         }
-        else if (_collider.CompareTag(transferTag))
+        if (_collider.CompareTag(transferTag))
         {
             onTriggerTrans.Remove(_collider.gameObject);
         }
@@ -140,24 +149,38 @@ public class CameraFrustumCollider : MonoBehaviour
         if(camScreen.IsPast == presentCam)
         {
             meshCollider.enabled = false;
+            onTriggerCap.Clear();
+            onTriggerTrans.Clear();
         }
         else
         {
             meshCollider.enabled = true;
+            onTriggerCap.Clear();
+            onTriggerTrans.Clear();
         }
     }
     private void OnCapture()
     {
         if (onTriggerCap.Count > 0)
+        {
             Debug.Log("Capture On");
+            onTriggerCap[0].GetComponent<GeneratePhoto>().OnPhoto();
+            onTriggerCap.RemoveAt(0);
+        }
         else
+        {
             Debug.Log("No Capture");
+        }
     }
     private void OnTransfer()
     {
         if (onTriggerTrans.Count > 0)
+        {
             Debug.Log("Transfer On");
+        }
         else
+        {
             Debug.Log("No Transfer");
+        }
     }
 }
