@@ -1,54 +1,33 @@
-﻿using System.Linq;
-using UnityEngine;
-using System.Collections;
+﻿// Script by Marcelli Michele
 
-// 
+using System.Linq;
+using UnityEngine;
+
 public class PadLockPassword : MonoBehaviour
 {
-    public MoveRuller moveRull;
-    public int[] numberPassword = {0,0,0,0};
-    public bool IsClear = false;
-    public GameObject ring;
-    public float OpenTime;
+    MoveRuller _moveRull;
 
-    private void Update()
+    public int[] _numberPassword = {0,0,0,0};
+
+    private void Awake()
     {
-        if (moveRull.numberArray.SequenceEqual(numberPassword))
-        {
-            PasswordCorrect();
-            numberPassword = new int[]{-1, -1, -1, -1 };
-        }
+        _moveRull = FindObjectOfType<MoveRuller>();
     }
 
-    private void PasswordCorrect()
+    public void Password()
     {
-        IsClear = true;
-
-        // 패스워드 일치시
-        Debug.Log("Password correct");
-
-        // 더이상 안반짝이게
-        for (int i = 0; i < moveRull.rullers.Count; i++)
+        if (_moveRull._numberArray.SequenceEqual(_numberPassword))
         {
-            moveRull.rullers[i].gameObject.GetComponent<PadLockEmissionColor>().isSelect = false;
-            moveRull.rullers[i].gameObject.GetComponent<PadLockEmissionColor>().BlinkingMaterial();
+            // Here enter the event for the correct combination
+            Debug.Log("Password correct");
+
+            // Es. Below the for loop to disable Blinking Material after the correct password
+            for (int i = 0; i < _moveRull._rullers.Count; i++)
+            {
+                _moveRull._rullers[i].GetComponent<PadLockEmissionColor>()._isSelect = false;
+                _moveRull._rullers[i].GetComponent<PadLockEmissionColor>().BlinkingMaterial();
+            }
+
         }
-
-        StartCoroutine(RotateRing());
-    }
-
-    private IEnumerator RotateRing()
-    {
-        float elapseTime = 0f;
-
-        while (elapseTime < OpenTime)
-        {
-            elapseTime += Time.deltaTime;
-
-            ring.transform.Rotate(0f, 180f * (Time.deltaTime / OpenTime), 0f);
-            yield return null;
-        }
-
-
     }
 }

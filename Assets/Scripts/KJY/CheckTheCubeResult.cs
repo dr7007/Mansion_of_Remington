@@ -7,8 +7,8 @@ public class CheckTheCubeResult : MonoBehaviour
 
     [SerializeField] private Cube1Levers Cube1;
     [SerializeField] private Cube2Sound Cube2;
-    [SerializeField] private Cube3Input Cube3;
-    [SerializeField] private Cube4ChessButton Cube4;
+    [SerializeField] private PadLock Cube3;
+    [SerializeField] private SmallChessBoard Cube4;
     [SerializeField] private Cubeparticle Ani;
 
 
@@ -16,6 +16,11 @@ public class CheckTheCubeResult : MonoBehaviour
     private bool C2Result = false;
     private bool C3Result = false;
     private bool C4Result = false;
+
+    private bool makeInstance1 = false;
+    private bool makeInstance2 = false;
+    private bool makeInstance3 = false;
+    private bool makeInstance4 = false;
 
     [SerializeField] private Transform[] CPos;
     private GameObject[] LightPrefabs = new GameObject[4];
@@ -54,8 +59,8 @@ public class CheckTheCubeResult : MonoBehaviour
     {
         C1Result = Cube1.TheLeverResult;
         C2Result = Cube2.TheCube2Result;
-        C3Result = Cube3.TheCube3Result;
-        C4Result = Cube4.TheCube4Result;
+        C3Result = Cube3.clear;
+        C4Result = Cube4.clear;
 
         CheckTheResult();
 
@@ -63,20 +68,24 @@ public class CheckTheCubeResult : MonoBehaviour
 
     private void CheckTheResult()
     {
-        if(C1Result == true)
+        if(C1Result == true && !makeInstance1)
         {
+            makeInstance1 = true;
             LightPrefabs[0] = Instantiate(LightPrefab, CPos[0].position, Quaternion.Euler(0f, 0f, 90f));
         }
-        if(C2Result == true)
+        if(C2Result == true && !makeInstance2)
         {
+            makeInstance2 = true;
             LightPrefabs[1] = Instantiate(LightPrefab, CPos[1].position, Quaternion.Euler(0f, 0f, 90f));
         }
-        if (C3Result == true)
+        if (C3Result == true && !makeInstance3)
         {
+            makeInstance3 = true;
             LightPrefabs[2] = Instantiate(LightPrefab, CPos[2].position, Quaternion.Euler(0f, 0f, 90f));
         }
-        if (C4Result == true)
+        if (C4Result == true && !makeInstance4)
         {
+            makeInstance4 = true;
             LightPrefabs[3] = Instantiate(LightPrefab, CPos[3].position, Quaternion.Euler(0f, 0f, 90f));
         }
 
