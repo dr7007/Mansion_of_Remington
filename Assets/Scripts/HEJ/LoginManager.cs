@@ -17,6 +17,8 @@ public class LoginManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField Pw;
     [SerializeField] private GameObject popup;
     [SerializeField] private TextMeshProUGUI textBox;
+    [SerializeField] private GameObject loginCanvas;
+    [SerializeField] private GameObject lobbyCanvas;
 
     private string playerNick;
 
@@ -110,8 +112,9 @@ public class LoginManager : MonoBehaviourPunCallbacks
         // 닉네임 설정
         PhotonNetwork.NickName = playerNick;
 
-        // 스크립트 이름이 SceneManager면 화나요
-        UnityEngine.SceneManagement.SceneManager.LoadScene("HEJ_Scene2");
+        // Login Scene을 false하고, LobbyScene을 On
+        loginCanvas.SetActive(false);
+        lobbyCanvas.SetActive(true);
     }
 
     // 서버와 연결이 실패시

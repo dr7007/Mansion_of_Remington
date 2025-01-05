@@ -1,10 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+
 
 public class LobyManager : MonoBehaviourPunCallbacks
 {
@@ -24,6 +26,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField roomCode;
     [SerializeField] private GameObject roomScene;
     [SerializeField] private TMP_InputField joinRoomCode;
+    [SerializeField] private GameObject lobbyCanvas;
     private bool firstEnter = false;
 
     // 방안 관련 변수들
@@ -193,7 +196,22 @@ public class LobyManager : MonoBehaviourPunCallbacks
     // 게임 시작 버튼 눌렀을때
     public void ClickRoomStart()
     {
-        // 다음씬으로 넘어가도록 설정하면 될듯.
+        // 선택한 역할군대로 직업을 설정
+        if (boyName.text == PhotonNetwork.NickName)
+        {
+            ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+            playerProperties.Add("Role", "Boy");
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+        }
+        else
+        {
+            ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
+            playerProperties.Add("Role", "Woman");
+            PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
+        }
+
+        // 다음씬으로 넘어가도록
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 
     #endregion
@@ -302,6 +320,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
 
         // 씬을 뛰우면 될듯
         roomScene.SetActive(true);
+        lobbyCanvas.SetActive(false);
 
         // 씬을 플레이어 정보와 동기화 시키는 something이 필요함.
         // 필요한 정보 : 플레이어 닉네임, 룸코드
