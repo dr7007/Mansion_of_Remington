@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Personal/KHS/KHS_Scene_Camera.unity
-    guid: ae6ad4dd19c581b46840e0ecfd1aec9b
+    path: Assets/Scenes/Personal/HEJ/HEJ_Scene.unity
+    guid: 89941b550ae888b4c87d529e9c51c1b8
+  - enabled: 1
+    path: Assets/Scenes/Personal/HEJ/HEJ_Scene2.unity
+    guid: 6e48720e326fb5340b1aa57dc713b5d2
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}
@@ -15,5 +18,5 @@ EditorBuildSettings:
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: a49cadc1a815591479693b955ccf08c1, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1a4c68ca72a83449f938d669337cb305, type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 1ee236955b77d9b469216e4501ddb574, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: c42ea22509b498a4ea5ca40e05c929c7, type: 2}
   m_UseUCBPForAssetBundles: 0
