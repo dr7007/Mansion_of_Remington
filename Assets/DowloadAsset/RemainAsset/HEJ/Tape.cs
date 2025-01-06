@@ -3,6 +3,7 @@ using UnityEngine.Video;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Tape : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class Tape : MonoBehaviour
 
         if (other.gameObject.name == "DVDPlayer")
         {
+            transform.gameObject.GetComponent<XRGrabInteractable>().enabled = false;
             this.transform.position = startPoint;
             animator.SetBool("IsTouch", true);
             //animator.enabled = true;

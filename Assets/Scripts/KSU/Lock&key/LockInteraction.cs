@@ -11,7 +11,7 @@ public class LockInteraction : MonoBehaviourPun
         // ÀÚ¹°¼è open
         Transform childTransform = transform.GetChild(0);
         childTransform.localPosition = childTransform.localPosition + new Vector3(0f, 0.02f, 0f);
-        // photonView.RPC("InteractionRPC", RpcTarget.Others);
+        photonView.RPC("InteractionRPC", RpcTarget.Others);
     }
 
     [PunRPC]

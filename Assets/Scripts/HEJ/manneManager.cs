@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class manneManager : MonoBehaviour
 {
+    public delegate void manneDelegate();
+    public manneDelegate manneSucessCallback;
+
     [SerializeField] private AudioClip sfx = null;
     //public GameObject one;
 
@@ -31,6 +34,7 @@ public class manneManager : MonoBehaviour
         }
 
         Debug.Log(isSuccess);
+        manneSucessCallback?.Invoke();
     }
 
     private void playSfx()

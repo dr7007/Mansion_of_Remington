@@ -33959,8 +33959,6 @@ MonoBehaviour:
   cam: {fileID: 0}
   mirror: {fileID: 0}
   mane: {fileID: 0}
-  wKeyBoard: {fileID: 0}
-  bKeyBoard: {fileID: 0}
   glass1: {fileID: 0}
   bAnimalboard: {fileID: 0}
   boy: {fileID: 0}
@@ -33982,6 +33980,10 @@ MonoBehaviour:
   boyHint2: {fileID: 0}
   womanHint1: {fileID: 0}
   womanHint2: {fileID: 0}
+  wKeyBoard1: {fileID: 0}
+  wKeyBoard2: {fileID: 0}
+  bKeyBoard1: {fileID: 0}
+  bKeyBoard2: {fileID: 0}
 --- !u!1001 &2111618788
 PrefabInstance:
   m_ObjectHideFlags: 0

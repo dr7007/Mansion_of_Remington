@@ -15,16 +15,10 @@ public class NetworkManager : MonoBehaviourPun
     private GameObject cam;
     [SerializeField]
     [Tooltip("거울 기믹 성공 콜백")]
-    private GameObject mirror;
+    private MirrorP mirror;
     [SerializeField]
     [Tooltip("마네킹 퍼즐 성공 콜백")]
     private manneManager mane;
-    [SerializeField]
-    [Tooltip("기자 키보드 누름 콜백")]
-    private GameObject wKeyBoard;
-    [SerializeField]
-    [Tooltip("소년 키보드 누름 콜백")]
-    private GameObject bKeyBoard;
     [SerializeField]
     [Tooltip("유리 뿌서짐 콜백")]
     private glass glass1;
@@ -98,15 +92,43 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("기자 힌트 2")]
     private GameObject womanHint2;
 
+    [Header("키보드 동시에 누르기")]
+    [SerializeField]
+    [Tooltip("기자 키보드1 상태")]
+    private KeyboardRPC wKeyBoard1;
+    [SerializeField]
+    [Tooltip("기자 키보드2 상태")]
+    private KeyboardRPC wKeyBoard2;
+    [SerializeField]
+    [Tooltip("소년 키보드1 상태")]
+    private KeyboardRPC bKeyBoard1;
+    [SerializeField]
+    [Tooltip("소년 키보드2 상태")]
+    private KeyboardRPC bKeyBoard2;
+
+    private bool keyboardSucess = false;
+
     private void Start()
     {
         // 콜백 함수 등록
         openLock.LockOpenCallback += BoyMove;
         wAnimalboard.animalBtnCallback += WCallbackAnimal;
         glass1.glassSucessCallback += GlassSucess;
+        mirror.mirroSucessCallback += MirrorSucess;
+        mane.manneSucessCallback += ManeSucess;
 
         // 플레이어 생성
         InstantiatePlayer();
+    }
+
+    private void Update()
+    {
+        // 키보드 4개 동시에 눌러진 상태라면 함수실행
+        if (!keyboardSucess && wKeyBoard1.TheButtonisPressed && wKeyBoard2.TheButtonisPressed && bKeyBoard1.TheButtonisPressed && bKeyBoard2.TheButtonisPressed)
+        {
+            keyboardSucess = true;
+            KeyboardSucess();
+        }
     }
 
     #region 콜백 받는 쪽에서 실행되는 함수들
@@ -149,6 +171,11 @@ public class NetworkManager : MonoBehaviourPun
     private void GlassSucess()
     {
         photonView.RPC("GlassSucessRPC", RpcTarget.Others);
+    }
+
+    private void KeyboardSucess()
+    {
+        photonView.RPC("KeyboardSucessRPC", RpcTarget.All);
     }
     #endregion
 
@@ -225,6 +252,21 @@ public class NetworkManager : MonoBehaviourPun
     private void GlassSucessRPC()
     {
         // 소년에게서 나레이션 재생
+    }
+
+    [PunRPC]
+    private void KeyboardSucessRPC()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            // 소년일때 -> 컴퓨터가 켜지면서 다시 되돌아 가라고 동작하는거
+
+        }
+        else
+        {
+            // 기자일때 -> 망치에 대한 힌트
+
+        }
     }
     #endregion
 

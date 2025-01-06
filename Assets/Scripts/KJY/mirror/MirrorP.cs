@@ -9,6 +9,9 @@ public class MirrorP : MonoBehaviour
     //위치 인식 - 매칭하는 것  - 타겟 & Trigger   
     //맞는 위치에 두면 mirror & backPan 비활성화 된다.
 
+    public delegate void MirroDelegate();
+    public MirroDelegate mirroSucessCallback;
+
 
     [SerializeField] private GameObject Mirror;
     [SerializeField] private GameObject MirrorBackpan;
@@ -21,10 +24,11 @@ public class MirrorP : MonoBehaviour
 
     private void Update()
     {
-        if (mirrorbutton.TheButtonisPressed == true && mirrorinsidebutton.TheButtonisPressed == true)
+        if (mirrorbutton.TheButtonisPressed == true && mirrorinsidebutton.TheButtonisPressed == true && !TheResult)
         {
             Debug.Log("동시 눌렀다");
             TheResult = true;
+            mirroSucessCallback?.Invoke();
         }
         
     }
