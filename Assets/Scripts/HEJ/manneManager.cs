@@ -9,29 +9,16 @@ public class manneManager : MonoBehaviour
 
     [SerializeField] private Mane[] manes = null;
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.transform.gameObject.tag == "mane")
-                {
-                    Mane mane = hit.transform.GetComponent<Mane>();
-                    //playSfx();
-                    mane.Rotate90();
-                    mane.TurnCallback = checkDegreeCallback;
-
-                }
-            }
-        }
-
+        manes[0].turnCallback += checkDegreeCallback;
+        manes[1].turnCallback += checkDegreeCallback;
+        manes[2].turnCallback += checkDegreeCallback;
+        manes[3].turnCallback += checkDegreeCallback;
     }
 
-    public void checkDegreeCallback(Mane _mane)
+
+    public void checkDegreeCallback()
     {
         bool isSuccess = true;
         foreach (Mane mane in manes)

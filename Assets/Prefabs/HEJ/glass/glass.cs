@@ -5,9 +5,12 @@ public class glass : MonoBehaviour
 {
 
     public delegate void GlassDelegate(glass _glass);
+    public delegate void GlassSucessDelegate();
 
+    public GlassSucessDelegate glassSucessCallback;
     private GlassDelegate glassCallback = null;
 
+    public int glassNum;
     public Collider[] colliders;
     parents parents;
 
@@ -18,6 +21,8 @@ public class glass : MonoBehaviour
 
     private void Awake()
     {
+        glassNum = 0;
+
         parents = GetComponent<parents>();
 
         colliders = GetComponentsInChildren<Collider>();
@@ -32,9 +37,9 @@ public class glass : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Input.GetMouseButtonDown(0))
+        if (other.gameObject.tag == "Hammer")
         {
             // 기존 상태의 유리창 예외처리
             GetComponent<Renderer>().enabled = false;
@@ -49,6 +54,16 @@ public class glass : MonoBehaviour
                 // 전체 움직임 풀어줌
                 rb.constraints = (RigidbodyConstraints)0;
             }
+        }
+    }
+
+    private void Update()
+    {
+        if (glassNum == 4)
+        {
+            // 콜백
+            glassSucessCallback?.Invoke();
+            glassNum = 0;
         }
     }
 }

@@ -27,7 +27,7 @@ public class NetworkManager : MonoBehaviourPun
     private GameObject bKeyBoard;
     [SerializeField]
     [Tooltip("유리 뿌서짐 콜백")]
-    private parents glass;
+    private glass glass1;
 
 
     [Header("플레이어 콜백 받는 쪽")]
@@ -103,6 +103,7 @@ public class NetworkManager : MonoBehaviourPun
         // 콜백 함수 등록
         openLock.LockOpenCallback += BoyMove;
         wAnimalboard.animalBtnCallback += WCallbackAnimal;
+        glass1.glassSucessCallback += GlassSucess;
 
         // 플레이어 생성
         InstantiatePlayer();

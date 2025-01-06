@@ -19,8 +19,13 @@ public class GlassClick : MonoBehaviour
         onGlassClickCallback?.Invoke();
     }
 
-    public void OnMouseDown()
+    private void OnTriggerEnter(Collider other)
     {
-        OnClickProcess();
+        if (other.gameObject.tag == "Hammer")
+        {
+            Debug.Log("À¯¸® ±úÁü È£ÃâµÊ.");
+
+            OnClickProcess();
+        }
     }
 }
