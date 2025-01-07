@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RoleAdd : MonoBehaviour
 {
+    public NetworkManager gm;
+
     void Start()
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
@@ -18,5 +20,7 @@ public class RoleAdd : MonoBehaviour
             playerProperties.Add("Role", "Woman");
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         }
+
+        // gm.InstantiatePlayer();
     }
 }

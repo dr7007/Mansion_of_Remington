@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem.XR;
-using Unity.XR.CoreUtils;
 
+// 그랩 동작 관련 함수(그냥 잡을때, 레버 잡을때 등등)
 public class CheckEvent : MonoBehaviour
 {
     [SerializeField]
@@ -11,13 +11,25 @@ public class CheckEvent : MonoBehaviour
     private GameObject rightHandVisable;
     [SerializeField]
     private GameObject player;
+    [SerializeField]
+    private float maxDis;
 
+    private GameObject curGrabGo;
+
+    private void Update()
+    {
+        if (curGrabGo != null)
+        {
+            CheckMaxDIs();
+        }
+    }
 
     // 그랩했을때 호출됨.
     public void GrabOn(SelectEnterEventArgs args)
     {
         Debug.Log("GrabOn 호출됨 : " + args.interactableObject.transform.name);
         string hand = args.interactorObject.handedness.ToString();
+        curGrabGo = args.interactableObject.transform.gameObject;
 
         // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
         if (args.interactableObject.transform.gameObject.tag == "NotMove")
@@ -46,6 +58,7 @@ public class CheckEvent : MonoBehaviour
     {
         Debug.Log("GrabOff 호출됨" + args.interactorObject.handedness.ToString());
         string hand = args.interactorObject.handedness.ToString();
+        curGrabGo = null;
 
         // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
         if (args.interactableObject.transform.gameObject.tag == "NotMove")
@@ -82,5 +95,18 @@ public class CheckEvent : MonoBehaviour
         }
 
         return null;
+    }
+
+    // 잡았을때, 일정거리 이상이면 자동으로 놓아짐.
+    private void CheckMaxDIs()
+    {
+        float distance = Vector3.Distance(curGrabGo.transform.position, player.transform.position);
+
+        if (distance > maxDis)
+        {
+            // 그랩을 놓도록 함.
+
+        }
+
     }
 }

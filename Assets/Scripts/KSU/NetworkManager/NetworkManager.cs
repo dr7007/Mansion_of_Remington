@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 
@@ -111,24 +112,24 @@ public class NetworkManager : MonoBehaviourPun
     private void Start()
     {
         // 콜백 함수 등록
-        openLock.LockOpenCallback += BoyMove;
-        wAnimalboard.animalBtnCallback += WCallbackAnimal;
-        glass1.glassSucessCallback += GlassSucess;
-        mirror.mirroSucessCallback += MirrorSucess;
-        mane.manneSucessCallback += ManeSucess;
+        // openLock.LockOpenCallback += BoyMove;
+        // wAnimalboard.animalBtnCallback += WCallbackAnimal;
+        // glass1.glassSucessCallback += GlassSucess;
+        // mirror.mirroSucessCallback += MirrorSucess;
+        // mane.manneSucessCallback += ManeSucess;
 
         // 플레이어 생성
-        InstantiatePlayer();
+        StartCoroutine(InstantiatePlayerCoroutine());
     }
 
     private void Update()
     {
         // 키보드 4개 동시에 눌러진 상태라면 함수실행
-        if (!keyboardSucess && wKeyBoard1.TheButtonisPressed && wKeyBoard2.TheButtonisPressed && bKeyBoard1.TheButtonisPressed && bKeyBoard2.TheButtonisPressed)
-        {
-            keyboardSucess = true;
-            KeyboardSucess();
-        }
+        //if (!keyboardSucess && wKeyBoard1.TheButtonisPressed && wKeyBoard2.TheButtonisPressed && bKeyBoard1.TheButtonisPressed && bKeyBoard2.TheButtonisPressed)
+        //{
+        //    keyboardSucess = true;
+        //    KeyboardSucess();
+        //}
     }
 
     #region 콜백 받는 쪽에서 실행되는 함수들
@@ -275,6 +276,8 @@ public class NetworkManager : MonoBehaviourPun
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
+            Debug.Log("소년 생성");
+
             // boy 생성
             boy = PhotonNetwork.Instantiate(boyPrefab.name, boyTr, Quaternion.identity);
 
@@ -286,11 +289,21 @@ public class NetworkManager : MonoBehaviourPun
         }
         else
         {
+            Debug.Log("기자 생성");
+
             // 기자 생성
             woman = PhotonNetwork.Instantiate(womanPrefab.name, womanTr, Quaternion.identity);
 
             // woman 설정
             photonView.RPC("SetWoman", RpcTarget.AllBuffered, woman.GetComponent<PhotonView>().ViewID);
         }
+    }
+
+    // 바로 생성하면 역할군 설정하는 시간때문에 오류가 나서 1초 딜레이를 줌.
+    private IEnumerator InstantiatePlayerCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+
+        InstantiatePlayer();
     }
 }
