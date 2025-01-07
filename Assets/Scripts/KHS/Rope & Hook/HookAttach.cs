@@ -9,11 +9,17 @@ public class HookAttach : MonoBehaviour
     [SerializeField]
     private Vector3 onRopePos = Vector3.zero;
     [SerializeField]
-    private float lerpratio = 0.003f;
+    private float lerpratio = 0.02f;
     [SerializeField]
     private GameObject ropeGo = null;
 
+    [SerializeField]
+    private bool activeTrigger = false;
+    private bool isActive = false;
     private bool isArrived = false;
+
+    private Transform parentTr = null;
+    private Transform chainTr = null;
 
     public delegate void HookAttachDelegate();
     private HookAttachDelegate hookAttachCallback = null;
@@ -26,13 +32,25 @@ public class HookAttach : MonoBehaviour
 
     private void Start()
     {
-        transform.localPosition = noRopePos;
-        onRopePos = noRopePos + 5*Vector3.up;
+        parentTr = transform.parent.transform;
+        chainTr = ropeGo.transform;
+        parentTr.localPosition = onRopePos;
+        chainTr.localPosition = Vector3.zero;
+        isActive = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if(activeTrigger && !isActive)
+        {
+            isActive = true;
+            StartCoroutine(FirstPositionMove());
+        }
     }
 
     private void OnTriggerEnter(Collider _collider)
     {
-        if(_collider.name == "ChainLink")
+        if(isActive && _collider.name == "ChainLink")
         {
             Debug.Log("Rope Attact!");
             hookAttachCallback?.Invoke();
@@ -45,17 +63,36 @@ public class HookAttach : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         while(!isArrived)
-        {
-            if((transform.position - onRopePos).magnitude <= 0.1f)
+        { 
+            if((parentTr.localPosition - onRopePos).magnitude <= 0.1f)
             {
                 isArrived = true;
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, onRopePos, lerpratio);
+                parentTr.localPosition = Vector3.Lerp(parentTr.localPosition, onRopePos, lerpratio);
                 yield return null;
             }
         }
         Debug.Log("Arrived!");
+        isArrived = false;
+    }
+    private IEnumerator FirstPositionMove()
+    {
+        yield return new WaitForSeconds(0.5f);
+        while (!isArrived)
+        {
+            if ((parentTr.localPosition - noRopePos).magnitude <= 0.1f)
+            {
+                isArrived = true;
+            }
+            else
+            {
+                parentTr.localPosition = Vector3.Lerp(parentTr.localPosition, noRopePos, lerpratio);
+                yield return null;
+            }
+        }
+        Debug.Log("Arrived!");
+        isArrived = false;
     }
 }
