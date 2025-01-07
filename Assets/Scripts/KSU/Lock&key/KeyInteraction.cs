@@ -23,7 +23,8 @@ public class KeyInteraction : MonoBehaviour
             if (keyTr.rotation.y <= openAngle && !opend)
             {
                 opend = true;
-                lockGo.GetComponent<LockInteraction>().Interaction();
+                Debug.Log("¿­¼è ¿­¸²");
+                // lockGo.GetComponent<LockInteraction>().Interaction();
             }
         }
     }
