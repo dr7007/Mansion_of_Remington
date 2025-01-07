@@ -50,6 +50,9 @@ public class LobyManager : MonoBehaviourPunCallbacks
             "This Room is Exist"
         };
         joinBtn.onClick.AddListener(ClickJoin);
+        
+        // 같이 씬넘길때 동기화 시키면서 넘기기 위해 포톤기능 사용
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     private void Update()
@@ -196,22 +199,28 @@ public class LobyManager : MonoBehaviourPunCallbacks
     // 게임 시작 버튼 눌렀을때
     public void ClickRoomStart()
     {
+        Debug.Log(PhotonNetwork.NickName);
+
         // 선택한 역할군대로 직업을 설정
         if (boyName.text == PhotonNetwork.NickName)
         {
+            Debug.Log("boy로 역할군 선택");
+
             ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
             playerProperties.Add("Role", "Boy");
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         }
         else
         {
+            Debug.Log("기자로 역할군 선택");
+
             ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable();
             playerProperties.Add("Role", "Woman");
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         }
 
         // 다음씬으로 넘어가도록
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+        PhotonNetwork.LoadLevel("MainScene");
     }
 
     #endregion
