@@ -35,6 +35,7 @@ public class PlayerCameraController : MonoBehaviour
 
     public GameObject leftPhysicalCamera; // 왼쪽 컨트롤러에 장착된 "물리 카메라"
     public GameObject leftController;
+    public GameObject toyBlockTrigger;
 
     [Header("Input Actions")]
     public InputActionProperty aButtonPressAction;
@@ -53,6 +54,15 @@ public class PlayerCameraController : MonoBehaviour
         leftPhysicalCamera.SetActive(false);
         leftPhysicalCamera.transform.localPosition = camOffset;
         onCamera = false;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if(other?.GetComponent<toyBlockPuzzle>())
+        {
+            Debug.Log("탐지범위 내");
+            toyBlockTrigger = other.gameObject;
+        }
     }
 
     private void OnEnable()
@@ -104,6 +114,11 @@ public class PlayerCameraController : MonoBehaviour
         {
             Debug.Log("OnRCapture");
             CaptureCallback?.Invoke();
+            if(toyBlockTrigger != null)
+            {
+                Debug.Log("포인트 찾음");
+                toyBlockTrigger.GetComponent<toyBlockPuzzle>().OnPhoto();
+            }
         }
         else
         {

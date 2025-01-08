@@ -13,6 +13,17 @@ TagManager:
   - Interaction
   - TempKey
   - Chain
+  - mane
+  - NotMove
+  - FusePlace
+  - book2
+  - book5
+  - book4
+  - book1
+  - book3
+  - TheMirrorPlace
+  - changeImage
+  - chacksi
   layers:
   - Default
   - TransparentFX

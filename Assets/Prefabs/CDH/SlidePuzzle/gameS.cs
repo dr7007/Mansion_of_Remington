@@ -51,7 +51,7 @@ public class gameS : MonoBehaviour
             currentPositions[i] = initialPositions[i];
             puzzleIndices.Add(i);
         }
-        ShufflePuzzle();
+        //ShufflePuzzle();
     }
 
     void Update()
@@ -128,8 +128,8 @@ public class gameS : MonoBehaviour
         {
             puzzleSolved = true;
             Debug.Log("³¡!");
-            //onArt.SetActive(true);
-           // offArt.SetActive(false);
+            onArt.SetActive(true);
+            offArt.SetActive(false);
         }
 
         //if (emptySpace == null)
