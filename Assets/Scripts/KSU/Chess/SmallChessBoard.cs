@@ -15,12 +15,14 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
     public int[] paths = { 1, 2, 3, 4, 3, 2, 10, 18, 26, 27, 28, 36, 44, 52, 60, 61, 62, 63, 64 };
     public int currentIdx = 1;
     public bool clear = false;
-    private List<GameObject> tiles = new List<GameObject>();
+    public List<GameObject> tiles = new List<GameObject>();
 
     private void Start()
     {
         tiles.Clear();
         Reset();
+
+        StartCoroutine(CheckPlayerInstantiate());
     }
 
     private void Update()
@@ -75,6 +77,23 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
         }
     }
 
+    private IEnumerator CheckPlayerInstantiate()
+    {
+        while (true)
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role"))
+            {
+                break;
+            }
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        CreateTiles();
+    }
+
     public void Reset()
     {
         currentIdx = 1;
@@ -90,22 +109,6 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
             }
         }
         tiles.Clear();
-    }
-
-    public override void OnJoinedRoom()
-    {
-        StartCoroutine(JoinRoomDelayCoroutine());
-    }
-
-    private IEnumerator JoinRoomDelayCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
-        {
-            Debug.Log("소년 방입장 호출됨");
-            CreateTiles();
-        }
     }
 
     [PunRPC]

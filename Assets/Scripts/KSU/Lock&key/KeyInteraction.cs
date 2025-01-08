@@ -1,13 +1,13 @@
 using UnityEngine;
 
+[RequireComponent(typeof(GCondition))]
 public class KeyInteraction : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("회전할 key의 Transform")]
     private Transform keyTr;
-    [SerializeField]
-    [Tooltip("열릴 자물쇠")]
-    private GameObject lockGo;
+
+    private GCondition solve;
 
 
     public bool inserted = false; // 키가 꽂혀 있는지 여부
@@ -21,7 +21,7 @@ public class KeyInteraction : MonoBehaviour
             {
                 opend = true;
                 Debug.Log("열쇠 열림");
-                lockGo.GetComponent<LockInteraction>().Interaction();
+                solve.OnSolvedCallback?.Invoke(true);
             }
         }
     }
