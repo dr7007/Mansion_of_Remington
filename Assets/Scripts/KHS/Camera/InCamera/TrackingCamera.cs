@@ -3,7 +3,7 @@ using UnityEngine;
 public class TrackingCamera : MonoBehaviour
 {
     [SerializeField]
-    private Transform playerTr =null;
+    private Transform pCamTr =null;
     [SerializeField]
     private Transform tCamTr = null;
 
@@ -17,12 +17,12 @@ public class TrackingCamera : MonoBehaviour
     private void Start()
     {
         offsetMap = targetMap - originMap;
-        tCamTr.position = playerTr.position + offsetMap;
-        tCamTr.rotation = playerTr.rotation;
+        tCamTr.position = pCamTr.position + offsetMap;
+        tCamTr.rotation = pCamTr.rotation;
     }
     private void FixedUpdate()
     {
-        tCamTr.position = playerTr.position + offsetMap;
-        tCamTr.rotation = playerTr.rotation;
+        tCamTr.position = pCamTr.position + offsetMap;
+        tCamTr.rotation = pCamTr.rotation;
     }
 }

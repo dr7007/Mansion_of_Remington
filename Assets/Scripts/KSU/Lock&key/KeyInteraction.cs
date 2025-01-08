@@ -3,9 +3,6 @@ using UnityEngine;
 public class KeyInteraction : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("자물쇠가 열리는 각도")]
-    private float openAngle;
-    [SerializeField]
     [Tooltip("회전할 key의 Transform")]
     private Transform keyTr;
     [SerializeField]
@@ -20,9 +17,10 @@ public class KeyInteraction : MonoBehaviour
     {
         if (inserted)
         {
-            if (keyTr.rotation.y <= openAngle && !opend)
+            if (keyTr.rotation.y >= 0.45 && !opend)
             {
                 opend = true;
+                Debug.Log("열쇠 열림");
                 lockGo.GetComponent<LockInteraction>().Interaction();
             }
         }

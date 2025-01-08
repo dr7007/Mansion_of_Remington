@@ -1,35 +1,18 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerCameraController))]
 public class CameraScreen : MonoBehaviour
 {
-    #region
+    public delegate void CameraColliderSwitchDelegate();
 
-    public delegate void ScreenChangeDelegate();
-    public delegate void CaptureDelegate();
-    public delegate void TransferDelegate();
+    private CameraColliderSwitchDelegate camColliderSwitchCallback = null;
 
-    private ScreenChangeDelegate screenChangeCallback;
-    private CaptureDelegate captureCallback;
-    private TransferDelegate transferCallback;
-
-    public ScreenChangeDelegate ScreenChangeCallback
+    public CameraColliderSwitchDelegate CamColliderSwitchCallback
     {
-        get { return screenChangeCallback; }
-        set { screenChangeCallback = value; }
+        get { return camColliderSwitchCallback; }
+        set { camColliderSwitchCallback = value; }
     }
-    public CaptureDelegate CaptureCallback
-    {
-        get { return captureCallback; }
-        set { captureCallback = value; }
-    }
-    public TransferDelegate TransferCallback
-    {
-        get { return transferCallback; }
-        set { transferCallback = value; }
-    }
-
-    #endregion
 
     [SerializeField]
     private MeshRenderer screenMR = null;
@@ -37,74 +20,34 @@ public class CameraScreen : MonoBehaviour
     private RenderTexture presentScreen = null;
     [SerializeField]
     private RenderTexture pastScreen = null;
-    [SerializeField]
-    private InputActionReference xrControllerAction = null;
+
+    private PlayerCameraController playerControl;
+    
 
     private bool isPast = false;
-
 
     public bool IsPast
     {
         get { return isPast; }
     }
-
+    private void Awake()
+    {
+        playerControl = GetComponent<PlayerCameraController>();
+    }
     private void Start()
     {
+        playerControl.ScreenChangeCallback += ScreenChange;
         isPast = false;
         screenMR.material.SetTexture("_BaseMap", presentScreen);
         screenMR.material.SetTexture("_EmissionMap", presentScreen);
     }
 
-    private void OnEnable()
+    private void ScreenChange()
     {
-        xrControllerAction.action.started += OnAButtonPressed;
-        xrControllerAction.action.canceled += OnAButtonReleased;
-        xrControllerAction.action.Enable();
-    }
-    private void OnDisable()
-    {
-        xrControllerAction.action.started -= OnAButtonPressed;
-        xrControllerAction.action.canceled -= OnAButtonReleased;
-        xrControllerAction.action.Disable();
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log("Q Pressed");
-            if (screenMR.isVisible)
-            {
-                isPast = !isPast;
-                ScreenChangeCallback?.Invoke();
-                ChangeRenderTex();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("E Pressed");
-            TransferCallback?.Invoke();
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("F Pressed");
-            CaptureCallback?.Invoke();
-        }
-    }
-
-    private void OnAButtonPressed(InputAction.CallbackContext context)
-    {
-        Debug.Log("A Pressed");
-        if (screenMR.isVisible)
-        {
-            isPast = !isPast;
-            ScreenChangeCallback?.Invoke();
-            ChangeRenderTex();
-        }
-    }
-    private void OnAButtonReleased(InputAction.CallbackContext context)
-    {
-        Debug.Log("A Released");
+        Debug.Log("CameraScreen Change!");
+        isPast = !isPast;
+        ChangeRenderTex();
+        CamColliderSwitchCallback?.Invoke();
     }
 
     private void ChangeRenderTex()

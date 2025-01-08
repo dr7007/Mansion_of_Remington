@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem.XR;
-using Unity.XR.CoreUtils;
 
+// 그랩 동작 관련 함수(그냥 잡을때, 레버 잡을때 등등)
 public class CheckEvent : MonoBehaviour
 {
     [SerializeField]
@@ -11,7 +11,6 @@ public class CheckEvent : MonoBehaviour
     private GameObject rightHandVisable;
     [SerializeField]
     private GameObject player;
-
 
     // 그랩했을때 호출됨.
     public void GrabOn(SelectEnterEventArgs args)
@@ -83,4 +82,6 @@ public class CheckEvent : MonoBehaviour
 
         return null;
     }
+
+    // 잡았을때, 일정거리 이상이면 자동으로 놓아짐.
 }

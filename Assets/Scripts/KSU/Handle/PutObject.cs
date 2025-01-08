@@ -21,7 +21,6 @@ public class PutObject : MonoBehaviour
     private LayerMask detectLayer;
 
     private bool detected = false;
-    public GameObject key;
 
     private void Update()
     {
@@ -66,7 +65,7 @@ public class PutObject : MonoBehaviour
                 // Å½ÁöµÊ.(update È£Ãâ off)
                 detected = true;
 
-                key.GetComponent<KeyInteraction>().inserted = true;
+                targetGo.GetComponent<KeyInteraction>().inserted = true;
             }
         }
     }

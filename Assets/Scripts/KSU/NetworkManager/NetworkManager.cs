@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 
@@ -15,16 +16,10 @@ public class NetworkManager : MonoBehaviourPun
     private GameObject cam;
     [SerializeField]
     [Tooltip("거울 기믹 성공 콜백")]
-    private GameObject mirror;
+    private MirrorP mirror;
     [SerializeField]
     [Tooltip("마네킹 퍼즐 성공 콜백")]
     private manneManager mane;
-    [SerializeField]
-    [Tooltip("기자 키보드 누름 콜백")]
-    private GameObject wKeyBoard;
-    [SerializeField]
-    [Tooltip("소년 키보드 누름 콜백")]
-    private GameObject bKeyBoard;
     [SerializeField]
     [Tooltip("유리 뿌서짐 콜백")]
     private glass glass1;
@@ -98,15 +93,59 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("기자 힌트 2")]
     private GameObject womanHint2;
 
+    [Header("키보드 동시에 누르기")]
+    [SerializeField]
+    [Tooltip("기자 키보드1 상태")]
+    private KeyboardRPC wKeyBoard1;
+    [SerializeField]
+    [Tooltip("기자 키보드2 상태")]
+    private KeyboardRPC wKeyBoard2;
+    [SerializeField]
+    [Tooltip("소년 키보드1 상태")]
+    private KeyboardRPC bKeyBoard1;
+    [SerializeField]
+    [Tooltip("소년 키보드2 상태")]
+    private KeyboardRPC bKeyBoard2;
+
+    private bool keyboardSucess = false;
+    private bool checkIsMine = false;
+
     private void Start()
     {
         // 콜백 함수 등록
-        openLock.LockOpenCallback += BoyMove;
-        wAnimalboard.animalBtnCallback += WCallbackAnimal;
-        glass1.glassSucessCallback += GlassSucess;
+        // openLock.LockOpenCallback += BoyMove;
+        // wAnimalboard.animalBtnCallback += WCallbackAnimal;
+        // glass1.glassSucessCallback += GlassSucess;
+        // mirror.mirroSucessCallback += MirrorSucess;
+        // mane.manneSucessCallback += ManeSucess;
 
         // 플레이어 생성
-        InstantiatePlayer();
+        StartCoroutine(InstantiatePlayerCoroutine());
+    }
+
+    private void Update()
+    {
+        // 키보드 4개 동시에 눌러진 상태라면 함수실행
+        //if (!keyboardSucess && wKeyBoard1.TheButtonisPressed && wKeyBoard2.TheButtonisPressed && bKeyBoard1.TheButtonisPressed && bKeyBoard2.TheButtonisPressed)
+        //{
+        //    keyboardSucess = true;
+        //    KeyboardSucess();
+        //}
+
+        // boy와 woman이 둘다 네트워크상에서 생성됬을때
+        if (boy != null && woman != null && !checkIsMine)
+        {
+            if (boy.GetComponent<PhotonView>().IsMine)
+            {
+                woman.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else if (woman.GetComponent<PhotonView>().IsMine)
+            {
+                boy.transform.GetChild(0).gameObject.SetActive(false);
+            }
+
+            checkIsMine = true;
+        }
     }
 
     #region 콜백 받는 쪽에서 실행되는 함수들
@@ -149,6 +188,11 @@ public class NetworkManager : MonoBehaviourPun
     private void GlassSucess()
     {
         photonView.RPC("GlassSucessRPC", RpcTarget.Others);
+    }
+
+    private void KeyboardSucess()
+    {
+        photonView.RPC("KeyboardSucessRPC", RpcTarget.All);
     }
     #endregion
 
@@ -226,6 +270,21 @@ public class NetworkManager : MonoBehaviourPun
     {
         // 소년에게서 나레이션 재생
     }
+
+    [PunRPC]
+    private void KeyboardSucessRPC()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            // 소년일때 -> 컴퓨터가 켜지면서 다시 되돌아 가라고 동작하는거
+
+        }
+        else
+        {
+            // 기자일때 -> 망치에 대한 힌트
+
+        }
+    }
     #endregion
 
     // 플레이어를 소환하는 함수
@@ -233,6 +292,8 @@ public class NetworkManager : MonoBehaviourPun
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
+            Debug.Log("소년 생성");
+
             // boy 생성
             boy = PhotonNetwork.Instantiate(boyPrefab.name, boyTr, Quaternion.identity);
 
@@ -242,13 +303,30 @@ public class NetworkManager : MonoBehaviourPun
             // boy 설정
             photonView.RPC("SetBoy", RpcTarget.AllBuffered, boy.GetComponent<PhotonView>().ViewID);
         }
-        else
+        else if(PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
+            Debug.Log("기자 생성");
+
             // 기자 생성
             woman = PhotonNetwork.Instantiate(womanPrefab.name, womanTr, Quaternion.identity);
 
             // woman 설정
             photonView.RPC("SetWoman", RpcTarget.AllBuffered, woman.GetComponent<PhotonView>().ViewID);
+        }
+    }
+
+    // 바로 생성하면 역할군 설정하는 시간때문에 오류가 나서 매프레임 들어왔는지 확인후에 생성
+    private IEnumerator InstantiatePlayerCoroutine()
+    {
+        while (true)
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") == true)
+            {
+                InstantiatePlayer();
+                break;
+            }
+
+            yield return null;
         }
     }
 }

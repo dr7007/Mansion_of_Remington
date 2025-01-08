@@ -11,11 +11,7 @@ public class CameraFrustumCollider : MonoBehaviour
     private MeshCollider meshCollider = null;
 
     public CameraScreen camScreen;
-
-    public const string captureTag = "CaptureTarget";
-    public const string transferTag = "TransferTarget";
-    public KeyCode captureKey = KeyCode.F;
-    public KeyCode transferKey = KeyCode.E;
+    public PlayerCameraController playerControl;
 
     [SerializeField]
     private List<GameObject> onTriggerCap = new List<GameObject>();
@@ -30,6 +26,7 @@ public class CameraFrustumCollider : MonoBehaviour
     {
         targetCamera = GetComponent<Camera>();
         camScreen = FindAnyObjectByType<CameraScreen>();
+        playerControl = FindAnyObjectByType<PlayerCameraController>();
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
     }
@@ -52,9 +49,9 @@ public class CameraFrustumCollider : MonoBehaviour
 
         CreateFrustumMesh();
         FrustumColliderSwitch();
-        camScreen.ScreenChangeCallback += FrustumColliderSwitch;
-        camScreen.CaptureCallback += OnCapture;
-        camScreen.TransferCallback += OnTransfer;
+        camScreen.CamColliderSwitchCallback += FrustumColliderSwitch;
+        playerControl.CaptureCallback += OnCapture;
+        playerControl.TransferCallback += OnTransfer;
     }
 
 
@@ -152,7 +149,6 @@ public class CameraFrustumCollider : MonoBehaviour
     }
     private void FrustumColliderSwitch()
     {
-        
         if(camScreen.IsPast == presentCam)
         {
             meshCollider.enabled = false;
