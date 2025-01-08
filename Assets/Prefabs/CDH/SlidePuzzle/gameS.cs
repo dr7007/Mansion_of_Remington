@@ -51,7 +51,7 @@ public class gameS : MonoBehaviour
             currentPositions[i] = initialPositions[i];
             puzzleIndices.Add(i);
         }
-        //ShufflePuzzle();
+        ShufflePuzzle();
     }
 
     void Update()
