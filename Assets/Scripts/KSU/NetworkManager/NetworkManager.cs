@@ -1,5 +1,6 @@
 using System.Collections;
 using Photon.Pun;
+using Photon.Voice.Unity;
 using UnityEngine;
 
 public class NetworkManager : MonoBehaviourPun
@@ -11,9 +12,6 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자가 누른 동물버튼 콜백")]
     private AnimalBoard wAnimalboard;
-    [SerializeField]
-    [Tooltip("카메라 보내기 기능 콜백")]
-    private GameObject cam;
     [SerializeField]
     [Tooltip("거울 기믹 성공 콜백")]
     private MirrorP mirror;
@@ -35,6 +33,24 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자")]
     private GameObject woman;
+    [SerializeField]
+    [Tooltip("포톤보이스")]
+    private Recorder recorder;
+    [SerializeField]
+    [Tooltip("큐브 보내기")]
+    private GResponse cubeResult;
+    [SerializeField]
+    [Tooltip("쇠사슬 보내기")]
+    private GResponse ropeResult;
+    [SerializeField]
+    [Tooltip("책1 보내기")]
+    private GResponse book1Result;
+    [SerializeField]
+    [Tooltip("책2 보내기")]
+    private GResponse book2Result;
+    [SerializeField]
+    [Tooltip("퓨즈 보내기")]
+    private GResponse puseResult;
 
     [Header("플레이어 생성 관련")]
     [SerializeField]
@@ -50,9 +66,10 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("기자 생성 위치")]
     private Vector3 womanTr;
 
-    [Header("사진으로 보낼것들")]
+
+    [Header("사진으로 보낼것들(소년쪽 오브젝트)")]
     [SerializeField]
-    [Tooltip("기자 튜토리얼 방의 큐브")]
+    [Tooltip("큐브")]
     private GameObject cube;
     [SerializeField]
     [Tooltip("쇠사슬")]
@@ -67,6 +84,12 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("퓨즈")]
     private GameObject fuse;
 
+    [Header("기자 쪽 생기는것들")]
+    [SerializeField]
+    [Tooltip("기자쪽 쇠사슬")]
+    private GameObject wChain;
+
+
     [Header("책 4권 생성 관련")]
     [SerializeField]
     [Tooltip("소년방 책1")]
@@ -75,17 +98,17 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("소년방 책2")]
     private GameObject boyBook2;
     [SerializeField]
-    [Tooltip("소년방 책1 위치")]
-    private Vector3 boyBook1Tr;
+    [Tooltip("소년방 책3")]
+    private GameObject boyBook3;
     [SerializeField]
-    [Tooltip("소년방 책2 위치")]
-    private Vector3 boyBook2Tr;
+    [Tooltip("소년방 책4")]
+    private GameObject boyBook4;
+    [SerializeField]
+    [Tooltip("소년방 책5")]
+    private GameObject boyBook5;
     [SerializeField]
     [Tooltip("소년 힌트 1")]
     private GameObject boyHint1;
-    [SerializeField]
-    [Tooltip("소년 힌트 2")]
-    private GameObject boyHint2;
     [SerializeField]
     [Tooltip("기자 힌트 1")]
     private GameObject womanHint1;
@@ -109,15 +132,42 @@ public class NetworkManager : MonoBehaviourPun
 
     private bool keyboardSucess = false;
     private bool checkIsMine = false;
+    private bool recorderOn = true;
 
     private void Start()
     {
         // 콜백 함수 등록
-        // openLock.LockOpenCallback += BoyMove;
-        // wAnimalboard.animalBtnCallback += WCallbackAnimal;
-        // glass1.glassSucessCallback += GlassSucess;
-        // mirror.mirroSucessCallback += MirrorSucess;
-        // mane.manneSucessCallback += ManeSucess;
+        if (openLock != null)
+        {
+            openLock.LockOpenCallback += BoyMove;
+        }
+
+        if (wAnimalboard != null)
+        {
+            wAnimalboard.animalBtnCallback += WCallbackAnimal;
+        }
+
+        if (glass1 != null)
+        {
+            glass1.glassSucessCallback += GlassSucess;
+        }
+
+        if (mirror != null)
+        {
+            mirror.mirroSucessCallback += MirrorSucess;
+        }
+
+        if (mane != null)
+        {
+            mane.manneSucessCallback += ManeSucess;
+        }
+
+        cubeResult.OnResponseCallback += CubeTransport;
+        ropeResult.OnResponseCallback += RopeTransport;
+        book1Result.OnResponseCallback += Book1Transport;
+        book2Result.OnResponseCallback += Book2Transport;
+        puseResult.OnResponseCallback += FuseTransport;
+
 
         // 플레이어 생성
         StartCoroutine(InstantiatePlayerCoroutine());
@@ -125,12 +175,15 @@ public class NetworkManager : MonoBehaviourPun
 
     private void Update()
     {
-        // 키보드 4개 동시에 눌러진 상태라면 함수실행
-        //if (!keyboardSucess && wKeyBoard1.TheButtonisPressed && wKeyBoard2.TheButtonisPressed && bKeyBoard1.TheButtonisPressed && bKeyBoard2.TheButtonisPressed)
-        //{
-        //    keyboardSucess = true;
-        //    KeyboardSucess();
-        //}
+        // 키보드 4개다 눌려졌을때 성공!
+        if (wKeyBoard1 != null && wKeyBoard2 != null && bKeyBoard1 != null && bKeyBoard2 != null)
+        {
+            if (!keyboardSucess && wKeyBoard1.TheButtonisPressed && wKeyBoard2.TheButtonisPressed && bKeyBoard1.TheButtonisPressed && bKeyBoard2.TheButtonisPressed)
+            {
+                keyboardSucess = true;
+                KeyboardSucess();
+            }
+        }
 
         // boy와 woman이 둘다 네트워크상에서 생성됬을때
         if (boy != null && woman != null && !checkIsMine)
@@ -169,12 +222,6 @@ public class NetworkManager : MonoBehaviourPun
         }
     }
 
-    private void SendObject(string _name)
-    {
-        // 이름에 따라 소년위치에 생성(소년 한테서만 호출됨)
-        photonView.RPC("SendObjectRPC", RpcTarget.Others, _name);
-    }
-
     private void MirrorSucess()
     {
         photonView.RPC("MirrorSucessRPC", RpcTarget.Others);
@@ -193,6 +240,31 @@ public class NetworkManager : MonoBehaviourPun
     private void KeyboardSucess()
     {
         photonView.RPC("KeyboardSucessRPC", RpcTarget.All);
+    }
+
+    private void CubeTransport(bool _state)
+    {
+        photonView.RPC("CubeTransportRPC", RpcTarget.Others);
+    }
+
+    private void RopeTransport(bool _state)
+    {
+        photonView.RPC("RopeTransportRPC", RpcTarget.Others);
+    }
+
+    private void Book1Transport(bool _state)
+    {
+        photonView.RPC("Book1TransportRPC", RpcTarget.Others);
+    }
+
+    private void Book2Transport(bool _state)
+    {
+        photonView.RPC("Book2TransportRPC", RpcTarget.Others);
+    }
+
+    private void FuseTransport(bool _state)
+    {
+        photonView.RPC("FuseTransportRPC", RpcTarget.Others);
     }
     #endregion
 
@@ -213,55 +285,40 @@ public class NetworkManager : MonoBehaviourPun
     private void BoyMoveRPC()
     {
         // boy가 움직일수 있게
-    }
-
-    [PunRPC]
-    private void SendObjectRPC(string _name)
-    {
-        // 이름에 따라 소년위치에 다른 프리펩들 생성
-        switch(_name)
-        {
-            case "cube":
-                Instantiate(cube, boy.transform.position, Quaternion.identity);
-                break;
-            case "chain":
-                Instantiate(chain, boy.transform.position, Quaternion.identity);
-                break;
-            case "book1":
-                Instantiate(book1, boy.transform.position, Quaternion.identity);
-                break;
-            case "book2":
-                Instantiate(book2, boy.transform.position, Quaternion.identity);
-                break;
-            case "fuse":
-                Instantiate(fuse, boy.transform.position, Quaternion.identity);
-                break;
-        }
+        boy.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
 
     [PunRPC]
     private void MirrorSucessRPC()
     {
         // 쇠사슬 생성
-        Instantiate(chain, woman.transform.position, Quaternion.identity);
+        if (wChain != null)
+        {
+            wChain.SetActive(true);
+        }
     }
 
     [PunRPC]
     private void ManeSucessRPC()
     {
+        // 아직 할당 안했으면 실행안됨.
+        if (boyBook1 == null || boyBook2 == null || boyBook3 == null || boyBook4 == null || boyBook5 == null || womanHint1 == null || womanHint2 == null) return;
+
         if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
-            // 소년일때 -> 책2권 생성, 힌트 2개를 소년 위치에
-            Instantiate(boyBook1, boyBook1Tr, Quaternion.identity);
-            Instantiate(boyBook2, boyBook2Tr, Quaternion.identity);
-            Instantiate(boyHint1, boy.transform.position, Quaternion.identity);
-            Instantiate(boyHint2, boy.transform.position, Quaternion.identity);
+            // 소년일때 -> 책5권 활성화 + 힌트 1개 활성화
+            boyBook1.SetActive(true);
+            boyBook2.SetActive(true);
+            boyBook3.SetActive(true);
+            boyBook4.SetActive(true);
+            boyBook5.SetActive(true);
+            boyHint1.SetActive(true);
         }
-        else
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때 -> 힌트 2개를 기자 위치에
-            Instantiate(womanHint1, woman.transform.position, Quaternion.identity);
-            Instantiate(womanHint2, woman.transform.position, Quaternion.identity);
+            womanHint1.SetActive(true);
+            womanHint2.SetActive(true);
         }
     }
 
@@ -269,6 +326,20 @@ public class NetworkManager : MonoBehaviourPun
     private void GlassSucessRPC()
     {
         // 소년에게서 나레이션 재생
+
+
+        // 서로 보이스 끊김
+        if (recorderOn)
+        {
+            recorder.RecordingEnabled = false;
+            recorderOn = false;
+        }
+        else
+        {
+            recorder.RecordingEnabled = true;
+            recorderOn = true;
+        }
+
     }
 
     [PunRPC]
@@ -276,14 +347,44 @@ public class NetworkManager : MonoBehaviourPun
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
-            // 소년일때 -> 컴퓨터가 켜지면서 다시 되돌아 가라고 동작하는거
+            // 소년일때
 
         }
-        else
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
-            // 기자일때 -> 망치에 대한 힌트
+            // 기자일때
 
         }
+    }
+
+    [PunRPC]
+    private void CubeTransportRPC()
+    {
+        if (cube != null) cube.SetActive(true);
+    }
+
+    [PunRPC]
+    private void RopeTransportRPC()
+    {
+        if (chain != null) chain.SetActive(true);
+    }
+
+    [PunRPC]
+    private void Book1TransportRPC()
+    {
+        if (book1 != null) book2.SetActive(true);
+    }
+
+    [PunRPC]
+    private void Book2TransportRPC()
+    {
+        if (book1 != null) book2.SetActive(true);
+    }
+
+    [PunRPC]
+    private void FuseTransportRPC()
+    {
+        if (fuse != null) fuse.SetActive(true);
     }
     #endregion
 
@@ -295,10 +396,10 @@ public class NetworkManager : MonoBehaviourPun
             Debug.Log("소년 생성");
 
             // boy 생성
-            boy = PhotonNetwork.Instantiate(boyPrefab.name, boyTr, Quaternion.identity);
+            boy = PhotonNetwork.Instantiate(boyPrefab.name, boyTr, Quaternion.Euler(0f, 180f, 0f));
 
-            // boy 못움직이게
-
+            // boy 못움직이게 locomotion 비활성화
+            boy.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
 
             // boy 설정
             photonView.RPC("SetBoy", RpcTarget.AllBuffered, boy.GetComponent<PhotonView>().ViewID);
