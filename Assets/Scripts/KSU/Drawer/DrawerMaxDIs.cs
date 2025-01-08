@@ -37,7 +37,7 @@ public class DrawerMaxDIs : MonoBehaviour
             }
             else if (transform.position.z <= positionz)
             {
-                transform.position = new Vector3(transform.position.z, transform.position.y, positionz);
+                transform.position = new Vector3(transform.position.x, transform.position.y, positionz);
             }
         }
         else if (moveBackDirX)

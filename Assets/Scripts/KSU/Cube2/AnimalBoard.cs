@@ -41,7 +41,7 @@ public class AnimalBoard : MonoBehaviourPun
         {
             elapseTime += Time.deltaTime;
 
-            rotateGo.transform.Rotate(0f, 0f, (180f * Time.deltaTime) / rotateTime);
+            rotateGo.transform.Rotate((180f * Time.deltaTime) / rotateTime, 0f, 0f);
 
             yield return null;
         }

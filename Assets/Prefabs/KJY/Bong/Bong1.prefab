@@ -11,14 +11,15 @@ GameObject:
   - component: {fileID: 3121277403909224022}
   - component: {fileID: 2990261977225006600}
   - component: {fileID: 8800842226061857460}
-  - component: {fileID: 7304024024596243275}
   - component: {fileID: 4411998208974285178}
   - component: {fileID: 882000594817716115}
   - component: {fileID: 6386056118587535332}
   - component: {fileID: 7436281598878471765}
+  - component: {fileID: 7180167855001216342}
+  - component: {fileID: 4405529299905020338}
   m_Layer: 0
   m_Name: Bong1
-  m_TagString: Untagged
+  m_TagString: NotMove
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,9 +34,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.003, y: 0.538, z: 0.072}
-  m_LocalScale: {x: 0.8, y: 0.06, z: 0.8}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_LocalScale: {x: 2, y: 0.15, z: 2}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 2736709010227050872}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2990261977225006600
@@ -91,28 +93,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &7304024024596243275
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5962839776275834142}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 87f4cc797fc57d5478defa024c8c9896, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4411998208974285178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,3 +279,65 @@ MonoBehaviour:
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
   m_FarAttachMode: 0
+--- !u!114 &7180167855001216342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962839776275834142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b2ef925c0ff8d4bbc34b73de430288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attachPos: {fileID: 2736709010227050872}
+  attachGo: {fileID: 6218945036100773337}
+  hand: {fileID: 0}
+  grapping: 0
+--- !u!114 &4405529299905020338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5962839776275834142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8335cde5c22d10c4ea32c7ebaf78d152, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDis: 0
+  attachGo: {fileID: 6218945036100773337}
+  grabInteractable: {fileID: 0}
+--- !u!1 &6218945036100773337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2736709010227050872}
+  m_Layer: 0
+  m_Name: HandPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2736709010227050872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6218945036100773337}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3121277403909224022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

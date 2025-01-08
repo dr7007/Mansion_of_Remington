@@ -12,7 +12,7 @@ public class WBrick : MonoBehaviourPun
 
     public void MoveWBrick(Vector3 _changePos)
     {
-        transform.position = startPos + _changePos;
+        transform.position = startPos - _changePos;
 
         photonView.RPC("MoveWBrickRPC", RpcTarget.Others, _changePos);
     }

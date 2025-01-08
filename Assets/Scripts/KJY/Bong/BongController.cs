@@ -1,14 +1,26 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class BongController : MonoBehaviour
 {
 
     public bool TheBongOnTouch = false;
+    private XRGrabInteractable grab;
 
-
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        TheBongOnTouch = true;
+        grab = GetComponent<XRGrabInteractable>();
     }
 
+    private void Update()
+    {
+        if (grab.isSelected == true)
+        {
+            TheBongOnTouch = true;
+        }
+        else
+        {
+            TheBongOnTouch = false;
+        }
+    }
 }
