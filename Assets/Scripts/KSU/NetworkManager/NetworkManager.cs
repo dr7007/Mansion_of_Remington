@@ -108,6 +108,7 @@ public class NetworkManager : MonoBehaviourPun
     private KeyboardRPC bKeyBoard2;
 
     private bool keyboardSucess = false;
+    private bool checkIsMine = false;
 
     private void Start()
     {
@@ -130,6 +131,21 @@ public class NetworkManager : MonoBehaviourPun
         //    keyboardSucess = true;
         //    KeyboardSucess();
         //}
+
+        // boy와 woman이 둘다 네트워크상에서 생성됬을때
+        if (boy != null && woman != null && !checkIsMine)
+        {
+            if (boy.GetComponent<PhotonView>().IsMine)
+            {
+                woman.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            else if (woman.GetComponent<PhotonView>().IsMine)
+            {
+                boy.transform.GetChild(0).gameObject.SetActive(false);
+            }
+
+            checkIsMine = true;
+        }
     }
 
     #region 콜백 받는 쪽에서 실행되는 함수들
@@ -287,7 +303,7 @@ public class NetworkManager : MonoBehaviourPun
             // boy 설정
             photonView.RPC("SetBoy", RpcTarget.AllBuffered, boy.GetComponent<PhotonView>().ViewID);
         }
-        else
+        else if(PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             Debug.Log("기자 생성");
 
@@ -299,11 +315,18 @@ public class NetworkManager : MonoBehaviourPun
         }
     }
 
-    // 바로 생성하면 역할군 설정하는 시간때문에 오류가 나서 1초 딜레이를 줌.
+    // 바로 생성하면 역할군 설정하는 시간때문에 오류가 나서 매프레임 들어왔는지 확인후에 생성
     private IEnumerator InstantiatePlayerCoroutine()
     {
-        yield return new WaitForSeconds(1f);
+        while (true)
+        {
+            if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") == true)
+            {
+                InstantiatePlayer();
+                break;
+            }
 
-        InstantiatePlayer();
+            yield return null;
+        }
     }
 }
