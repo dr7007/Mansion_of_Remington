@@ -16,12 +16,6 @@ public class GCondition : MonoBehaviourPun
     public void OnSolved(bool _isSolved)
     {
         OnSolvedCallback?.Invoke(_isSolved);
-        //photonView.RPC("OnSolvedRPC", RpcTarget.Others, _isSolved);
     }
 
-    [PunRPC]
-    public void OnSolvedRPC(bool _isSolved)
-    {
-        OnSolvedCallback?.Invoke(_isSolved);
-    }
 }

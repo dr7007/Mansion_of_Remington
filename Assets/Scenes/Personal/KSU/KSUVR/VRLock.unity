@@ -1412,7 +1412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.554
+      value: 1.822
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1420,19 +1420,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9940685
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.10875589
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1444,7 +1444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 814673338317122950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -12.487
       objectReference: {fileID: 0}
     - target: {fileID: 2097745084394383733, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_Enabled
@@ -1460,11 +1460,11 @@ PrefabInstance:
       objectReference: {fileID: 333760630}
     - target: {fileID: 6779998056042331764, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6779998056042331764, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8534299166014872950, guid: c42ce39cf0c7c6c428ba0a5680d9b2ba, type: 3}
       propertyPath: m_LocalRotation.w

@@ -11,6 +11,7 @@ public class BigTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("trigger됨");
         // 번호와 이름이 일치할때
         if (board.paths[board.currentIdx-1].ToString() == gameObject.name)
         {

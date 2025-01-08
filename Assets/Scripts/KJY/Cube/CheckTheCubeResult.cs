@@ -104,9 +104,6 @@ public class CheckTheCubeResult : MonoBehaviour
         //Handle.gameObject.SetActive(true);
 
         Ani.StartAnimation();
-
-        //클릭하면 레번태그인 경우 겜오브젝트 파괴하고 인벤토리에 
-        Debug.Log("TheFinalResult 실행됨"); 
         
         //if (Input.GetMouseButtonDown(0))
         //{
