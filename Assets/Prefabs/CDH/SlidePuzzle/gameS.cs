@@ -8,6 +8,11 @@ public class gameS : MonoBehaviour
     private Camera _camera;
     [SerializeField] private SlidePuzzle[] tiles;
 
+    [SerializeField]
+    GameObject offArt;
+    [SerializeField]
+    GameObject onArt;
+
     public GameObject[] puzzlePieces;        // 퍼즐 조각들을 저장할 배열
     private Vector3[] initialPositions;      // 각 퍼즐 조각의 초기 위치를 저장할 배열
     private Vector3[] currentPositions;
@@ -55,6 +60,7 @@ public class gameS : MonoBehaviour
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+                Debug.Log("클릭");
 
             if (Physics.Raycast(ray, out hit))
             {
@@ -122,7 +128,8 @@ public class gameS : MonoBehaviour
         {
             puzzleSolved = true;
             Debug.Log("끝!");
-            
+            //onArt.SetActive(true);
+           // offArt.SetActive(false);
         }
 
         //if (emptySpace == null)
