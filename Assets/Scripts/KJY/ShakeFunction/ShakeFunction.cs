@@ -5,10 +5,16 @@ public class ShakeFunction : MonoBehaviour
 {
     // 흔들릴 3D 오브젝트
     public Transform objectToShake; 
-    // 떨어질 공 오브젝트 프리팹
-    public GameObject ballPrefab;  
-    // 공이 떨어질 위치
-    public Transform ballSpawnPoint; 
+    // 떨어질 오브젝트 프리팹
+    public GameObject Beer;
+    public GameObject Shape;
+    public GameObject Mouse;
+    public GameObject Pig;
+    public GameObject Monkey;
+    public GameObject Penguin;
+    public GameObject Rabbit;
+    
+
     // 흔들림 감지 임계값
     public float shakeThreshold = 2.0f;
     // 흔들림 지속 시간
@@ -52,7 +58,7 @@ public class ShakeFunction : MonoBehaviour
             if (timeDifference <= syncThreshold)
             {
                 shakeTimer = shakeDuration;
-                DropBall();
+                SetActive();
             }
         }
 
@@ -78,17 +84,17 @@ public class ShakeFunction : MonoBehaviour
         }
     }
 
-    void DropBall()
+    void SetActive()
     {
-        if (ballPrefab != null && ballSpawnPoint != null)
-        {
-            GameObject ball = Instantiate(ballPrefab, ballSpawnPoint.position, Quaternion.identity);
-            Rigidbody rb = ball.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
-        }
+
+        Beer.SetActive(true);
+        Shape.SetActive(true);
+        Mouse.SetActive(true);
+        Pig.SetActive(true);
+        Monkey.SetActive(true);
+        Penguin.SetActive(true);
+        Rabbit.SetActive(true);
+
     }
 }
 

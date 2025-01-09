@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 245458765432821811}
   - component: {fileID: 4318094521167128853}
   - component: {fileID: 8920107950907484449}
+  - component: {fileID: 8689219306091772019}
+  - component: {fileID: 1006578786806795509}
   m_Layer: 0
   m_Name: PolaroidHammer
   m_TagString: Untagged
@@ -86,3 +88,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8689219306091772019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737476599715366769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84057ed8f060046a0f5ab901f43ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1006578786806795509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737476599715366769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf79b4599c6cee4785e75be6f9e4282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8798970441540392459}
   - component: {fileID: 8036165826877141070}
   - component: {fileID: 6982044066124380940}
+  - component: {fileID: 420938202051134200}
+  - component: {fileID: 2117337926809473520}
   m_Layer: 0
   m_Name: PolaroidDoor2
   m_TagString: Untagged
@@ -86,3 +88,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &420938202051134200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5938868408009547963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84057ed8f060046a0f5ab901f43ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2117337926809473520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5938868408009547963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf79b4599c6cee4785e75be6f9e4282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
