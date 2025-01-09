@@ -21,6 +21,7 @@ public class CheckEvent : MonoBehaviour
         // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
         if (args.interactableObject.transform.gameObject.tag == "NotMove")
         {
+            Debug.Log(args.interactableObject.transform.gameObject.name);
             // 움직임을 따라다니는 track을 비활성화
             CheckHand(hand).GetComponent<TrackedPoseDriver>().enabled = false;
 
