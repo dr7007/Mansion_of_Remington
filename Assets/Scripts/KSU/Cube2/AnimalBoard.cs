@@ -50,7 +50,6 @@ public class AnimalBoard : MonoBehaviourPun
     // ¸ùÅ° ¹öÆ° ´­·¶À»¶§
     public void PressMonkeyBtn()
     {
-        Debug.Log("¸ùÅ°");
         photonView.RPC("PressMonkeyBtnRPC", RpcTarget.Others);
     }
 
