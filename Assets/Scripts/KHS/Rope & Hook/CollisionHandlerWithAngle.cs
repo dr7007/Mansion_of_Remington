@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -19,26 +20,24 @@ public class CollisionHandlerWithAngle : MonoBehaviour
         characterIndex = _characterIndex;
     }
 
-    void OnTriggerStay(Collider _collider)
+    void OnTriggerEnter(Collider _collider)
     {
         // 충돌한 오브젝트가 쇠사슬인지 확인
-        if (_collider.CompareTag("Chain"))
+        if (_collider.CompareTag("Chain") && !sentenceTmp.isInside)
         {
-            // 각도를 계산하고 조건을 만족하는 경우에만 색상 변경
-            if (IsValidAngle(_collider.transform))
-            {
-                sentenceTmp.onLight = textMeshPro.textInfo.characterInfo[characterIndex].character;
-                Debug.Log("Char : " + sentenceTmp.onLight);
-                ChangeCharacterColor(Color.red);
-            }
+            sentenceTmp.isInside = true;
+
+            ChangeCharacterColor(Color.red);
+
         }
     }
 
     void OnTriggerExit(Collider _collider)
     {
         // 충돌 종료 시 색상을 원래대로 복원
-        if (_collider.CompareTag("Chain"))
+        if (_collider.CompareTag("Chain") && sentenceTmp.isInside)
         {
+            sentenceTmp.isInside = false;
             ChangeCharacterColor(Color.white);
         }
     }
