@@ -3185,7 +3185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7004524481649481263
 Transform:
   m_ObjectHideFlags: 0
@@ -3507,7 +3507,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2332940354863805375}
   - component: {fileID: 5854866618688808765}
-  - component: {fileID: 8812018924465550171}
   m_Layer: 0
   m_Name: picturePos
   m_TagString: Untagged
@@ -3542,19 +3541,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115275a1de774ba45bf3d26538c20a8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8812018924465550171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6758826149043037635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8c56bce41ce83841bdd2ba493b5088d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pCam: {fileID: 2872014397115911287}
 --- !u!1 &6843473354729277214
 GameObject:
   m_ObjectHideFlags: 0
@@ -5691,6 +5677,7 @@ GameObject:
   - component: {fileID: 1739119373215977457}
   - component: {fileID: 7757645937737440069}
   - component: {fileID: 6577362804175279197}
+  - component: {fileID: 1402269163451627129}
   m_Layer: 2
   m_Name: WomanPlayer
   m_TagString: Untagged
@@ -5763,7 +5750,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8501411865753025319}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 017c5e3933235514c9520e1dace2a4b2, type: 3}
   m_Name: 
@@ -5911,6 +5898,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126494ae2a10a34499272ed97a6c9f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1402269163451627129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501411865753025319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8c56bce41ce83841bdd2ba493b5088d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pCam: {fileID: 2872014397115911287}
 --- !u!1 &8523916143686243690
 GameObject:
   m_ObjectHideFlags: 0
