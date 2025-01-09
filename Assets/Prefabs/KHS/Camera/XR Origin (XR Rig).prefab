@@ -9843,6 +9843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftPhysicalCamera: {fileID: 2872014397115899339}
   leftController: {fileID: 7074156240514400773}
+  toyBlockTrigger: {fileID: 0}
   aButtonPressAction:
     m_UseReference: 1
     m_Action:

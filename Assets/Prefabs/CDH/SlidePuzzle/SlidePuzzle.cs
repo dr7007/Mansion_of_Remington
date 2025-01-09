@@ -6,13 +6,13 @@ public class SlidePuzzle : MonoBehaviour
     //    private Vector3[] initialPositions;      // 각 퍼즐 조각의 초기 위치를 저장할 배열
     //    public int emptyIndex = 8;               // 빈 공간의 인덱스 (3x3 퍼즐에서 8번 인덱스가 빈 공간)
 
-    public Vector3 targetPosition;
+    //public Vector3 targetPosition;
 
     private void Start()
     {
         
     
-        targetPosition = transform.position;
+        //targetPosition = transform.position;
         //// 초기 위치를 저장
         //initialPositions = new Vector3[puzzlePieces.Length];
         //for (int i = 0; i < puzzlePieces.Length; i++)
@@ -24,7 +24,7 @@ public class SlidePuzzle : MonoBehaviour
 
     void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, targetPosition, 0.05f);
+        //transform.position = Vector3.Lerp(transform.position, targetPosition, 0.05f);
         //if (Input.GetMouseButtonDown(0))  // 마우스 왼쪽 버튼 클릭
         //{
         //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -50,6 +50,8 @@ public class SlidePuzzle : MonoBehaviour
         // 퍼즐 조각에 따라 값 반환 (예: 퍼즐에 번호가 있다면 그 번호 반환)
         return int.Parse(gameObject.name);  // 예: 퍼즐 조각이 "1", "2", "3" 등의 이름을 가질 경우
     }
+
+   
 
     //void ShufflePuzzle()
     //{

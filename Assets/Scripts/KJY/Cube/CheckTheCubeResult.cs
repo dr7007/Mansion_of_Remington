@@ -93,7 +93,7 @@ public class CheckTheCubeResult : MonoBehaviour
         {
             CurIndex = 4;
         }
-        Debug.Log("AllCubeResult" + CurIndex);
+        //Debug.Log("AllCubeResult" + CurIndex);
 
     }
 

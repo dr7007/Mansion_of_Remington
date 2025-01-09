@@ -35,7 +35,7 @@ public class bookManager : MonoBehaviour
         if (isSuccess)
         {
             // 성공
-            Debug.Log("성공");
+           // Debug.Log("성공");
             //Invoke("MovigBookSelf", 2f);
             onAniamtionCallback?.Invoke();
             Destroy(this.gameObject, 10f);
