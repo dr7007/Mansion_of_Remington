@@ -7,8 +7,13 @@ public class ST_PuzzleDisplay : MonoBehaviour
 	// this puzzle texture.
 	public Texture PuzzleImage;
 
-	// the width and height of the puzzle in tiles.
-	public int Height = 3;
+    [SerializeField]
+    GameObject offArt;
+    [SerializeField]
+    GameObject onArt;
+
+    // the width and height of the puzzle in tiles.
+    public int Height = 3;
 	public int Width  = 3;
 
 	// additional scaling value.
@@ -233,7 +238,9 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		if(Complete)
 		{
 			Debug.Log("Puzzle Complete!");
-		}
+            onArt.SetActive(true);
+            offArt.SetActive(false);
+        }
 
 		yield return null;
 	}
