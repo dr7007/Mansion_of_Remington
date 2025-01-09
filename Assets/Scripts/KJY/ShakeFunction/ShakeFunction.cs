@@ -1,18 +1,30 @@
+using System.Threading;
+using System.Timers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ShakeFunction : MonoBehaviour
 {
     // 흔들릴 3D 오브젝트
-    public Transform objectToShake; 
-    // 떨어질 공 오브젝트 프리팹
-    public GameObject ballPrefab;  
-    // 공이 떨어질 위치
-    public Transform ballSpawnPoint; 
+    public Transform objectToShake;
+
+    [SerializeField] private XRGrabInteractable grab;
+
+    // 떨어질 오브젝트 프리팹
+    public GameObject Beer;
+    public GameObject Shape;
+    public GameObject Mouse;
+    public GameObject Pig;
+    public GameObject Monkey;
+    public GameObject Penguin;
+    public GameObject Rabbit;
+    
+
     // 흔들림 감지 임계값
-    public float shakeThreshold = 2.0f;
+    public float shakeThreshold = 1.0f;
     // 흔들림 지속 시간
-    public float shakeDuration = 0.5f; 
+    public float shakeDuration = 1f; 
     // 양손 동기화 시간 허용 범위
     public float syncThreshold = 0.2f; 
     
@@ -27,6 +39,9 @@ public class ShakeFunction : MonoBehaviour
     private Vector3 lastLeftPosition;  
     private float shakeTimer = 0f;
 
+    private float TheTime = 0f;
+    private float timeLimit = 3f;
+
     void Start()
     {
         lastRightPosition = Vector3.zero;
@@ -35,6 +50,17 @@ public class ShakeFunction : MonoBehaviour
 
     void Update()
     {
+        
+
+        if(grab.isSelected)
+        {
+            transform.rotation = Quaternion.Euler(0f,0f,0f);
+        }
+        else
+        {
+            TheTime = 0f;
+        }
+
         // 위치 데이터 가져오기
         Vector3 rightPosition = rightHandPositionAction.action.ReadValue<Vector3>();
         Vector3 leftPosition = leftHandPositionAction.action.ReadValue<Vector3>();
@@ -46,14 +72,25 @@ public class ShakeFunction : MonoBehaviour
         // 양손 흔들림 동기화 확인
         if (rightVelocity.magnitude > shakeThreshold && leftVelocity.magnitude > shakeThreshold)
         {
+            TheTime += Time.deltaTime;
+
             // 속도의 시간 차 확인
             float timeDifference = Mathf.Abs(rightVelocity.magnitude - leftVelocity.magnitude);
 
-            if (timeDifference <= syncThreshold)
+            Debug.Log("timeDi :" + timeDifference);
+            Debug.Log("sysmThre : " + syncThreshold);
+
+            if(TheTime >= timeLimit)
             {
-                shakeTimer = shakeDuration;
-                DropBall();
+                if (timeDifference <= syncThreshold)
+                {
+                    shakeTimer = shakeDuration;
+                    SetActive();
+                    //MakePrefabs();
+                }
+
             }
+
         }
 
         // 이전 위치 업데이트
@@ -78,17 +115,42 @@ public class ShakeFunction : MonoBehaviour
         }
     }
 
-    void DropBall()
+    void SetActive()
     {
-        if (ballPrefab != null && ballSpawnPoint != null)
-        {
-            GameObject ball = Instantiate(ballPrefab, ballSpawnPoint.position, Quaternion.identity);
-            Rigidbody rb = ball.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
-        }
+
+        Beer.SetActive(true);
+        Shape.SetActive(true);
+        Mouse.SetActive(true);
+        Pig.SetActive(true);
+        Monkey.SetActive(true);
+        Penguin.SetActive(true);
+        Rabbit.SetActive(true);
+
     }
+
+//    private void MakePrefabs()
+//    {
+//        GameObject Beer1 = Instantiate(Beer);
+//        Beer1.transform.position = objectToShake.position;
+//        Beer1.SetActive(true);
+//        GameObject Shape1 = Instantiate(Shape);
+//        Shape1.transform.position = objectToShake.position;
+//        Shape1.SetActive(true);
+//        GameObject Mouse1 = Instantiate(Mouse);
+//        Mouse1.transform.position = objectToShake.position;
+//        Mouse1.SetActive(true);
+//        GameObject Rabbit1 = Instantiate(Rabbit);
+//        Rabbit1.transform.position = objectToShake.position;
+//        Rabbit1.SetActive(true);
+//        GameObject Monkey1 = Instantiate(Monkey);
+//        Monkey1.transform.position = objectToShake.position;
+//        Monkey1.SetActive(true);
+//        GameObject Penguin1 = Instantiate(Penguin);
+//        Penguin1.transform.position = objectToShake.position;
+//        Penguin1.SetActive(true);
+//        GameObject Pig1 = Instantiate(Pig);
+//        Pig1.transform.position = objectToShake.position;
+//        Pig1.SetActive(true);
+//    }
 }
 

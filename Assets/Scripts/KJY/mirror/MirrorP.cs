@@ -38,7 +38,7 @@ public class MirrorP : MonoBehaviour
     {
         if(other.gameObject.tag == "TheMirrorPlace")
         {
-            Debug.Log("작동");
+            //Debug.Log("작동");
 
             Mirror.SetActive(false);
             MirrorBackpan.SetActive(false);

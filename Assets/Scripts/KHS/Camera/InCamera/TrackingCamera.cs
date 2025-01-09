@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class TrackingCamera : MonoBehaviour
 {
-    [SerializeField]
-    private Transform pCamTr =null;
+    public Transform pCamTr =null;
     [SerializeField]
     private Transform tCamTr = null;
 

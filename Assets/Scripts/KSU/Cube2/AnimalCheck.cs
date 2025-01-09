@@ -28,7 +28,7 @@ public class AnimalCheck : MonoBehaviour
         {
             if (monkey.curGO == null || mouse.curGO == null) return;
 
-            if (monkey.curGO.name == "P_Monkey" && mouse.curGO.name == "P_Mouse")
+            if (monkey.curGO.name == "MONKEY" && mouse.curGO.name == "MOUSE")
             {
                 activeOnce = true;
 

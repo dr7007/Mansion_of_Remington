@@ -8,17 +8,72 @@ public class ChainTextDet : MonoBehaviour
     [SerializeField]
     private GameObject[] characterColliders; // 글자별 Collider 오브젝트
     public Vector3 colVec = Vector3.zero;
+    public string onLight = string.Empty;
+    public bool isInside = false;
 
     void Start()
     {
         GenerateCharacterColliders();
     }
 
+    public void LogRedText()
+    {
+        if (textMeshPro == null)
+        {
+            Debug.LogWarning("TextMeshPro is not assigned.");
+            return;
+        }
+
+        TMP_TextInfo textInfo = textMeshPro.textInfo;
+
+        string redText = "";
+
+        // 텍스트의 각 문자 정보를 확인
+        for (int i = 0; i < textInfo.characterCount; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+
+            if (charInfo.isVisible)
+            {
+                int meshIndex = charInfo.materialReferenceIndex;
+                int vertexIndex = charInfo.vertexIndex;
+
+                // 문자에 설정된 색상 배열 가져오기
+                Color32[] vertexColors = textInfo.meshInfo[meshIndex].colors32;
+
+                // 4개의 정점 색상을 확인
+                bool isRed = true;
+                for (int j = 0; j < 4; j++)
+                {
+                    if (vertexColors[vertexIndex + j] != Color.red)
+                    {
+                        isRed = false;
+                        break;
+                    }
+                }
+
+                if (isRed)
+                {
+                    redText += charInfo.character;
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(redText))
+        {
+            Debug.Log($"Red text: {redText}");
+            onLight = redText;
+        }
+        else
+        {
+            Debug.Log("No red text found.");
+        }
+    }
+
     void GenerateCharacterColliders()
     {
         // 텍스트 정보를 초기화
         TMP_TextInfo textInfo = textMeshPro.textInfo;
-        textMeshPro.ForceMeshUpdate();
 
         // 글자 개수만큼 Collider 오브젝트 생성
         characterColliders = new GameObject[textInfo.characterCount];
@@ -38,7 +93,9 @@ public class ChainTextDet : MonoBehaviour
             Vector3 bottomLeft = textMeshPro.transform.TransformPoint(charInfo.bottomLeft);
             Vector3 topRight = textMeshPro.transform.TransformPoint(charInfo.topRight);
 
+            // 텍스트의 로컬 회전을 반영한 중심 위치 및 크기
             charCollider.transform.position = (bottomLeft + topRight) / 2;
+            charCollider.transform.rotation = textMeshPro.transform.rotation; // 텍스트의 회전값 적용
             charCollider.transform.localScale = colVec;
 
             // BoxCollider 추가 및 초기화
@@ -48,75 +105,10 @@ public class ChainTextDet : MonoBehaviour
             // CollisionHandler 스크립트를 추가
             CollisionHandlerWithAngle collisionHandler = charCollider.AddComponent<CollisionHandlerWithAngle>();
             collisionHandler.Initialize(textMeshPro, i);
+            
 
             characterColliders[i] = charCollider;
         }
     }
-}
 
-
-public class CollisionHandlerWithAngle : MonoBehaviour
-{
-    private TextMeshPro textMeshPro;
-    private int characterIndex;
-
-    public float minAngle = 80f; // 허용 각도 범위 (최소)
-    public float maxAngle = 100f; // 허용 각도 범위 (최대)
-
-    public void Initialize(TextMeshPro textMeshPro, int characterIndex)
-    {
-        this.textMeshPro = textMeshPro;
-        this.characterIndex = characterIndex;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        // 충돌한 오브젝트가 쇠사슬인지 확인
-        if (other.CompareTag("Chain"))
-        {
-            // 각도를 계산하고 조건을 만족하는 경우에만 색상 변경
-            if (IsValidAngle(other.transform))
-            {
-                ChangeCharacterColor(Color.red);
-            }
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        // 충돌 종료 시 색상을 원래대로 복원
-        if (other.CompareTag("Chain"))
-        {
-            ChangeCharacterColor(Color.white);
-        }
-    }
-
-    bool IsValidAngle(Transform chainTransform)
-    {
-        // 글자 표면의 방향 (텍스트의 정면 방향)
-        Vector3 textNormal = transform.up; // 텍스트의 로컬 Up 방향
-        Vector3 chainDirection = chainTransform.forward; // 쇠사슬의 진행 방향
-
-        // 각도 계산
-        float angle = Vector3.Angle(textNormal, chainDirection);
-
-        // 허용 각도 범위 확인
-        return angle >= minAngle && angle <= maxAngle;
-    }
-
-    void ChangeCharacterColor(Color color)
-    {
-        // 글자 색상 변경
-        TMP_TextInfo textInfo = textMeshPro.textInfo;
-        int meshIndex = textInfo.characterInfo[characterIndex].materialReferenceIndex;
-        int vertexIndex = textInfo.characterInfo[characterIndex].vertexIndex;
-
-        Color32[] vertexColors = textInfo.meshInfo[meshIndex].colors32;
-        for (int i = 0; i < 4; i++)
-        {
-            vertexColors[vertexIndex + i] = color;
-        }
-
-        textMeshPro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-    }
 }

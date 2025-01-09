@@ -20,6 +20,8 @@ public class CrankController : XRBaseInteractable
 
     //Door
     [SerializeField] private GameObject Door;
+    //Fuse
+    //[SerializeField] private GameObject Fuse;
 
     [SerializeField] private Vector3 DeviceLTrs;
     [SerializeField] private Vector3 DeviceRTrs;
@@ -64,6 +66,7 @@ public class CrankController : XRBaseInteractable
         else if(curCnt == 3 )
         {
             Debug.Log("3¹ÙÄû µ¹·È´Ù.");
+            //Fuse.SetActive(true);
             Door.SetActive(true);
             doorAni.SartDoorAnimation();
         }

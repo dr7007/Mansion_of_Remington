@@ -1,94 +1,112 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ShakeSomething : MonoBehaviour
 {
+    // 흔들릴 3D 오브젝트
+    public Transform objectToShake;
 
-    //오브젝트
-    public XRGrabInteractable grabInteractable;
+    [SerializeField] private XRGrabInteractable grab;
 
-    //흔들림의 임계값
-    [SerializeField] private float ShakeValue;
-
-    //체크 시간
-    [SerializeField] private float ShakeDuration;
-
-    //양손의 포지션
-    private Vector3 previousLeftHandPosition;
-    private Vector3 previousRightHandPosition;
-
-    //양손 잡고 있는 상태
-    private bool isGrabbedWithTwoHands = false;
-
-    //흔들림의 강도
-    private float ShakeIntensity = 0f;
+    // 떨어질 오브젝트 프리팹
+    public GameObject Book;
 
 
-    private void Start()
+    // 흔들림 감지 임계값
+    public float shakeThreshold = 1.0f;
+    // 흔들림 지속 시간
+    public float shakeDuration = 1f;
+    // 양손 동기화 시간 허용 범위
+    public float syncThreshold = 0.2f;
+
+    // 오른손 위치 액션
+    public InputActionProperty rightHandPositionAction;
+    // 왼손 위치 액션
+    public InputActionProperty leftHandPositionAction;
+
+    // 오른손의 이전 위치
+    private Vector3 lastRightPosition;
+    // 왼손의 이전 위치
+    private Vector3 lastLeftPosition;
+    private float shakeTimer = 0f;
+
+    private float TheTime = 0f;
+    private float timeLimit = 3f;
+
+
+    void Start()
     {
-        grabInteractable.selectEntered.AddListener(OnGrab);
-        grabInteractable.selectExited.AddListener(OnRelease);
+        lastRightPosition = Vector3.zero;
+        lastLeftPosition = Vector3.zero;
     }
 
-    private void Update()
+    void Update()
     {
-        if (isGrabbedWithTwoHands)
+        if (grab.isSelected)
         {
-            Vector3 currentLeftHandPosition = grabInteractable.interactorsSelecting[0].transform.position;
-            Vector3 currentRightHandPosition = grabInteractable.interactorsSelecting[1].transform.position;
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+        else
+        {
+            TheTime = 0f;
+        }
 
-            // 양 손의 움직임 차이를 기반으로 흔들림 계산
-            float leftHandShake = Vector3.Distance(currentLeftHandPosition, previousLeftHandPosition);
-            float rightHandShake = Vector3.Distance(currentRightHandPosition, previousRightHandPosition);
 
-            ShakeIntensity += leftHandShake + rightHandShake;
+        // 위치 데이터 가져오기
+        Vector3 rightPosition = rightHandPositionAction.action.ReadValue<Vector3>();
+        Vector3 leftPosition = leftHandPositionAction.action.ReadValue<Vector3>();
 
-            // 이전 손 위치 갱신
-            previousLeftHandPosition = currentLeftHandPosition;
-            previousRightHandPosition = currentRightHandPosition;
+        // 속도 계산
+        Vector3 rightVelocity = (rightPosition - lastRightPosition) / Time.deltaTime;
+        Vector3 leftVelocity = (leftPosition - lastLeftPosition) / Time.deltaTime;
 
-            // 흔들림 강도가 임계값을 초과하면 공 떨어뜨리기
-            if (ShakeIntensity > ShakeValue)
+        // 양손 흔들림 동기화 확인
+        if (rightVelocity.magnitude > shakeThreshold && leftVelocity.magnitude > shakeThreshold)
+        {
+            TheTime += Time.deltaTime;
+            // 속도의 시간 차 확인
+            float timeDifference = Mathf.Abs(rightVelocity.magnitude - leftVelocity.magnitude);
+            if (TheTime >= timeLimit)
             {
-                TheKeyAnswer();
-                ShakeIntensity = 0f; // 초기화
+                if (timeDifference <= syncThreshold)
+                {
+                    shakeTimer = shakeDuration;
+                    SetActive();
+                    //MakePrefabs();
+                }
+
             }
         }
-    }
 
-    private void OnRelease(SelectExitEventArgs arg0)
-    {
-        if (grabInteractable.interactorsSelecting.Count < 2) // 손을 놓았을 때
+        // 이전 위치 업데이트
+        lastRightPosition = rightPosition;
+        lastLeftPosition = leftPosition;
+
+        // 흔들림 애니메이션
+        if (shakeTimer > 0)
         {
-            isGrabbedWithTwoHands = false;
-            ShakeIntensity = 0f; // 흔들림 초기화
+            ShakeObject();
+            shakeTimer -= Time.deltaTime;
         }
     }
 
-    private void OnGrab(SelectEnterEventArgs arg0)
+    void ShakeObject()
     {
-        if (grabInteractable.interactorsSelecting.Count == 2) // 양손으로 잡았을 때
+        if (objectToShake != null)
         {
-            isGrabbedWithTwoHands = true;
-
-            // 초기 위치 설정
-            previousLeftHandPosition = grabInteractable.interactorsSelecting[0].transform.position;
-            previousRightHandPosition = grabInteractable.interactorsSelecting[1].transform.position;
-
-            ShakeIntensity = 0f; // 흔들림 초기화
+            // 흔들림 크기
+            float shakeAmount = Mathf.Sin(Time.time * 20) * 0.1f;
+            objectToShake.localPosition = new Vector3(shakeAmount, 0, 0);
         }
     }
 
-    public void TheKeyAnswer()
+    void SetActive()
     {
-        GameObject Sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        Sphere.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-        Sphere.transform.localPosition = new Vector3(0, 1, 2);
-        Sphere.AddComponent<Rigidbody>();
+
+        Book.SetActive(true);
 
     }
-
-
 }

@@ -25,19 +25,15 @@ public class GrabMaxDIs : MonoBehaviour
             if (curDistance > maxDis)
             {
                 grabInteractable.enabled = false;
+                grabInteractable.enabled = true;
+                attachHand = null;
+                Debug.Log("±×·¦ ¶³¾îÁü");
             }
-
-            grabInteractable.enabled = true;
         }
     }
 
     private void GrabOn(SelectEnterEventArgs args)
     {
         attachHand = args.interactorObject.transform.gameObject;
-    }
-
-    private void GrabOff()
-    {
-        attachHand = null;
     }
 }

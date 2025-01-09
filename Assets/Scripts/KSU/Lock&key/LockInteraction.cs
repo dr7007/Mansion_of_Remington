@@ -1,21 +1,18 @@
 using UnityEngine;
 using Photon.Pun;
 
-[RequireComponent(typeof(GResponse))]
+[RequireComponent(typeof(GCondition))]
 public class LockInteraction : MonoBehaviourPun
 {
     public delegate void LockOpenDelegate();
     public LockOpenDelegate LockOpenCallback;
 
-    public GameObject CubeInWomanRoom;
+    // 자물쇠 열린걸 알려줌.
+    private GCondition solve;
 
-    private GResponse result;
-    private void Start()
+    private void Awake()
     {
-        if (CubeInWomanRoom != null)
-        {
-            result.OnResponseCallback += SetCubeOn;
-        }
+        solve = GetComponent<GCondition>();
     }
 
     public void Interaction()
@@ -23,12 +20,6 @@ public class LockInteraction : MonoBehaviourPun
         // 자물쇠 open
         Transform childTransform = transform.GetChild(0);
         childTransform.localPosition = childTransform.localPosition + new Vector3(0f, 0.02f, 0f);
-        LockOpenCallback?.Invoke();
-    }
-
-    // 기자 방에 큐브가 생성되게 하는거
-    private void SetCubeOn(bool _state)
-    {
-        CubeInWomanRoom.SetActive(true);
+        solve.OnSolvedCallback?.Invoke(true);
     }
 }

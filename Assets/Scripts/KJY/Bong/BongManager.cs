@@ -4,8 +4,11 @@ public class BongManager : MonoBehaviour
 {
     [SerializeField] private BongController bongcontroller;
     [SerializeField] private PictureBongController picturebongcontroller;
+    [SerializeField] private GameObject BongPlane;
 
     public bool TheResult = false;
+
+    [SerializeField] private GameObject Fuse;
 
     private void Update()
     {
@@ -14,10 +17,19 @@ public class BongManager : MonoBehaviour
             if(bongcontroller.TheBongOnTouch == true && picturebongcontroller.TheBongOnTouch == true)
             {
                 TheResult = true;
+                Fuse.SetActive(true);
                 Debug.Log("µøΩ√ ¡¢√À");
             }
         }
         
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "BongPicture")
+        {
+            BongPlane.SetActive(false);
+        }
     }
 
 }

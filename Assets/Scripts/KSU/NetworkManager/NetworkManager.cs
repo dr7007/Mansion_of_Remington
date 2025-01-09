@@ -88,6 +88,9 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자쪽 쇠사슬")]
     private GameObject wChain;
+    [SerializeField]
+    [Tooltip("기자쪽 망치")]
+    private GameObject wHammer;
 
 
     [Header("책 4권 생성 관련")]
@@ -353,7 +356,7 @@ public class NetworkManager : MonoBehaviourPun
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때
-
+            wHammer.SetActive(true);
         }
     }
 
@@ -398,6 +401,9 @@ public class NetworkManager : MonoBehaviourPun
             // boy 생성
             boy = PhotonNetwork.Instantiate(boyPrefab.name, boyTr, Quaternion.Euler(0f, 180f, 0f));
 
+            // ismine 키기
+            boy.transform.GetChild(0).gameObject.SetActive(true);
+
             // boy 못움직이게 locomotion 비활성화
             boy.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
 
@@ -410,6 +416,9 @@ public class NetworkManager : MonoBehaviourPun
 
             // 기자 생성
             woman = PhotonNetwork.Instantiate(womanPrefab.name, womanTr, Quaternion.identity);
+
+            // ismine 키기
+            woman.transform.GetChild(0).gameObject.SetActive(true);
 
             // woman 설정
             photonView.RPC("SetWoman", RpcTarget.AllBuffered, woman.GetComponent<PhotonView>().ViewID);
