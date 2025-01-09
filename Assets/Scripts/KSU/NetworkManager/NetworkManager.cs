@@ -88,6 +88,9 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자쪽 쇠사슬")]
     private GameObject wChain;
+    [SerializeField]
+    [Tooltip("기자쪽 망치")]
+    private GameObject wHammer;
 
 
     [Header("책 4권 생성 관련")]
@@ -353,7 +356,7 @@ public class NetworkManager : MonoBehaviourPun
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때
-
+            wHammer.SetActive(true);
         }
     }
 

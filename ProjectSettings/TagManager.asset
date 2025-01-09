@@ -24,6 +24,9 @@ TagManager:
   - TheMirrorPlace
   - changeImage
   - chacksi
+  - InputSencor
+  - P_List
+  - Hammer
   layers:
   - Default
   - TransparentFX
