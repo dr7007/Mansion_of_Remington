@@ -25,6 +25,7 @@ public class GPhotoResult : MonoBehaviour
     }
     private void CreatePhoto(bool _State)
     {
+        Debug.Log(_State);
         if(_State)
         {
             //mat.EnableKeyword("_EMISSION");

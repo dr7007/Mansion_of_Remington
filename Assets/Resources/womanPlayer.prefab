@@ -5911,6 +5911,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pCam: {fileID: 2872014397115911287}
+  pCameraScreen: {fileID: 1739119373215977457}
+  playercamController: {fileID: 8689985160444421180}
 --- !u!1 &8523916143686243690
 GameObject:
   m_ObjectHideFlags: 0

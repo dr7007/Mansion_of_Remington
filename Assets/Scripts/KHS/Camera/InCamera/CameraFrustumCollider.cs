@@ -21,6 +21,8 @@ public class CameraFrustumCollider : MonoBehaviour
     [SerializeField]
     private bool presentCam = false;
 
+    private bool oneTime = false;
+
 
     private void Awake()
     {
@@ -49,9 +51,17 @@ public class CameraFrustumCollider : MonoBehaviour
 
         CreateFrustumMesh();
         FrustumColliderSwitch();
-        camScreen.CamColliderSwitchCallback += FrustumColliderSwitch;
-        playerControl.CaptureCallback += OnCapture;
-        playerControl.TransferCallback += OnTransfer;
+    }
+
+    private void Update()
+    {
+        if (playerControl != null && camScreen != null && !oneTime)
+        {
+            camScreen.CamColliderSwitchCallback += FrustumColliderSwitch;
+            playerControl.CaptureCallback += OnCapture;
+            playerControl.TransferCallback += OnTransfer;
+            oneTime = true;
+        }
     }
 
 
