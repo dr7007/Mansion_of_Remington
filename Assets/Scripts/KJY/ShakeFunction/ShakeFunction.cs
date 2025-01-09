@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Timers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -20,11 +22,11 @@ public class ShakeFunction : MonoBehaviour
     
 
     // 흔들림 감지 임계값
-    public float shakeThreshold = 2.0f;
+    public float shakeThreshold = 1.0f;
     // 흔들림 지속 시간
     public float shakeDuration = 1f; 
     // 양손 동기화 시간 허용 범위
-    public float syncThreshold = 0.9f; 
+    public float syncThreshold = 0.2f; 
     
     // 오른손 위치 액션
     public InputActionProperty rightHandPositionAction; 
@@ -37,6 +39,9 @@ public class ShakeFunction : MonoBehaviour
     private Vector3 lastLeftPosition;  
     private float shakeTimer = 0f;
 
+    private float TheTime = 0f;
+    private float timeLimit = 3f;
+
     void Start()
     {
         lastRightPosition = Vector3.zero;
@@ -45,10 +50,15 @@ public class ShakeFunction : MonoBehaviour
 
     void Update()
     {
+        
 
         if(grab.isSelected)
         {
             transform.rotation = Quaternion.Euler(0f,0f,0f);
+        }
+        else
+        {
+            TheTime = 0f;
         }
 
         // 위치 데이터 가져오기
@@ -62,16 +72,25 @@ public class ShakeFunction : MonoBehaviour
         // 양손 흔들림 동기화 확인
         if (rightVelocity.magnitude > shakeThreshold && leftVelocity.magnitude > shakeThreshold)
         {
+            TheTime += Time.deltaTime;
+
             // 속도의 시간 차 확인
             float timeDifference = Mathf.Abs(rightVelocity.magnitude - leftVelocity.magnitude);
 
             Debug.Log("timeDi :" + timeDifference);
             Debug.Log("sysmThre : " + syncThreshold);
-            if (timeDifference >= syncThreshold)
+
+            if(TheTime >= timeLimit)
             {
-                shakeTimer = shakeDuration;
-                //MakePrefabs();
+                if (timeDifference <= syncThreshold)
+                {
+                    shakeTimer = shakeDuration;
+                    SetActive();
+                    //MakePrefabs();
+                }
+
             }
+
         }
 
         // 이전 위치 업데이트
@@ -93,7 +112,6 @@ public class ShakeFunction : MonoBehaviour
             // 흔들림 크기
             float shakeAmount = Mathf.Sin(Time.time * 20) * 0.1f; 
             objectToShake.localPosition = new Vector3(shakeAmount, 0, 0);
-                SetActive();
         }
     }
 

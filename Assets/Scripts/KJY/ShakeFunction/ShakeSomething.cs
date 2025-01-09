@@ -16,11 +16,11 @@ public class ShakeSomething : MonoBehaviour
 
 
     // 흔들림 감지 임계값
-    public float shakeThreshold = 2.0f;
+    public float shakeThreshold = 1.0f;
     // 흔들림 지속 시간
-    public float shakeDuration = 0.5f;
+    public float shakeDuration = 1f;
     // 양손 동기화 시간 허용 범위
-    public float syncThreshold = 0.9f;
+    public float syncThreshold = 0.2f;
 
     // 오른손 위치 액션
     public InputActionProperty rightHandPositionAction;
@@ -32,6 +32,10 @@ public class ShakeSomething : MonoBehaviour
     // 왼손의 이전 위치
     private Vector3 lastLeftPosition;
     private float shakeTimer = 0f;
+
+    private float TheTime = 0f;
+    private float timeLimit = 3f;
+
 
     void Start()
     {
@@ -45,6 +49,11 @@ public class ShakeSomething : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
+        else
+        {
+            TheTime = 0f;
+        }
+
 
         // 위치 데이터 가져오기
         Vector3 rightPosition = rightHandPositionAction.action.ReadValue<Vector3>();
@@ -57,13 +66,18 @@ public class ShakeSomething : MonoBehaviour
         // 양손 흔들림 동기화 확인
         if (rightVelocity.magnitude > shakeThreshold && leftVelocity.magnitude > shakeThreshold)
         {
+            TheTime += Time.deltaTime;
             // 속도의 시간 차 확인
             float timeDifference = Mathf.Abs(rightVelocity.magnitude - leftVelocity.magnitude);
-
-            if (timeDifference >= syncThreshold)
+            if (TheTime >= timeLimit)
             {
-                shakeTimer = shakeDuration;
-                SetActive();
+                if (timeDifference <= syncThreshold)
+                {
+                    shakeTimer = shakeDuration;
+                    SetActive();
+                    //MakePrefabs();
+                }
+
             }
         }
 
