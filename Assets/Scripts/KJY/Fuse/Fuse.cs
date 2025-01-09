@@ -6,7 +6,7 @@ public class Fuse : MonoBehaviour
 
     [SerializeField] private GameObject fuse1;
     [SerializeField] private GameObject fuse1_1;
-    //[SerializeField] private GameObject TheLight;
+    [SerializeField] private GameObject TheLight;
     //[SerializeField] private GameObject TheOriginLight;
 
     [SerializeField] private GameObject TheDeractionObject;
@@ -24,7 +24,7 @@ public class Fuse : MonoBehaviour
             TheDoorPicture.SetActive(true);
 
             TheButton.SetActive(true);
-            //TheLight.SetActive(true);
+            TheLight.SetActive(true);
             //TheOriginLight.SetActive(false);
 
         }

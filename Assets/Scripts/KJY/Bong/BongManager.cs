@@ -8,6 +8,8 @@ public class BongManager : MonoBehaviour
 
     public bool TheResult = false;
 
+    [SerializeField] private GameObject Fuse;
+
     private void Update()
     {
         if(TheResult == false)
@@ -15,6 +17,7 @@ public class BongManager : MonoBehaviour
             if(bongcontroller.TheBongOnTouch == true && picturebongcontroller.TheBongOnTouch == true)
             {
                 TheResult = true;
+                Fuse.SetActive(true);
                 Debug.Log("µøΩ√ ¡¢√À");
             }
         }
