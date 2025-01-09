@@ -8,6 +8,9 @@ public class ShakeSomething : MonoBehaviour
 {
     // 흔들릴 3D 오브젝트
     public Transform objectToShake;
+
+    [SerializeField] private XRGrabInteractable grab;
+
     // 떨어질 오브젝트 프리팹
     public GameObject Book;
 
@@ -17,7 +20,7 @@ public class ShakeSomething : MonoBehaviour
     // 흔들림 지속 시간
     public float shakeDuration = 0.5f;
     // 양손 동기화 시간 허용 범위
-    public float syncThreshold = 0.2f;
+    public float syncThreshold = 0.9f;
 
     // 오른손 위치 액션
     public InputActionProperty rightHandPositionAction;
@@ -38,6 +41,11 @@ public class ShakeSomething : MonoBehaviour
 
     void Update()
     {
+        if (grab.isSelected)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+
         // 위치 데이터 가져오기
         Vector3 rightPosition = rightHandPositionAction.action.ReadValue<Vector3>();
         Vector3 leftPosition = leftHandPositionAction.action.ReadValue<Vector3>();
@@ -52,7 +60,7 @@ public class ShakeSomething : MonoBehaviour
             // 속도의 시간 차 확인
             float timeDifference = Mathf.Abs(rightVelocity.magnitude - leftVelocity.magnitude);
 
-            if (timeDifference <= syncThreshold)
+            if (timeDifference >= syncThreshold)
             {
                 shakeTimer = shakeDuration;
                 SetActive();

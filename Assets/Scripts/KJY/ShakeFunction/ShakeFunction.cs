@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ShakeFunction : MonoBehaviour
 {
     // 흔들릴 3D 오브젝트
-    public Transform objectToShake; 
+    public Transform objectToShake;
+
+    [SerializeField] private XRGrabInteractable grab;
+
     // 떨어질 오브젝트 프리팹
     public GameObject Beer;
     public GameObject Shape;
@@ -18,9 +22,9 @@ public class ShakeFunction : MonoBehaviour
     // 흔들림 감지 임계값
     public float shakeThreshold = 2.0f;
     // 흔들림 지속 시간
-    public float shakeDuration = 0.5f; 
+    public float shakeDuration = 1f; 
     // 양손 동기화 시간 허용 범위
-    public float syncThreshold = 0.2f; 
+    public float syncThreshold = 0.9f; 
     
     // 오른손 위치 액션
     public InputActionProperty rightHandPositionAction; 
@@ -41,6 +45,12 @@ public class ShakeFunction : MonoBehaviour
 
     void Update()
     {
+
+        if(grab.isSelected)
+        {
+            transform.rotation = Quaternion.Euler(0f,0f,0f);
+        }
+
         // 위치 데이터 가져오기
         Vector3 rightPosition = rightHandPositionAction.action.ReadValue<Vector3>();
         Vector3 leftPosition = leftHandPositionAction.action.ReadValue<Vector3>();
@@ -55,10 +65,12 @@ public class ShakeFunction : MonoBehaviour
             // 속도의 시간 차 확인
             float timeDifference = Mathf.Abs(rightVelocity.magnitude - leftVelocity.magnitude);
 
-            if (timeDifference <= syncThreshold)
+            Debug.Log("timeDi :" + timeDifference);
+            Debug.Log("sysmThre : " + syncThreshold);
+            if (timeDifference >= syncThreshold)
             {
                 shakeTimer = shakeDuration;
-                SetActive();
+                //MakePrefabs();
             }
         }
 
@@ -81,6 +93,7 @@ public class ShakeFunction : MonoBehaviour
             // 흔들림 크기
             float shakeAmount = Mathf.Sin(Time.time * 20) * 0.1f; 
             objectToShake.localPosition = new Vector3(shakeAmount, 0, 0);
+                SetActive();
         }
     }
 
@@ -96,5 +109,30 @@ public class ShakeFunction : MonoBehaviour
         Rabbit.SetActive(true);
 
     }
+
+//    private void MakePrefabs()
+//    {
+//        GameObject Beer1 = Instantiate(Beer);
+//        Beer1.transform.position = objectToShake.position;
+//        Beer1.SetActive(true);
+//        GameObject Shape1 = Instantiate(Shape);
+//        Shape1.transform.position = objectToShake.position;
+//        Shape1.SetActive(true);
+//        GameObject Mouse1 = Instantiate(Mouse);
+//        Mouse1.transform.position = objectToShake.position;
+//        Mouse1.SetActive(true);
+//        GameObject Rabbit1 = Instantiate(Rabbit);
+//        Rabbit1.transform.position = objectToShake.position;
+//        Rabbit1.SetActive(true);
+//        GameObject Monkey1 = Instantiate(Monkey);
+//        Monkey1.transform.position = objectToShake.position;
+//        Monkey1.SetActive(true);
+//        GameObject Penguin1 = Instantiate(Penguin);
+//        Penguin1.transform.position = objectToShake.position;
+//        Penguin1.SetActive(true);
+//        GameObject Pig1 = Instantiate(Pig);
+//        Pig1.transform.position = objectToShake.position;
+//        Pig1.SetActive(true);
+//    }
 }
 
