@@ -39477,8 +39477,13 @@ MonoBehaviour:
   detectAngle: {x: 0, y: 180, z: 0}
   detectRange: {x: 0.15, y: 0.15, z: 0.15}
   detectGONames:
-  - P_Monkey
-  - P_Mouse
+  - MOUSE
+  - MONKEY
+  - BEAR
+  - PENGUIN
+  - PIG
+  - RABBIT
+  - SHEEP
   detectLayer:
     serializedVersion: 2
     m_Bits: 1
@@ -46809,6 +46814,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2051846826}
     m_Modifications:
+    - target: {fileID: 641600085563086320, guid: bdb02df6d22d4ca45994a845b63b2de7, type: 3}
+      propertyPath: m_Name
+      value: MOUSE
+      objectReference: {fileID: 0}
     - target: {fileID: 3073349618351931509, guid: bdb02df6d22d4ca45994a845b63b2de7, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -65550,8 +65559,13 @@ MonoBehaviour:
   detectAngle: {x: 0, y: 180, z: 0}
   detectRange: {x: 0.15, y: 0.15, z: 0.15}
   detectGONames:
-  - P_Monkey
-  - P_Mouse
+  - MOUSE
+  - MONKEY
+  - BEAR
+  - PENGUIN
+  - PIG
+  - RABBIT
+  - SHEEP
   detectLayer:
     serializedVersion: 2
     m_Bits: 1
