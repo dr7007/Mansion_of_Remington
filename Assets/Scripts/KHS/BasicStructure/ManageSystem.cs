@@ -20,7 +20,7 @@ public class ManageSystem : MonoBehaviour
     {
         for(int i = 0; i < gConList.Count; ++i)
         {
-            gConList[i].OnSolvedCallback = gResList[i].OnResponse;
+            gConList[i].OnSolvedCallback += gResList[i].OnResponse;
         }
     }
 

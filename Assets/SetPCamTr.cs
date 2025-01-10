@@ -8,9 +8,14 @@ public class SetPCamTr : MonoBehaviour
     private CameraScreen pCameraScreen;
     [SerializeField]
     private PlayerCameraController playercamController;
+    [SerializeField]
+    private Transform LeftHand;
+    [SerializeField]
+    private Transform RightHand;
+
 
     private GameObject pastcam;
-
+    private CrankController crank;
 
     void Start()
     {
@@ -19,5 +24,8 @@ public class SetPCamTr : MonoBehaviour
         pastcam.GetComponent<TrackingCamera>().pCamTr = pCam.transform;
         pastcam.GetComponent<CameraFrustumCollider>().camScreen = pCameraScreen;
         pastcam.GetComponent<CameraFrustumCollider>().playerControl = playercamController;
+        crank = GameObject.FindAnyObjectByType<CrankController>();
+        crank.LeftDeviceTr = LeftHand;
+        crank.RightDeviceTr = RightHand;
     }
 }
