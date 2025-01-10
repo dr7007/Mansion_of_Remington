@@ -1,3 +1,4 @@
+using UnityEditor.Hardware;
 using UnityEngine;
 
 public class ChainJudge : MonoBehaviour
@@ -22,12 +23,37 @@ public class ChainJudge : MonoBehaviour
     #endregion
 
     private Vector3 pathVec = Vector3.zero;
+    private float threshold = 0.9f;
 
     private void OnTriggerEnter(Collider _chrCollider)
     {
-        if(_chrCollider.GetComponent<CollisionHandlerWithAngle>())
+        if(LightJudgeFunc(_chrCollider))
         {
+            Debug.Log("character Index : " + _chrCollider.name);
+        }
+    }
 
+    private bool LightJudgeFunc(Collider _chrCollider)
+    {
+        CollisionHandlerWithAngle tempCHWA = null;
+        if (tempCHWA = _chrCollider.GetComponent<CollisionHandlerWithAngle>())
+        {
+            float dotProduct = Vector3.Dot(tempCHWA.transform.up, transform.up);
+
+            if (Mathf.Abs(dotProduct) >= threshold)
+            {
+                //Debug.Log("On dotProduct : "+ dotProduct);
+                return true;
+            }
+            else
+            {
+                //Debug.Log("OFF dotProduct : "+ dotProduct);
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
     private void OnDrawGizmos()

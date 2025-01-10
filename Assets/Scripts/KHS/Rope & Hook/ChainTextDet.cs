@@ -76,7 +76,7 @@ public class ChainTextDet : MonoBehaviour
         TMP_TextInfo textInfo = textMeshPro.textInfo;
         textMeshPro.ForceMeshUpdate();
 
-        Debug.Log("단어 카운트" + textInfo.characterCount);
+        
         // 글자 개수만큼 Collider 오브젝트 생성
         characterColliders = new GameObject[textInfo.characterCount];
 
