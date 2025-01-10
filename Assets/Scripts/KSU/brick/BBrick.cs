@@ -26,6 +26,8 @@ public class BBrick : MonoBehaviourPun
         // 소년일때만 실행
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
+            Debug.Log("소년 실행중" + gameObject);
+
             Vector3 changePos = startPos - transform.position;
 
             // 각도 고정
@@ -41,7 +43,7 @@ public class BBrick : MonoBehaviourPun
 
         if (isGrab)
         {
-            transform.position = new Vector3(handTr.position.x, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y, handTr.position.z);
         }
     }
 
