@@ -71,7 +71,7 @@ public class HookAttach : MonoBehaviour
             else
             {
                 parentTr.localPosition = Vector3.Lerp(parentTr.localPosition, onRopePos, lerpratio);
-                yield return null;
+                yield return new WaitForSeconds(0.01f);
             }
         }
         Debug.Log("Arrived!");
