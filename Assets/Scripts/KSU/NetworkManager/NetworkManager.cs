@@ -207,6 +207,8 @@ public class NetworkManager : MonoBehaviourPun
     #region 콜백 받는 쪽에서 실행되는 함수들
     private void BoyMove()
     {
+        Debug.Log("boymove 해제 호출");
+
         // 소년이 움직일수 있도록 설정
         photonView.RPC("BoyMoveRPC", RpcTarget.Others);
     }
@@ -247,7 +249,7 @@ public class NetworkManager : MonoBehaviourPun
 
     private void CubeTransport(bool _state)
     {
-        photonView.RPC("CubeTransportRPC", RpcTarget.Others);
+        photonView.RPC("CubeTransportRPC", RpcTarget.All);
     }
 
     private void RopeTransport(bool _state)
@@ -287,6 +289,9 @@ public class NetworkManager : MonoBehaviourPun
     [PunRPC]
     private void BoyMoveRPC()
     {
+        Debug.LogError("Boy의 움직임 해제 rpc 호출됨.");
+
+        Debug.LogError(boy.transform.GetChild(0).GetChild(0) + " : Locomotion이여야함");
         // boy가 움직일수 있게
         boy.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }

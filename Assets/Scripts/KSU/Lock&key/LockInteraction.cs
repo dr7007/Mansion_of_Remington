@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEditor.XR.OpenXR.Features;
 
 [RequireComponent(typeof(GCondition))]
 public class LockInteraction : MonoBehaviourPun
@@ -29,5 +28,6 @@ public class LockInteraction : MonoBehaviourPun
         Transform childTransform = transform.GetChild(0);
         childTransform.localPosition = childTransform.localPosition + new Vector3(0f, 0.02f, 0f);
         solve.OnSolvedCallback?.Invoke(true);
+        LockOpenCallback?.Invoke();
     }
 }
