@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class BigChessBoard : MonoBehaviour
     public bool clear = false;
     public float floorPos;
     private List<GameObject> tiles = new List<GameObject>();
+    private bool check = false;
 
     private void Start()
     {
@@ -22,12 +24,10 @@ public class BigChessBoard : MonoBehaviour
 
     private void Update()
     {
-        if (currentIdx == 20)
+        if (currentIdx == 20 && !check)
         {
-            clear = true;
-            Debug.Log("clear");
-            currentIdx = -1;
-            DestroyTiles();
+            StartCoroutine(CheckClear());
+            check = true;
         }
     }
 
@@ -81,4 +81,17 @@ public class BigChessBoard : MonoBehaviour
         tiles.Clear();
     }
 
+    private IEnumerator CheckClear()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (currentIdx == 20)
+        {
+            clear = true;
+            DestroyTiles();
+            currentIdx = -1;
+        }
+
+        check = false;
+    }
 }

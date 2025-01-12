@@ -29,7 +29,7 @@ public class manneManager : MonoBehaviour
             if (!mane.IsSuccess())
             {
                 isSuccess = false;
-                break;
+                return;
             }
         }
 

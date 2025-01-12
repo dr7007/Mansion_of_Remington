@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -26,7 +27,7 @@ public class CheckTheCubeResult : MonoBehaviour
     private GameObject[] LightPrefabs = new GameObject[4];
     [SerializeField] private GameObject LightPrefab;
 
-    [SerializeField] private GameObject Handle;
+    [SerializeField] private GameObject Mirror;
 
     [SerializeField] private int CurIndex = 0;
 
@@ -40,6 +41,11 @@ public class CheckTheCubeResult : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            TheFinalResult();
+        }
+
         if (CurIndex < 4)
         {
             UpdateTheCubeResult();
@@ -71,22 +77,22 @@ public class CheckTheCubeResult : MonoBehaviour
         if(C1Result == true && !makeInstance1)
         {
             makeInstance1 = true;
-            LightPrefabs[0] = Instantiate(LightPrefab, CPos[0].position, Quaternion.Euler(0f, 0f, 90f));
+            LightPrefabs[0] = Instantiate(LightPrefab, CPos[0].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
         }
         if(C2Result == true && !makeInstance2)
         {
             makeInstance2 = true;
-            LightPrefabs[1] = Instantiate(LightPrefab, CPos[1].position, Quaternion.Euler(0f, 0f, 90f));
+            LightPrefabs[1] = Instantiate(LightPrefab, CPos[1].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
         }
         if (C3Result == true && !makeInstance3)
         {
             makeInstance3 = true;
-            LightPrefabs[2] = Instantiate(LightPrefab, CPos[2].position, Quaternion.Euler(0f, 0f, 90f));
+            LightPrefabs[2] = Instantiate(LightPrefab, CPos[2].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
         }
         if (C4Result == true && !makeInstance4)
         {
             makeInstance4 = true;
-            LightPrefabs[3] = Instantiate(LightPrefab, CPos[3].position, Quaternion.Euler(0f, 0f, 90f));
+            LightPrefabs[3] = Instantiate(LightPrefab, CPos[3].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
         }
 
         if (C1Result == true && C2Result == true && C3Result == true && C4Result == true)
@@ -100,11 +106,9 @@ public class CheckTheCubeResult : MonoBehaviour
 
     private void TheFinalResult()
     {
-        //레버 생성
-        //Handle.gameObject.SetActive(true);
 
         Ani.StartAnimation();
-        
+        StartCoroutine(SetMirror());
         //if (Input.GetMouseButtonDown(0))
         //{
         //    Debug.Log("D");
@@ -122,7 +126,19 @@ public class CheckTheCubeResult : MonoBehaviour
         //}
 
         //레버가 인벤토리에 들어간다.
+    }
 
+    private IEnumerator SetMirror()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        Collider[] childColliders = Mirror.GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in childColliders)
+        {
+            col.enabled = true;
+        }
+        Mirror.GetComponent<Rigidbody>().isKinematic = false;
     }
 
 

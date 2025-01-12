@@ -10,12 +10,11 @@ public class VRInventory : MonoBehaviour
     private XRGrabInteractable grabInteractable;
 
     private string ItemName;
-    private Transform beforeGrapTransform;
+    private GameObject curInventoryGo;
 
     private void Start()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
-        beforeGrapTransform = transform;
     }
 
     // 이미지를 넣음
@@ -24,8 +23,8 @@ public class VRInventory : MonoBehaviour
         // 이미 슬롯안에 있다면 return
         if (alreadyIn) return;
 
-        // 상호작용 안되는 아이템이면 못넣음. 
-        if (other.gameObject.tag != "Interaction") return;
+        // itemInfo가 없는 객체면 안들어감. 
+        if (other.GetComponent<ItemInfo>() == null) return;
 
         // 플레이어가 잡고 있는 상태라면 안들어감.
         if (other.gameObject.GetComponent<XRGrabInteractable>().isSelected == true) return;
@@ -37,8 +36,11 @@ public class VRInventory : MonoBehaviour
         // 못들어가는 상태로 만듦.
         alreadyIn = true;
 
-        // 해당 아이템을 destroy
-        Destroy(other.gameObject);
+        // 현재 게임오브젝트 저장
+        curInventoryGo = other.gameObject;
+
+        // 해당 아이템을 비활성화
+        other.gameObject.SetActive(false);
     }
 
     // 아이템 꺼내는 함수
@@ -49,9 +51,12 @@ public class VRInventory : MonoBehaviour
         alreadyIn = false;
         gameObject.GetComponent<Image>().sprite = null;
 
-        // 게임 오브젝트를 만들어 내고
-        GameObject prefab = Resources.Load<GameObject>(ItemName);
-        GameObject prefabGo = Instantiate(prefab, playerTr.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
+        // 플레이어 위에 생성
+        curInventoryGo.transform.position = playerTr.position + new Vector3(0f, 3f, 0f);
+        curInventoryGo.SetActive(true);
+
+        // 다시 null상태
+        curInventoryGo = null;
     }
 }
 

@@ -34,6 +34,10 @@ public class Cube2Sound : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            ClickDog();
+        }
 
         if (curNum == 5)
         {
@@ -155,7 +159,7 @@ public class Cube2Sound : MonoBehaviour
 
         if (curNum < Lights.Length && Lights[curNum] == null)
         {
-            Lights[curNum] = Instantiate(GreenLight, LightsPos[curNum].position, Quaternion.Euler(0f, 90f, 0f));
+            Lights[curNum] = Instantiate(GreenLight, LightsPos[curNum].position, Quaternion.Euler(0f, 90f, 0f), transform.root);
 
             //greenLightInstance.transform.SetParent(Lights[curNum].transform);
         }

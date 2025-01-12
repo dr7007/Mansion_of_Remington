@@ -15,11 +15,11 @@ public class SmallTile : MonoBehaviourPun
     {
         if (gameObject.name == _name)
         {
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color = Color.green;
-            color.a = 1f;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.green * 60f);
+
             board.currentIdx++;
-            gameObject.GetComponent<Renderer>().material.color = color;
 
             photonView.RPC("CorrectRPC", RpcTarget.Others, _name);
         }
@@ -29,10 +29,9 @@ public class SmallTile : MonoBehaviourPun
     {
         if (gameObject.name == _name)
         {
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color = Color.red;
-            color.a = 1f;
-            gameObject.GetComponent<Renderer>().material.color = color;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.red * 60f);
 
             board.Reset();
 
@@ -44,9 +43,8 @@ public class SmallTile : MonoBehaviourPun
     {
         if (gameObject.name == _name)
         {
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color.a = 0f;
-            gameObject.GetComponent<Renderer>().material.color = color;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.DisableKeyword("_EMISSION");
 
             photonView.RPC("ExitRPC", RpcTarget.Others, _name);
         }
@@ -57,11 +55,10 @@ public class SmallTile : MonoBehaviourPun
     {
         if (gameObject.name == _name)
         {
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color = Color.green;
-            color.a = 1f;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.green * 60f);
             board.currentIdx++;
-            gameObject.GetComponent<Renderer>().material.color = color;
         }
     }
 
@@ -70,10 +67,9 @@ public class SmallTile : MonoBehaviourPun
     {
         if (gameObject.name == _name)
         {
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color = Color.red;
-            color.a = 1f;
-            gameObject.GetComponent<Renderer>().material.color = color;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.red * 60f);
 
             board.Reset();
         }
@@ -84,9 +80,8 @@ public class SmallTile : MonoBehaviourPun
     {
         if (gameObject.name == _name)
         {
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color.a = 0f;
-            gameObject.GetComponent<Renderer>().material.color = color;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.DisableKeyword("_EMISSION");
         }
     }
 

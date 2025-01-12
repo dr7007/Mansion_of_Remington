@@ -10,7 +10,7 @@ public class PlayerInstantiate : MonoBehaviourPunCallbacks
 
     private void SpawnPlayer()
     {
-        PhotonNetwork.Instantiate(playerPrefab.name, instantiatePos, Quaternion.identity, 0);
+        Instantiate(playerPrefab, instantiatePos, Quaternion.identity);
     }
 
     public override void OnJoinedRoom()
