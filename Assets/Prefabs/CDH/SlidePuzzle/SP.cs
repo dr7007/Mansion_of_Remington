@@ -63,54 +63,58 @@ public class SP : MonoBehaviour
 
                     if ((hit.transform.position.x - emptySpace.transform.position.x) > 0)
                     {
+                        int j = 0;
                         for (int i = 0; i <= puzzlePieces.Count; ++i)
                         {
+                            ++j;
                             if (puzzlePieces[i] == thisTile)
                             {
-                                puzzlePieces[i + 1] = puzzlePieces[i];
-                                puzzlePieces[i] = emptySpace;
-                                Debug.Log(CheckPieces[i]);
-                                Debug.Log(puzzlePieces[i]);
+                                puzzlePieces[j + 1] = puzzlePieces[j];
+                                puzzlePieces[j] = emptySpace;
+                                Debug.Log(CheckPieces[j]);
+                                Debug.Log(puzzlePieces[j]);
 
-                                puzzlePieces[i + 1].transform.position = puzzlePieces[i].transform.position;
-                                puzzlePieces[i].transform.position = emptySpace.transform.position;
+                                puzzlePieces[j + 1].transform.position = puzzlePieces[j].transform.position;
+                                puzzlePieces[j].transform.position = emptySpace.transform.position;
                             }
                         }
                     }
                     else if ((hit.transform.position.x - emptySpace.transform.position.x) < 0)
                     {
+                        int j = 0;
                         for (int i = 0; i <= puzzlePieces.Count; ++i)
                         {
+                            ++j;
                             if (puzzlePieces[i] == thisTile)
                             {
-                                puzzlePieces[i - 1] = puzzlePieces[i];
-                                puzzlePieces[i] = emptySpace;
+                                puzzlePieces[j - 1] = puzzlePieces[j];
+                                puzzlePieces[j] = emptySpace;
 
-                                puzzlePieces[i - 1].transform.position = puzzlePieces[i].transform.position;
-                                puzzlePieces[i].transform.position = emptySpace.transform.position;
+                                puzzlePieces[j - 1].transform.position = puzzlePieces[j].transform.position;
+                                puzzlePieces[j].transform.position = emptySpace.transform.position;
                             }
                         }
                     }
                     else if ((hit.transform.position.y - emptySpace.transform.position.y) > 0)
                     {
-
+                        int j = 0;
                         for (int i = 0; i < puzzlePieces.Count; ++i)
                         {
                             if (puzzlePieces[i] == thisTile)
                             {
 
 
-                                Debug.Log(i + 3);
-                                if (i + 3 < puzzlePieces.Count)
+                                Debug.Log(j + 3);
+                                if ( + 3 < puzzlePieces.Count)
                                 {
-                                puzzlePieces[i+3] = puzzlePieces[i];  // puzzlePieces[4]는 puzzlePieces[1]과 같은 객체를 가리킨다
+                                puzzlePieces[j+3] = puzzlePieces[j];  // puzzlePieces[4]는 puzzlePieces[1]과 같은 객체를 가리킨다
 
                                 // puzzlePieces[1]에 empty를 넣기
-                                puzzlePieces[i] = emptySpace;  // puzzlePieces[1]은 empty 공간을 가리키게 된다
+                                puzzlePieces[j] = emptySpace;  // puzzlePieces[1]은 empty 공간을 가리키게 된다
 
                                 // 위치도 바꿔줘야 한다면:
-                                puzzlePieces[i+3].transform.position = initialPositions[i];
-                                puzzlePieces[i].transform.position = emptySpace.transform.position;
+                                puzzlePieces[j+3].transform.position = initialPositions[j];
+                                puzzlePieces[j].transform.position = emptySpace.transform.position;
                                     //puzzlePieces[i + 3] = puzzlePieces[i];
                                     //puzzlePieces[i] = emptySpace;
                                 }
@@ -131,19 +135,21 @@ public class SP : MonoBehaviour
                     }
                     else if ((hit.transform.position.y - emptySpace.transform.position.y) < 0)
                     {
+                        int j = 0;
                         for (int i = 0; i < puzzlePieces.Count; ++i)
                         {
-
+                            ++j;
                             if (puzzlePieces[i] == thisTile)
                             {
-                                // i - 1이 범위 내에 있는지 체크
-                                if (i - 3 >= 0)
-                                {
-                                    puzzlePieces[i - 3] = puzzlePieces[i];
-                                    puzzlePieces[i] = emptySpace;
 
-                                    puzzlePieces[i - 3].transform.position = puzzlePieces[i].transform.position;
-                                    puzzlePieces[i].transform.position = emptySpace.transform.position;
+                                //i - 1이 범위 내에 있는지 체크
+                                if (j - 3 >= 0)
+                                {
+                                    puzzlePieces[j - 3] = puzzlePieces[j];
+                                    puzzlePieces[j] = emptySpace;
+
+                                    puzzlePieces[j - 3].transform.position = puzzlePieces[j].transform.position;
+                                    puzzlePieces[j].transform.position = emptySpace.transform.position;
                                 }
                                 else
                                 {
