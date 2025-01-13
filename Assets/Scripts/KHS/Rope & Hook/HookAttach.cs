@@ -4,6 +4,16 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class HookAttach : MonoBehaviour
 {
+    public delegate void HookArrivedDelegate();
+
+    private HookArrivedDelegate hookArrivedCallback = null;
+    
+    public HookArrivedDelegate HookArrivedCallback
+    {
+        get { return hookArrivedCallback; }
+        set { hookArrivedCallback = value; }
+    }
+
     [SerializeField]
     private Vector3 noRopePos = Vector3.zero;
     [SerializeField]
@@ -93,6 +103,7 @@ public class HookAttach : MonoBehaviour
             }
         }
         Debug.Log("Arrived!");
+        HookArrivedCallback?.Invoke();
         isArrived = false;
     }
 }

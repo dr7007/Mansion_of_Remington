@@ -33,8 +33,8 @@ public class PlayerCameraController : MonoBehaviour
 
     #endregion
 
-    public GameObject leftPhysicalCamera; // 왼쪽 컨트롤러에 장착된 "물리 카메라"
-    public GameObject leftController;
+    public GameObject PhysicalCamera; // 왼쪽 컨트롤러에 장착된 "물리 카메라"
+    public GameObject Controller;
     public GameObject toyBlockTrigger;
 
     [Header("Input Actions")]
@@ -51,8 +51,8 @@ public class PlayerCameraController : MonoBehaviour
     private void Start()
     {
         // 초기 상태: "카메라" 비활성화
-        leftPhysicalCamera.SetActive(false);
-        leftPhysicalCamera.transform.localPosition = camOffset;
+        PhysicalCamera.SetActive(false);
+        PhysicalCamera.transform.localPosition = camOffset;
         onCamera = false;
     }
 
@@ -90,7 +90,7 @@ public class PlayerCameraController : MonoBehaviour
         lTriggerPressAction.action.Dispose();
     }
 
-    private void OnAButtonPressed(InputAction.CallbackContext context)
+    private void OnXButtonPressed(InputAction.CallbackContext context)
     {
         if (onCamera)
         {
@@ -102,7 +102,7 @@ public class PlayerCameraController : MonoBehaviour
         }
     }
 
-    private void OnXButtonPressed(InputAction.CallbackContext context)
+    private void OnAButtonPressed(InputAction.CallbackContext context)
     {
         Debug.Log("X Pressed");
         TogglePhysicalCamera();
@@ -142,7 +142,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         onCamera = !onCamera;
 
-        leftPhysicalCamera.SetActive(onCamera);
-        leftController.SetActive(!onCamera);
+        PhysicalCamera.SetActive(onCamera);
+        Controller.SetActive(!onCamera);
     }
 }
