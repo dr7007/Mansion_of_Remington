@@ -85,6 +85,7 @@ public class HookAttach : MonoBehaviour
             }
         }
         Debug.Log("Arrived!");
+        HookArrivedCallback?.Invoke();
         isArrived = false;
     }
     private IEnumerator FirstPositionMove()
@@ -103,7 +104,6 @@ public class HookAttach : MonoBehaviour
             }
         }
         Debug.Log("Arrived!");
-        HookArrivedCallback?.Invoke();
         isArrived = false;
     }
 }
