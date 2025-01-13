@@ -4,7 +4,7 @@ public class RenderHand : MonoBehaviour
 {
     public Transform trackController;
     public Transform physicHand;
-    public Renderer nonePhysicHand;
+    public GameObject nonePhysicHand;
     public float activeDis = 0.05f;
 
     private void Update()
@@ -13,11 +13,11 @@ public class RenderHand : MonoBehaviour
 
         if (dis > activeDis)
         {
-            nonePhysicHand.enabled = true;
+            nonePhysicHand.SetActive(true);
         }
         else
         {
-            nonePhysicHand.enabled = false;
+            nonePhysicHand.SetActive(false);
         }
     }
 

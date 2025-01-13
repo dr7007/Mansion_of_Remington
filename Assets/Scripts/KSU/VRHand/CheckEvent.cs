@@ -18,12 +18,14 @@ public class CheckEvent : MonoBehaviour
         Debug.Log("GrabOn 호출됨 : " + args.interactableObject.transform.name);
         string hand = args.interactorObject.handedness.ToString();
 
+        CheckHand(hand).GetComponent<Rigidbody>().isKinematic = true;
+
         // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
         if (args.interactableObject.transform.gameObject.tag == "NotMove")
         {
             Debug.Log(args.interactableObject.transform.gameObject.name);
             // 움직임을 따라다니는 track을 비활성화
-            CheckHand(hand).GetComponent<TrackedPoseDriver>().enabled = false;
+            CheckHand(hand).GetComponent<PhysicHand>().enabled = false;
 
             // 해당 위치에 hand를 붙여줌.
             args.interactableObject.transform.gameObject.GetComponent<AttachHand>().hand = CheckHand(hand);
@@ -47,6 +49,8 @@ public class CheckEvent : MonoBehaviour
         Debug.Log("GrabOff 호출됨" + args.interactorObject.handedness.ToString());
         string hand = args.interactorObject.handedness.ToString();
 
+        CheckHand(hand).GetComponent<Rigidbody>().isKinematic = false;
+
         // 레버 같이 손이 해당 오브젝트에 붙어야 하는 경우
         if (args.interactableObject.transform.gameObject.tag == "NotMove")
         {
@@ -54,13 +58,16 @@ public class CheckEvent : MonoBehaviour
             args.interactableObject.transform.gameObject.GetComponent<AttachHand>().grapping = false;
 
             // 움직임을 따라다니는 track을 활성화
-            CheckHand(hand).GetComponent<TrackedPoseDriver>().enabled = true;
+            CheckHand(hand).GetComponent<PhysicHand>().enabled = true;
 
             // 해당 위치에 hand를 초기화
             args.interactableObject.transform.gameObject.GetComponent<AttachHand>().hand = null;
 
             // 다시 플레이어 자식으로 만들기
             CheckHand(hand).transform.SetParent(player.transform);
+
+            // 원상태로 복귀
+            CheckHand(hand).transform.localScale = Vector3.one;
         }
         else
         {
