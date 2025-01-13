@@ -19,6 +19,7 @@ public class PadButtonController : MonoBehaviour
 
     private void Start()
     {
+        ResetColor();
     }
 
 
@@ -57,10 +58,10 @@ public class PadButtonController : MonoBehaviour
     private void IfCan()
     {
         LastDoor.SetActive(true);
+        PadPuzzle.SetActive(false);
         AudioClip Door = audioClips;
         GetComponent<AudioSource>().Stop();
         GetComponent<AudioSource>().PlayOneShot(Door, 0.8f);
-        PadPuzzle.SetActive(false);
     }
 
     public void FirstBTN()

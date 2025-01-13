@@ -11,14 +11,9 @@ public class ShakeFunction : MonoBehaviour
 
     [SerializeField] private XRGrabInteractable grab;
 
-    // 떨어질 오브젝트 프리팹
-    public GameObject Beer;
-    public GameObject Shape;
-    public GameObject Mouse;
-    public GameObject Pig;
-    public GameObject Monkey;
-    public GameObject Penguin;
-    public GameObject Rabbit;
+    // 떨어질 오브젝트 프리팹들
+    public GameObject[] toys;
+    private int curnum = 0;
     
 
     // 흔들림 감지 임계값
@@ -40,7 +35,7 @@ public class ShakeFunction : MonoBehaviour
     private float shakeTimer = 0f;
 
     private float TheTime = 0f;
-    private float timeLimit = 3f;
+    private float timeLimit = 0.5f;
 
     void Start()
     {
@@ -50,7 +45,7 @@ public class ShakeFunction : MonoBehaviour
 
     void Update()
     {
-        
+        if (curnum == 7) return;
 
         if(grab.isSelected)
         {
@@ -87,6 +82,7 @@ public class ShakeFunction : MonoBehaviour
                     shakeTimer = shakeDuration;
                     SetActive();
                     //MakePrefabs();
+                    TheTime = 0f;
                 }
 
             }
@@ -117,15 +113,8 @@ public class ShakeFunction : MonoBehaviour
 
     void SetActive()
     {
-
-        Beer.SetActive(true);
-        Shape.SetActive(true);
-        Mouse.SetActive(true);
-        Pig.SetActive(true);
-        Monkey.SetActive(true);
-        Penguin.SetActive(true);
-        Rabbit.SetActive(true);
-
+        toys[curnum].SetActive(true);
+        curnum++;
     }
 
 //    private void MakePrefabs()

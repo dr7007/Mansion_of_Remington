@@ -15,4 +15,6 @@ public class LuckPictureController : MonoBehaviour
             LuckPicture.SetActive(false);
         }
     }
+
+
 }
