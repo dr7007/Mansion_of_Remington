@@ -11,27 +11,40 @@ public class BigTile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (board.currentIdx == 20)
+        {
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.red * 60f);
+
+            // 초기화 하는 코드
+            board.Reset();
+
+            // 틀리게 들어감을 알리는 코드 (리셋하라고 하면 될듯)
+            ChangeSmallBoardWrong(gameObject.name);
+
+            return;
+        }
+
         Debug.Log("trigger됨");
         // 번호와 이름이 일치할때
         if (board.paths[board.currentIdx-1].ToString() == gameObject.name)
         {
-            // 색을 바꿈(초록)
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color = Color.green;
-            color.a = 1f;
-            board.currentIdx++;
-            gameObject.GetComponent<Renderer>().material.color = color;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.green * 60f);
+
 
             // 맞게 들어감을 알리는 코드 (순서를 인자로)
             ChangeSmallBoardCorrect(gameObject.name);
+
+            board.currentIdx++;
         }
         else
         {
-            // 색을 바꿈(빨강)
-            Color color = gameObject.GetComponent<Renderer>().material.color;
-            color = Color.red;
-            color.a = 1f;
-            gameObject.GetComponent<Renderer>().material.color = color;
+            Material mat = gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.red * 60f);
 
             // 초기화 하는 코드
             board.Reset();
@@ -43,10 +56,8 @@ public class BigTile : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // 색을 바꿈(안보이게)
-        Color color = gameObject.GetComponent<Renderer>().material.color;
-        color.a = 0f;
-        gameObject.GetComponent<Renderer>().material.color = color;
+        Material mat = gameObject.GetComponent<Renderer>().material;
+        mat.DisableKeyword("_EMISSION");
 
         // 나왔다는걸 알리는 코드 (순서를 인자로)
         ChangeSmallBoardExit(gameObject.name);

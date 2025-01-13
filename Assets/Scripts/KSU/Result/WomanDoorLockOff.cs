@@ -18,6 +18,7 @@ public class WomanDoorLockOff : MonoBehaviour
 
     private void DoorLockOff(bool _state)
     {
+        Debug.Log("¹®¿­¸²");
         WomanTutoriialDoor.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         WomanTutoriialDoor.GetComponent<Rigidbody>().isKinematic = false;
     }

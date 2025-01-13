@@ -8,11 +8,66 @@ public class ChainTextDet : MonoBehaviour
     [SerializeField]
     private GameObject[] characterColliders; // 글자별 Collider 오브젝트
     public Vector3 colVec = Vector3.zero;
-    public char onLight = ' ';
+    public string onLight = string.Empty;
+    public bool isInside = false;
 
     void Start()
     {
         GenerateCharacterColliders();
+    }
+
+    public void LogRedText()
+    {
+        if (textMeshPro == null)
+        {
+            Debug.LogWarning("TextMeshPro is not assigned.");
+            return;
+        }
+
+        TMP_TextInfo textInfo = textMeshPro.textInfo;
+
+        string redText = "";
+
+        // 텍스트의 각 문자 정보를 확인
+        for (int i = 0; i < textInfo.characterCount; i++)
+        {
+            TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
+
+            if (charInfo.isVisible)
+            {
+                int meshIndex = charInfo.materialReferenceIndex;
+                int vertexIndex = charInfo.vertexIndex;
+
+                // 문자에 설정된 색상 배열 가져오기
+                Color32[] vertexColors = textInfo.meshInfo[meshIndex].colors32;
+
+                // 4개의 정점 색상을 확인
+                bool isRed = true;
+                for (int j = 0; j < 4; j++)
+                {
+                    if (vertexColors[vertexIndex + j] != Color.red)
+                    {
+                        isRed = false;
+                        break;
+                    }
+                }
+
+                if (isRed)
+                {
+                    redText += charInfo.character;
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(redText))
+        {
+            Debug.Log($"Red text: {redText}");
+            onLight = redText;
+        }
+        else
+        {
+            Debug.Log("No red text found.");
+        }
     }
 
     void GenerateCharacterColliders()
@@ -21,6 +76,7 @@ public class ChainTextDet : MonoBehaviour
         TMP_TextInfo textInfo = textMeshPro.textInfo;
         textMeshPro.ForceMeshUpdate();
 
+        
         // 글자 개수만큼 Collider 오브젝트 생성
         characterColliders = new GameObject[textInfo.characterCount];
 

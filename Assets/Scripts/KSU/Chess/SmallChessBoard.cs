@@ -17,6 +17,8 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
     public bool clear = false;
     public List<GameObject> tiles = new List<GameObject>();
 
+    private bool check = false;
+
     private void Start()
     {
         tiles.Clear();
@@ -27,12 +29,10 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (currentIdx == 20)
+        if (currentIdx == 20 && !check)
         {
-            clear = true;
-            Debug.Log("clear");
-            currentIdx = -1;
-            DestroyTiles();
+            StartCoroutine(CheckClear());
+            check = true;
         }
     }
 
@@ -91,7 +91,10 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(1f);
 
-        CreateTiles();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CreateTiles();
+        }
     }
 
     public void Reset()
@@ -138,6 +141,20 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
             TextMesh textMesh = tile.GetComponentInChildren<TextMesh>();
             textMesh.text = (_row * boardSize + _col + 1).ToString();
         }
+    }
+
+    private IEnumerator CheckClear()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (currentIdx == 20)
+        {
+            clear = true;
+            DestroyTiles();
+            currentIdx = -1;
+        }
+
+        check = false;
     }
 
 

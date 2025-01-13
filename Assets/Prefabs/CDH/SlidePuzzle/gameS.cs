@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 
 public class gameS : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class gameS : MonoBehaviour
     GameObject onArt;
 
     public GameObject[] puzzlePieces;        // 퍼즐 조각들을 저장할 배열
+    public List<GameObject> puzzlePiecesList = null;
     private Vector3[] initialPositions;      // 각 퍼즐 조각의 초기 위치를 저장할 배열
     private Vector3[] currentPositions;
     public int emptyIndex = 8;
@@ -22,10 +24,11 @@ public class gameS : MonoBehaviour
     private List<int> puzzleIndices = new List<int>();
 
     private bool puzzleSolved = false;
+    bool isend = false;
 
     void Start()
     {
-
+        puzzlePiecesList = puzzlePieces.ToList();
         //if (hit.transform != null && hit.transform.gameObject == emptySpace)
         //{
         //    Debug.Log("Empty space clicked!");
@@ -90,8 +93,8 @@ public class gameS : MonoBehaviour
                     //    return;  // SlidePuzzle 컴포넌트가 없으면 처리하지 않음
                     //}
 
-                    emptySpace.transform.position = thisTile.targetPosition;                
-                    thisTile.targetPosition = lastEmptySpace;
+                    emptySpace.transform.position = thisTile.transform.position;                
+                    thisTile.transform.position = lastEmptySpace;
                     
                     //Vector3.Lerp(thisTile.targetPosition, lastEmptySpace, 0.05f);
 
@@ -151,54 +154,160 @@ public class gameS : MonoBehaviour
             Debug.Log("풀 수 있다!!!!");
     }
 
+
+    //public List<GameObject> puzzlePieces = new List<GameObject>();
+    //private List<Vector3> initialPositions = new List<Vector3>();
     void ShufflePieces()
     {
-        List<int> shuffledIndices = new List<int>(puzzleIndices);
-        System.Random rand = new System.Random();
+        //List<int> shuffledIndices = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8 };
+        //System.Random rand = new System.Random();
 
-        for (int i = 0; i < shuffledIndices.Count; ++i)
+
+        for (int i = 0; i < puzzlePiecesList.Count; ++i)
         {
-            int temp = shuffledIndices[i];
-            int randomIndex = rand.Next(i, shuffledIndices.Count);
-            shuffledIndices[i] = shuffledIndices[randomIndex];
-            shuffledIndices[randomIndex] = temp;
+            Debug.Log("셔플 전 :" + puzzlePieces[i]);
+            
+            GameObject temp = puzzlePieces[i];
+            int RD = Random.Range(i, puzzlePiecesList.Count);
+            puzzlePieces[i] = puzzlePiecesList[RD];
+            //puzzlePieces[RD] = temp;
+            //puzzlePieces[i].transform.position = initialPositions[i];
+
+            puzzlePiecesList.RemoveAt(RD);
+
+
+            Debug.Log("셔플 후:" + puzzlePieces[i]);
+
+
+            
+
         }
 
-        for (int i = 0; i < puzzlePieces.Length; ++i)
-        {
-            //puzzlePieces[i].GetComponent<SlidePuzzle>().targetPosition = initialPositions[shuffledIndices[i]];
-            //SlidePuzzle.targetPosition = initialPositions[shuffledIndices[i]];
-            puzzlePieces[i].transform.position = initialPositions[shuffledIndices[i]];
-            // currentPositions[i] = puzzlePieces[i].transform.position;
-            SlidePuzzle slidePuzzle = puzzlePieces[i].GetComponent<SlidePuzzle>();
-            if (slidePuzzle != null)
-            {
-                slidePuzzle.targetPosition = puzzlePieces[i].transform.position;
-            }
+        //List<GameObject> GMlist = GameObject.FindObjectOfType<GameObject>().ToList();
 
-        }
+
+
+            //    // currentPositions[i] = puzzlePieces[i].transform.position;
+
+
+        //Debug.Log("셔플 전:");
+        //for (int i = 0; i < puzzlePieces.Length; ++i)
+        //{
+        //    SlidePuzzle slidePuzzle = puzzlePieces[i].GetComponent<SlidePuzzle>();
+        //    if (slidePuzzle != null)
+        //    {
+        //        Debug.Log("퍼즐 조각 " + i + " 값: " + slidePuzzle.GetPuzzleValue());  // 값 출력
+        //    }
+        //}
+
+
+        //for (int i = 0; i < shuffledIndices.Count; ++i)
+        //{
+        //    //Debug.Log("셔플전: " + string.Join(", ", puzzlePieces[i]));
+
+
+        //    Debug.Log("셔플 :" + puzzlePieces[i]);
+
+
+        //    //int temp = shuffledIndices[i];
+        //    int randomIndex = Random.Range(i, shuffledIndices.Count);
+        //    //shuffledIndices[i] = shuffledIndices[randomIndex];
+
+        //    //puzzlePieces[i] = shuffledIndices[i];
+        //    puzzlePieces[i] = puzzlePieces[];
+        //    puzzlePieces[i].transform.position = initialPositions[];
+        //    //Debug.Log(shuffledIndices[j]);
+
+        //    Debug.Log(randomIndex);
+        //    shuffledIndices.RemoveAt(randomIndex);
+
+
+        //    Debug.Log("셔플 후:" + puzzlePieces[i]);
+
+
+        //    // currentPositions[i] = puzzlePieces[i].transform.position;
+        //    SlidePuzzle slidePuzzle = puzzlePieces[i].GetComponent<SlidePuzzle>();
+        //    if (slidePuzzle != null)
+        //    {
+        //        slidePuzzle.targetPosition = puzzlePieces[i].transform.position;
+
+        //        //Debug.Log("퍼즐 조각 " + j + " 값: " + slidePuzzle.GetPuzzleValue());  // 값 출력
+
+        //    }
+        // Debug.Log(shuffledIndices[i]);
+        //shuffledIndices[randomIndex] = temp;
+        //Debug.Log(temp);
+        //if (i == 8)
+        //{
+        //    isend = true;
+        //}
+
+
+        // }
+
+        //if (isend) 
+        //{ 
+        //    for (int j = 0; j < puzzlePieces.Length; ++j)
+        //    {
+        //        //puzzlePieces[i].GetComponent<SlidePuzzle>().targetPosition = initialPositions[shuffledIndices[i]];
+        //        //SlidePuzzle.targetPosition = initialPositions[shuffledIndices[i]];
+
+        //        puzzlePieces[j].transform.position = initialPositions[shuffledIndices[j]];
+        //        //Debug.Log(shuffledIndices[j]);
+
+        //        // currentPositions[i] = puzzlePieces[i].transform.position;
+        //        SlidePuzzle slidePuzzle = puzzlePieces[j].GetComponent<SlidePuzzle>();
+        //        if (slidePuzzle != null)
+        //        {
+        //            slidePuzzle.targetPosition = puzzlePieces[j].transform.position;
+
+        //            //Debug.Log("퍼즐 조각 " + j + " 값: " + slidePuzzle.GetPuzzleValue());  // 값 출력
+
+        //        }
+        //        //Debug.Log("셔플후: " + string.Join(", ", puzzlePieces[i]));
+        //        // Debug.Log("셔플후: " + string.Join(", ", slidePuzzle));
+        //    }
+        //    }
+
+
     }
 
     bool isSolvable()
     {
-        //List<int> puzzleValues = new List<int>();
-        //for (int i = 0; i < puzzlePieces.Length; ++i)
-        //{
-        //    if (puzzlePieces[i].activeSelf)
-        //    {
-        //        puzzleValues.Add(i);
-        //Debug.Log("풀 수 있음");
+        List<int> puzzleValues = new List<int>();
+        for (int i = 0; i < puzzlePieces.Length; ++i)
+        {
+            if (puzzlePieces[i].activeSelf)
+            {
+                puzzleValues.Add(i);
+                Debug.Log("풀 수 있음");
 
-        //    }
-        //}
+            }
+        }
+
+        int inversions = 0;
+        for (int i = 0; i < puzzleValues.Count; ++i)
+        {
+            for (int j = i + 1; j < puzzleValues.Count; ++j)
+            {
+                Debug.Log("풀 수 있음2");
+                if (puzzleValues[i] > puzzleValues[j])
+                {
+                    ++inversions;
+                }
+            }
+        }
+        Debug.Log("풀 수 있음3");
+
+        return inversions % 2 == 0;
 
         //int inversions = 0;
-        //for (int i = 0; i < puzzleValues.Count; ++i)
+        //for (int i = 0; i < puzzlePieces.Length; ++i)
         //{
-        //    for (int j = i + 1; j < puzzleValues.Count; ++j)
+        //    for (int j = i + 1; j < puzzlePieces.Length; ++j)
         //    {
-        //Debug.Log("풀 수 있음2");
-        //        if (puzzleValues[i] > puzzleValues[j])
+        //        Debug.Log("풀 수 있음2");
+        //        if (puzzlePieces[i] > puzzlePieces[j])
         //        {
         //            ++inversions;
         //        }
@@ -208,42 +317,54 @@ public class gameS : MonoBehaviour
 
         //return inversions % 2 == 0;
 
-        List<int> puzzleValues = new List<int>();
+        //        List<int> puzzleValues = new List<int>();
 
-        // 퍼즐 조각의 값(1, 2, 3, ..., N)을 가져와 puzzleValues 리스트에 추가합니다.
-        for (int i = 0; i < puzzlePieces.Length; ++i)
-        {
-            if (puzzlePieces[i].activeSelf)  // 활성화된 퍼즐 조각만 고려
-            {
-                SlidePuzzle puzzle = puzzlePieces[i].GetComponent<SlidePuzzle>();
-                if (puzzle != null)
-                {
-                    // 퍼즐의 값 (예: 1, 2, 3, ...)을 가져옵니다.
-                    int value = puzzle.GetPuzzleValue();  // GetPuzzleValue() 함수가 퍼즐의 실제 값 반환한다고 가정
-                    puzzleValues.Add(value);
-                }
-            }
-        }
+        //        // 퍼즐 조각의 값(1, 2, 3, ..., N)을 가져와 puzzleValues 리스트에 추가합니다.
+        //        for (int i = 0; i < puzzlePieces.Length; ++i)
+        //        {
+        //            if (puzzlePieces[i].activeSelf)  // 활성화된 퍼즐 조각만 고려
+        //            {
+        //                SlidePuzzle puzzle = puzzlePieces[i].GetComponent<SlidePuzzle>();
+        //                if (puzzle != null)
+        //                {
+        //                    // 퍼즐의 값 (예: 1, 2, 3, ...)을 가져옴
+        //                    int value = puzzle.GetPuzzleValue();  // GetPuzzleValue() 함수가 퍼즐의 실제 값 반환
 
-        int inversions = 0;
-        // 역전 수 계산
-        for (int i = 0; i < puzzleValues.Count; ++i)
-        {
-            for (int j = i + 1; j < puzzleValues.Count; ++j)
-            {
-                // i번과 j번 값 비교 (역전 계산)
-                if (puzzleValues[i] > puzzleValues[j])
-                {
-                    ++inversions;
-                }
-            }
-        }
+        //                    //Debug.Log("퍼즐 값 추가 전: " + value);
 
-        // 역전 수가 짝수이면 풀 수 있는 퍼즐, 홀수이면 풀 수 없는 퍼즐
-        Debug.Log("Inversions: " + inversions);
-        Debug.Log(inversions % 2 == 0 ? "풀 수 있음" : "풀 수 없음");
+        //                    puzzleValues.Add(value);
+        //                    //Debug.Log("퍼즐 값 추가 후: " + string.Join(", ", puzzleValues));
 
-        return inversions % 2 == 0;
+        //                }
+        //            }
+        //        }
+
+        ////Debug.Log("Puzzle Values: " + string.Join(", ", puzzleValues));
+
+
+        //        int inversions = 0;
+        //        // 역전 수 계산
+        //        for (int i = 0; i < puzzleValues.Count; ++i)
+        //        {
+
+        //            for (int j = i + 1; j < puzzleValues.Count; ++j)
+        //            {
+        //                //Debug.Log("풀수있는지 검사하고있음");
+        //                // i번과 j번 값 비교 (역전 계산)
+        //                if (puzzleValues[i] > puzzleValues[j])
+        //                {
+
+        //                //Debug.Log("못풀수도 있음 인버전 추가중");
+        //                    ++inversions;
+        //                }
+        //            }
+        //        }
+
+        //        // 역전 수가 짝수이면 풀 수 있는 퍼즐, 홀수이면 풀 수 없는 퍼즐
+        //        //Debug.Log("Inversions: " + inversions);
+        //        //Debug.Log(inversions % 2 == 0 ? "풀 수 있음" : "풀 수 없음");
+
+        //        return inversions % 2 == 0;
     }
 
 

@@ -26,7 +26,15 @@ public class BBrick : MonoBehaviourPun
         // 소년일때만 실행
         if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
+            Debug.Log("소년 실행중" + gameObject);
+
             Vector3 changePos = startPos - transform.position;
+
+            // 변화량이 0일때는 입력 안받음
+            if (changePos == Vector3.zero) return;
+
+            // 현재 방향의 변화량으로 전환해서 보냄.
+            Vector3 worldMovement = transform.TransformDirection(changePos);
 
             // 각도 고정
             transform.rotation = initialRotation;
@@ -35,13 +43,13 @@ public class BBrick : MonoBehaviourPun
             SetMaxDis();
 
             // 연결된 벽돌 이동
-            linkWBrick.MoveWBrick(changePos);
-            linkWBrick2.MoveWBrick(changePos);
+            linkWBrick.MoveWBrick(worldMovement);
+            linkWBrick2.MoveWBrick(worldMovement);
         }
 
         if (isGrab)
         {
-            transform.position = new Vector3(handTr.position.x, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x, transform.position.y, handTr.position.z);
         }
     }
 
@@ -53,14 +61,9 @@ public class BBrick : MonoBehaviourPun
         // 제한 거리에 도달했을때
         if (distanceFromStart > maxDistance)
         {
-            grab.enabled = false;
-
             Vector3 direction = transform.position - startPos;
             direction = direction.normalized * maxDistance;
             transform.position = startPos + direction;
-
-            // 그랩을 놓도록 설정하면 될듯!
-            grab.enabled = true;
         }
     }
 

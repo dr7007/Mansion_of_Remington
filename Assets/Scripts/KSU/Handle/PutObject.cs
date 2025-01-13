@@ -48,10 +48,13 @@ public class PutObject : MonoBehaviour
                 targetGo.transform.position = detectPos.position;
 
                 // 회전값
-                targetGo.transform.eulerAngles = detectAngle;
+                targetGo.transform.rotation = Quaternion.Euler(detectAngle);
 
                 // 중력 off
                 targetGo.GetComponent<Rigidbody>().useGravity = false;
+
+                // 키네마틱 on
+                targetGo.GetComponent<Rigidbody>().isKinematic = true;
 
                 // 상호작용되던 물리작용 off
                 targetGo.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;

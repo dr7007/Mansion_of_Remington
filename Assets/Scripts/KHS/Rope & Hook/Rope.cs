@@ -5,6 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Rope : MonoBehaviour
 {
+    [SerializeField]
     private HookAttach hook = null;
     [SerializeField]
     private GameObject parentGo = null;
@@ -20,11 +21,12 @@ public class Rope : MonoBehaviour
     }
     private void Start()
     {
-        hook.HookAttachCallback = SetAttach;
+        hook.HookAttachCallback += SetAttach;
     }
 
     private void SetAttach()
     {
+        Debug.Log("SetAttach ¡¯¿‘");
         grab.enabled = false;
         parentGo.SetActive(false);
     }

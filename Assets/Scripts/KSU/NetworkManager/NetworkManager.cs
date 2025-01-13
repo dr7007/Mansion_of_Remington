@@ -75,6 +75,9 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("쇠사슬")]
     private GameObject chain;
     [SerializeField]
+    [Tooltip("훅 활성화")]
+    private HookAttach hook;
+    [SerializeField]
     [Tooltip("책 2권중 첫번째책(book 착시퍼즐)")]
     private GameObject book1;
     [SerializeField]
@@ -207,6 +210,8 @@ public class NetworkManager : MonoBehaviourPun
     #region 콜백 받는 쪽에서 실행되는 함수들
     private void BoyMove()
     {
+        Debug.Log("boymove 해제 호출");
+
         // 소년이 움직일수 있도록 설정
         photonView.RPC("BoyMoveRPC", RpcTarget.Others);
     }
@@ -247,7 +252,7 @@ public class NetworkManager : MonoBehaviourPun
 
     private void CubeTransport(bool _state)
     {
-        photonView.RPC("CubeTransportRPC", RpcTarget.Others);
+        photonView.RPC("CubeTransportRPC", RpcTarget.All);
     }
 
     private void RopeTransport(bool _state)
@@ -287,6 +292,9 @@ public class NetworkManager : MonoBehaviourPun
     [PunRPC]
     private void BoyMoveRPC()
     {
+        Debug.LogError("Boy의 움직임 해제 rpc 호출됨.");
+
+        Debug.LogError(boy.transform.GetChild(0).GetChild(0) + " : Locomotion이여야함");
         // boy가 움직일수 있게
         boy.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
@@ -305,7 +313,7 @@ public class NetworkManager : MonoBehaviourPun
     private void ManeSucessRPC()
     {
         // 아직 할당 안했으면 실행안됨.
-        if (boyBook1 == null || boyBook2 == null || boyBook3 == null || boyBook4 == null || boyBook5 == null || womanHint1 == null || womanHint2 == null) return;
+        // if (boyBook1 == null || boyBook2 == null || boyBook3 == null || boyBook4 == null || boyBook5 == null || womanHint1 == null || womanHint2 == null) return;
 
         if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
@@ -315,13 +323,13 @@ public class NetworkManager : MonoBehaviourPun
             boyBook3.SetActive(true);
             boyBook4.SetActive(true);
             boyBook5.SetActive(true);
-            boyHint1.SetActive(true);
+            // boyHint1.SetActive(true);
         }
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때 -> 힌트 2개를 기자 위치에
-            womanHint1.SetActive(true);
-            womanHint2.SetActive(true);
+            // womanHint1.SetActive(true);
+            // womanHint2.SetActive(true);
         }
     }
 
@@ -370,6 +378,8 @@ public class NetworkManager : MonoBehaviourPun
     private void RopeTransportRPC()
     {
         if (chain != null) chain.SetActive(true);
+        // 훅 활성화
+        if (hook != null) hook.activeTrigger = true;
     }
 
     [PunRPC]
@@ -401,6 +411,9 @@ public class NetworkManager : MonoBehaviourPun
             // boy 생성
             boy = PhotonNetwork.Instantiate(boyPrefab.name, boyTr, Quaternion.Euler(0f, 180f, 0f));
 
+            // ismine 키기
+            boy.transform.GetChild(0).gameObject.SetActive(true);
+
             // boy 못움직이게 locomotion 비활성화
             boy.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
 
@@ -413,6 +426,9 @@ public class NetworkManager : MonoBehaviourPun
 
             // 기자 생성
             woman = PhotonNetwork.Instantiate(womanPrefab.name, womanTr, Quaternion.identity);
+
+            // ismine 키기
+            woman.transform.GetChild(0).gameObject.SetActive(true);
 
             // woman 설정
             photonView.RPC("SetWoman", RpcTarget.AllBuffered, woman.GetComponent<PhotonView>().ViewID);
