@@ -8,7 +8,7 @@ public class InventoryMove : MonoBehaviour
     public GameObject uiElement;
     public float distance = 5f;   
     private bool isUIVisible = false;  
-    private Camera playerCamera; 
+    public Camera playerCamera; 
     private Vector3 uiFixedPosition;
 
     private void OnEnable()
