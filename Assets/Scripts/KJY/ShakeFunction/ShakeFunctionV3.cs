@@ -95,7 +95,7 @@ public class ShakeFunctionV3 : MonoBehaviour
     private void HandleShakeEvent(Vector3 leftAcceleration, Vector3 rightAcceleration)
     {
         // 원하는 동작 수행
-        Debug.Log($"Shak  Left: {leftAcceleration}, Right: {rightAcceleration}");
+        Debug.Log($"Shake Detected! Left: {leftAcceleration}, Right: {rightAcceleration}");
         SetActive();
     }
 

@@ -326,5 +326,7 @@ public class ST_PuzzleDisplay : MonoBehaviour
 		TileDisplayArray[1,3].GetComponent<Renderer>().material = thisTileMaterial3;
 		TileDisplayArray[2,3].GetComponent<Renderer>().material = thisTileMaterial2;
 		*/
+
+		transform.rotation = Quaternion.Euler(-90f, 0f, 90f);
 	}
 }
