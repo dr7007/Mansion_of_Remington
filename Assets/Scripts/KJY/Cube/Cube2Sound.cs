@@ -199,6 +199,7 @@ public class Cube2Sound : MonoBehaviour
             Destroy(Lights[4]);
 
             correctNum = 0;
+            InputResult = new string[5];
         }
     }
 
