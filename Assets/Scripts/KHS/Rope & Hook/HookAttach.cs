@@ -14,7 +14,7 @@ public class HookAttach : MonoBehaviour
     private GameObject ropeGo = null;
 
     [SerializeField]
-    private bool activeTrigger = false;
+    public bool activeTrigger = false;
     private bool isActive = false;
     private bool isArrived = false;
 

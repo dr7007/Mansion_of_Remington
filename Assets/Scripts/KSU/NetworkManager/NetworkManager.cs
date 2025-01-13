@@ -75,6 +75,9 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("쇠사슬")]
     private GameObject chain;
     [SerializeField]
+    [Tooltip("훅 활성화")]
+    private HookAttach hook;
+    [SerializeField]
     [Tooltip("책 2권중 첫번째책(book 착시퍼즐)")]
     private GameObject book1;
     [SerializeField]
@@ -310,7 +313,7 @@ public class NetworkManager : MonoBehaviourPun
     private void ManeSucessRPC()
     {
         // 아직 할당 안했으면 실행안됨.
-        if (boyBook1 == null || boyBook2 == null || boyBook3 == null || boyBook4 == null || boyBook5 == null || womanHint1 == null || womanHint2 == null) return;
+        // if (boyBook1 == null || boyBook2 == null || boyBook3 == null || boyBook4 == null || boyBook5 == null || womanHint1 == null || womanHint2 == null) return;
 
         if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
         {
@@ -320,13 +323,13 @@ public class NetworkManager : MonoBehaviourPun
             boyBook3.SetActive(true);
             boyBook4.SetActive(true);
             boyBook5.SetActive(true);
-            boyHint1.SetActive(true);
+            // boyHint1.SetActive(true);
         }
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때 -> 힌트 2개를 기자 위치에
-            womanHint1.SetActive(true);
-            womanHint2.SetActive(true);
+            // womanHint1.SetActive(true);
+            // womanHint2.SetActive(true);
         }
     }
 
@@ -375,6 +378,8 @@ public class NetworkManager : MonoBehaviourPun
     private void RopeTransportRPC()
     {
         if (chain != null) chain.SetActive(true);
+        // 훅 활성화
+        if (hook != null) hook.activeTrigger = true;
     }
 
     [PunRPC]
