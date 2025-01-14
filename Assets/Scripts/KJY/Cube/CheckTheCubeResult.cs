@@ -77,22 +77,22 @@ public class CheckTheCubeResult : MonoBehaviour
         if(C1Result == true && !makeInstance1)
         {
             makeInstance1 = true;
-            LightPrefabs[0] = Instantiate(LightPrefab, CPos[0].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
+            LightPrefabs[0] = Instantiate(LightPrefab, CPos[0].position, Quaternion.Euler(0f, 0f, 90f), transform);
         }
         if(C2Result == true && !makeInstance2)
         {
             makeInstance2 = true;
-            LightPrefabs[1] = Instantiate(LightPrefab, CPos[1].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
+            LightPrefabs[1] = Instantiate(LightPrefab, CPos[1].position, Quaternion.Euler(0f, 0f, 90f), transform);
         }
         if (C3Result == true && !makeInstance3)
         {
             makeInstance3 = true;
-            LightPrefabs[2] = Instantiate(LightPrefab, CPos[2].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
+            LightPrefabs[2] = Instantiate(LightPrefab, CPos[2].position, Quaternion.Euler(0f, 0f, 90f), transform);
         }
         if (C4Result == true && !makeInstance4)
         {
             makeInstance4 = true;
-            LightPrefabs[3] = Instantiate(LightPrefab, CPos[3].position, Quaternion.Euler(0f, 0f, 90f), transform.root);
+            LightPrefabs[3] = Instantiate(LightPrefab, CPos[3].position, Quaternion.Euler(0f, 0f, 90f), transform);
         }
 
         if (C1Result == true && C2Result == true && C3Result == true && C4Result == true)

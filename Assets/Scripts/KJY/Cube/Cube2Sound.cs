@@ -159,7 +159,7 @@ public class Cube2Sound : MonoBehaviour
 
         if (curNum < Lights.Length && Lights[curNum] == null)
         {
-            Lights[curNum] = Instantiate(GreenLight, LightsPos[curNum].position, Quaternion.Euler(0f, 90f, 0f), transform.root);
+            Lights[curNum] = Instantiate(GreenLight, LightsPos[curNum].position, Quaternion.Euler(0f, 90f, 0f), transform);
 
             //greenLightInstance.transform.SetParent(Lights[curNum].transform);
         }

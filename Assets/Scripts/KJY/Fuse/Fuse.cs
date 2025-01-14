@@ -5,6 +5,7 @@ public class Fuse : MonoBehaviour
 {
 
     [SerializeField] private GameObject fuse1;
+   // [SerializeField] private GameObject fuse1_2;
     [SerializeField] private GameObject fuse1_1;
     [SerializeField] private GameObject TheLight;
     //[SerializeField] private GameObject TheOriginLight;
@@ -18,6 +19,7 @@ public class Fuse : MonoBehaviour
     {
         if(other.gameObject.tag =="FusePlace")
         {
+            
             fuse1.SetActive(false);
             fuse1_1.SetActive(true);
             TheDeractionObject.SetActive(true);
