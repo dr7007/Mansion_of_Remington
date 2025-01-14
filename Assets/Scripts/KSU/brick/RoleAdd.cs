@@ -2,25 +2,24 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using UnityEngine;
 
-public class RoleAdd : MonoBehaviour
+public class RoleAdd : MonoBehaviourPunCallbacks
 {
-    public NetworkManager gm;
+    public bool boy = false;
+    public bool woman = false;
 
-    void Start()
+    public override void OnJoinedRoom()
     {
-        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+        if (boy)
         {
             Hashtable playerProperties = new Hashtable();
             playerProperties.Add("Role", "Boy");
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         }
-        else
+        else if (woman)
         {
             Hashtable playerProperties = new Hashtable();
             playerProperties.Add("Role", "Woman");
             PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
         }
-
-        // gm.InstantiatePlayer();
     }
 }

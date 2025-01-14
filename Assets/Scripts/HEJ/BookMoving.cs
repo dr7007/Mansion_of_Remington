@@ -13,7 +13,7 @@ public class BookMoving : MonoBehaviour
 
     private void Start()
     {
-            bookManager.onAniamtionCallback = OnAnimation;
+            bookManager.onAniamtionCallback = ()=>Invoke("OnAnimation",5f);
     }
 
     private void Update()

@@ -9,17 +9,20 @@ public class BookCheckPoint : MonoBehaviour
     public OnCheckedDelegate onCheckedCallback = null;
         
     private RaycastHit hit;
+    private float rayDistance = 0.5f;
 
 
     private void Update()
     {
+        bool isHit = false;
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, 0.2f))
         {
-            Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
+            isHit = true;
 
             if (hit.transform.gameObject.tag == targetTag)
             {
+                Debug.Log("책 "+ targetTag + "들어감");
                 isChecked = true;
 
                 onCheckedCallback?.Invoke();
@@ -30,8 +33,14 @@ public class BookCheckPoint : MonoBehaviour
                 isChecked = false;
             }
 
+
         }
-        
+
+        if (!isHit)
+            Debug.DrawRay(transform.position, transform.forward * rayDistance, Color.green);
+        else
+            Debug.DrawRay(transform.position, transform.forward * rayDistance, Color.red);
+
     }
 
    

@@ -20,6 +20,6 @@ public class WBrick : MonoBehaviourPun
     {
         Vector3 localMovement = transform.InverseTransformDirection(_changePos);
 
-        transform.position = startPos + localMovement;
+        transform.position = startPos - localMovement;
     }
 }

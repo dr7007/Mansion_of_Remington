@@ -17,11 +17,13 @@ public class bookManager : MonoBehaviour
     private void Start()
     {
         foreach (BookCheckPoint bookCheckPoint in bookCheckPoints)
-            bookCheckPoint.onCheckedCallback = OnCheckedCallback;
+            bookCheckPoint.onCheckedCallback += OnCheckedCallback;
     }
 
     private void OnCheckedCallback()
     {
+        Debug.Log("°á°ú ®G!");
+
         isSuccess = true;
         foreach (BookCheckPoint bookCheckPoint in bookCheckPoints)
         {
@@ -31,6 +33,8 @@ public class bookManager : MonoBehaviour
                 break;
             }
         }
+
+        Debug.Log("°á°ú ®G!" + isSuccess);
 
         if (isSuccess)
         {
