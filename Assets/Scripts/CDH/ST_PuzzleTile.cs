@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ST_PuzzleTile : MonoBehaviour 
 {
@@ -68,4 +69,9 @@ public class ST_PuzzleTile : MonoBehaviour
 		// get the puzzle display and return the new target location from this tile. 
 		LaunchPositionCoroutine(this.transform.parent.GetComponent<ST_PuzzleDisplay>().GetTargetLocation(this.GetComponent<ST_PuzzleTile>()));
 	}
+
+	public void ClickUI()
+	{
+        LaunchPositionCoroutine(this.transform.parent.GetComponent<ST_PuzzleDisplay>().GetTargetLocation(this.GetComponent<ST_PuzzleTile>()));
+    }
 }
