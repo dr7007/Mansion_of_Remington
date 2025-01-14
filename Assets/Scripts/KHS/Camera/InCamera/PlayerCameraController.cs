@@ -112,14 +112,15 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (onCamera)
         {
-            Debug.Log("OnRCapture");
-            CaptureCallback?.Invoke();
-
             if(toyBlockTrigger != null)
             {
                 Debug.Log("포인트 찾음");
                 toyBlockTrigger.GetComponent<toyBlockPuzzle>().OnPhoto();
+                return;
             }
+            Debug.Log("OnRCapture");
+            CaptureCallback?.Invoke();
+
         }
         else
         {

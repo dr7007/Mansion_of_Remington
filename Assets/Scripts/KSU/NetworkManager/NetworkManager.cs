@@ -121,6 +121,10 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자 힌트 2")]
     private GameObject womanHint2;
+    [SerializeField]
+    [Tooltip("소년방 실루엣액자 collider")]
+    private Collider[] planes = new Collider[4];
+
 
     [Header("키보드 동시에 누르기")]
     [SerializeField]
@@ -324,6 +328,12 @@ public class NetworkManager : MonoBehaviourPun
             boyBook4.SetActive(true);
             boyBook5.SetActive(true);
             // boyHint1.SetActive(true);
+
+            // 액자 collider 비활성화
+            foreach(Collider col in planes)
+            {
+                col.enabled = false;
+            }
         }
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {

@@ -148,7 +148,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
         womanName.text = PhotonNetwork.NickName;
 
         // 동기화를 위한 RPC
-        photonView.RPC("WomanClicked", RpcTarget.Others, PhotonNetwork.NickName);
+        photonView.RPC("WomanClicked", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
     }
 
     // 소년 그림 눌렀을때
@@ -164,7 +164,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
         boyName.text = PhotonNetwork.NickName;
 
         // 동기화를 위한 RPC
-        photonView.RPC("BoyClicked", RpcTarget.Others, PhotonNetwork.NickName);
+        photonView.RPC("BoyClicked", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
     }
 
     // 가운데 대기화면 눌렀을때
@@ -180,7 +180,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
             SetAlphaUserNick(1f, PhotonNetwork.NickName);
 
             // 동기화를 위한 RPC
-            photonView.RPC("BoyWaitClicked", RpcTarget.Others, PhotonNetwork.NickName);
+            photonView.RPC("BoyWaitClicked", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
         }
         else if (womanSelected && PhotonNetwork.NickName == womanName.text)
         {
@@ -192,7 +192,7 @@ public class LobyManager : MonoBehaviourPunCallbacks
             SetAlphaUserNick(1f, PhotonNetwork.NickName);
 
             // 동기화를 위한 RPC
-            photonView.RPC("WomanWaitClicked", RpcTarget.Others, PhotonNetwork.NickName);
+            photonView.RPC("WomanWaitClicked", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
         }
     }
 
@@ -484,17 +484,20 @@ public class LobyManager : MonoBehaviourPunCallbacks
         }
     }
 
-    // 방안에 시작버튼 활성화 비활성화를 결정함.
+    // 방안에 시작버튼 활성화 비활성화를 결정함. (방장만)
     private void RoomStartBtnOnOff()
     {
         if ((boySelected && womanSelected) && !callOneTime)
         {
-            roomStart.interactable = true;
-            callOneTime = true;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                roomStart.interactable = true;
+                callOneTime = true;
 
-            Color currentColor = roomStart.image.color;
-            currentColor.a = 1f;
-            roomStart.image.color = currentColor;
+                Color currentColor = roomStart.image.color;
+                currentColor.a = 1f;
+                roomStart.image.color = currentColor;
+            }
         }
         else if ((!boySelected || !womanSelected) && callOneTime)
         {

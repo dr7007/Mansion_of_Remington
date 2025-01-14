@@ -4,12 +4,10 @@ using TMPro;
 public class ChainTextDet : MonoBehaviour
 {
     public TextMeshPro textMeshPro; // 대상 TextMeshPro
-    public string chainTag = "Chain"; // 쇠사슬 태그
     [SerializeField]
     private GameObject[] characterColliders; // 글자별 Collider 오브젝트
-    public Vector3 colVec = Vector3.zero;
-    public string onLight = string.Empty;
-    public bool isInside = false;
+    public Vector3 colVec = Vector3.zero;   // 글자 Collider 사이즈
+    public string onLight = string.Empty;   // 불이 들어온 글자 조합.
 
     void Start()
     {
@@ -99,13 +97,14 @@ public class ChainTextDet : MonoBehaviour
             charCollider.transform.position = (bottomLeft + topRight) / 2;
             charCollider.transform.rotation = textMeshPro.transform.rotation; // 텍스트의 회전값 적용
             charCollider.transform.localScale = colVec;
+            charCollider.transform.localPosition += colVec.z * Vector3.back /2f;
 
             // BoxCollider 추가 및 초기화
             BoxCollider boxCollider = charCollider.AddComponent<BoxCollider>();
             boxCollider.isTrigger = true; // Trigger로 설정
 
-            // CollisionHandler 스크립트를 추가
-            CollisionHandlerWithAngle collisionHandler = charCollider.AddComponent<CollisionHandlerWithAngle>();
+            // ChangeTextColor 스크립트를 추가
+            ChangeTextColor collisionHandler = charCollider.AddComponent<ChangeTextColor>();
             collisionHandler.Initialize(textMeshPro, i);
             
 

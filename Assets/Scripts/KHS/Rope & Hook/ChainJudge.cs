@@ -3,8 +3,8 @@ using UnityEngine;
 public class ChainJudge : MonoBehaviour
 {
     #region
-    public delegate void ChainJudgeInDelegate();
-    public delegate void ChainJudgeOutDelegate();
+    public delegate void ChainJudgeInDelegate(Transform _tr, Color _color);
+    public delegate void ChainJudgeOutDelegate(Transform _tr, Color _color);
 
     private ChainJudgeInDelegate chainJudgeInCallback;
     private ChainJudgeOutDelegate chainJudgeOutCallback;
@@ -29,13 +29,22 @@ public class ChainJudge : MonoBehaviour
         if(LightJudgeFunc(_chrCollider))
         {
             Debug.Log("character Index : " + _chrCollider.name);
+            ChainJudgeInCallback?.Invoke(_chrCollider.transform, Color.red);
+        }
+    }
+    private void OnTriggerExit(Collider _chrCollider)
+    {
+        if (_chrCollider.GetComponent<ChangeTextColor>())
+        {
+            Debug.Log("Off character Index : " + _chrCollider.name);
+            ChainJudgeOutCallback?.Invoke(_chrCollider.transform, Color.white);
         }
     }
 
     private bool LightJudgeFunc(Collider _chrCollider)
     {
-        CollisionHandlerWithAngle tempCHWA = null;
-        if (tempCHWA = _chrCollider.GetComponent<CollisionHandlerWithAngle>())
+        ChangeTextColor tempCHWA = null;
+        if (tempCHWA = _chrCollider.GetComponent<ChangeTextColor>())
         {
             float dotProduct = Vector3.Dot(tempCHWA.transform.up, transform.up);
 

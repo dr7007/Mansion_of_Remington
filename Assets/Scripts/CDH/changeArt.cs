@@ -19,6 +19,7 @@ public class changeArt : MonoBehaviour
         if(other.gameObject.tag == "changeImage")
         {
             onImage.SetActive(true);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.stab);
             AudioManager.instance.PlaySfx(AudioManager.sfx.boyscream);
             offBox.SetActive(false);
             onBox.SetActive(true);

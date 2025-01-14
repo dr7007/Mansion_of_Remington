@@ -145,7 +145,7 @@ public class SmallChessBoard : MonoBehaviourPunCallbacks
 
     private IEnumerator CheckClear()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
 
         if (currentIdx == 20)
         {
