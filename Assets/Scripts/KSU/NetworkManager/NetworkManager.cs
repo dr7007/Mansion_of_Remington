@@ -94,6 +94,9 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자쪽 망치")]
     private GameObject wHammer;
+    [SerializeField]
+    [Tooltip("기자쪽 마네킹후 책")]
+    private GameObject womanTBook;
 
 
     [Header("책 4권 생성 관련")]
@@ -116,8 +119,8 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("소년 힌트 1")]
     private GameObject boyHint1;
     [SerializeField]
-    [Tooltip("기자 힌트 1")]
-    private GameObject womanHint1;
+    [Tooltip("기자 책1")]
+    private GameObject womanBook1;
     [SerializeField]
     [Tooltip("기자 힌트 2")]
     private GameObject womanHint2;
@@ -338,7 +341,7 @@ public class NetworkManager : MonoBehaviourPun
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때 -> 힌트 2개를 기자 위치에
-            // womanHint1.SetActive(true);
+            womanTBook.SetActive(true);
             // womanHint2.SetActive(true);
         }
     }

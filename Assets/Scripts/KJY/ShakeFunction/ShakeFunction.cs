@@ -120,6 +120,7 @@ public class ShakeFunction : MonoBehaviour
     void SetActive()
     {
         toys[curnum].SetActive(true);
+        toys[curnum].transform.parent = null;
         curnum++;
     }
 
