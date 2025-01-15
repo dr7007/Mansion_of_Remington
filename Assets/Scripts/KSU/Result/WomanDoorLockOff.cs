@@ -22,9 +22,11 @@ public class WomanDoorLockOff : MonoBehaviour
 
         // layer 변경 (벽이랑 충돌안되는 layer로)
         int layerToSet = LayerMask.NameToLayer("Interaction");
-        Transform[] allTransforms = GetComponentsInChildren<Transform>(true);
+        Transform[] allTransforms = WomanTutoriialDoor.GetComponentsInChildren<Transform>(true);
         foreach (Transform t in allTransforms)
         {
+            Debug.Log(layerToSet);
+            Debug.Log(t.gameObject);
             t.gameObject.layer = layerToSet;
         }
 

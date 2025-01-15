@@ -326,6 +326,7 @@ public class NetworkManager : MonoBehaviourPun
         {
             // 소년일때 -> 책5권 활성화 + 힌트 1개 활성화
             boyBook1.SetActive(true);
+            boyBook1.transform.parent = null;
             boyBook2.SetActive(true);
             boyBook3.SetActive(true);
             boyBook4.SetActive(true);
@@ -398,7 +399,7 @@ public class NetworkManager : MonoBehaviourPun
     [PunRPC]
     private void Book1TransportRPC()
     {
-        if (book1 != null) book2.SetActive(true);
+        if (book1 != null) book1.SetActive(true);
     }
 
     [PunRPC]
