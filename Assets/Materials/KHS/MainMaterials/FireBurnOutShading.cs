@@ -3,23 +3,29 @@ using UnityEngine;
 
 public class FireBurnOutShading : MonoBehaviour
 {
-    public Material burnMaterial;
+    public Material[] burnMaterials;
     public float burnSpeed = 0.01f;
     private float threshold = 0.5f;
+    private AudioSource burnSound;
 
     private void Awake()
     {
-        burnMaterial = GetComponent<MeshRenderer>().material;
+        burnMaterials = GetComponent<MeshRenderer>().materials;
+        burnSound = GetComponent<AudioSource>();
     }
     private void Start()
     {
+        burnSound.Stop();
         InitializeMaterial(0.5f);
     }
 
     public void InitializeMaterial(float _threshold)
     {
         threshold = _threshold; // 초기 Threshold 값 설정
-        burnMaterial.SetFloat("_Threshold", _threshold); // Material 초기화
+        foreach (Material mat in burnMaterials)
+        {
+            mat.SetFloat("_Threshold", _threshold); // Material 초기화
+        }
     }
 
     public void FireFadeOut()
@@ -35,20 +41,30 @@ public class FireBurnOutShading : MonoBehaviour
 
     private IEnumerator FireBurnOutEffectCoroutine()
     {
+        burnSound.Play();
         while (threshold > -0.5f)
         {
             threshold -= burnSpeed;
-            burnMaterial.SetFloat("_Threshold", threshold);
+            foreach (Material mat in burnMaterials)
+            {
+                mat.SetFloat("_Threshold", threshold);
+            }
             yield return null;
         }
+        burnSound.Stop();
     }
     private IEnumerator FireBurnInEffectCoroutine()
     {
+        burnSound.Play();
         while (threshold < 0.5f)
         {
             threshold += burnSpeed;
-            burnMaterial.SetFloat("_Threshold", threshold);
+            foreach (Material mat in burnMaterials)
+            {
+                mat.SetFloat("_Threshold", threshold);
+            }
             yield return null;
         }
+        burnSound.Stop();
     }
 }
