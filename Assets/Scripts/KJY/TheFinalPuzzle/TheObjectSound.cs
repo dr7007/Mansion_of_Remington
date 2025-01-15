@@ -6,6 +6,13 @@ public class TheObjectSound : MonoBehaviour
 
     [SerializeField] private AudioClip[] audioClips;
 
+
+    private void Update()
+    {
+        
+    }
+
+
     public void SkullSound()
     {
         AudioClip Skull = audioClips[0];
