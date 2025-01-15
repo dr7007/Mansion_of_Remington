@@ -12,7 +12,7 @@ public class Fuse : MonoBehaviour
 
     [SerializeField] private GameObject TheDeractionObject;
     [SerializeField] private GameObject TheDoorPicture;
-    [SerializeField] private GameObject TheButton;
+    //[SerializeField] private GameObject TheButton;
     
 
     private void OnTriggerEnter(Collider other)
@@ -25,8 +25,8 @@ public class Fuse : MonoBehaviour
             TheDeractionObject.SetActive(true);
             TheDoorPicture.SetActive(true);
 
-            TheButton.SetActive(true);
             TheLight.SetActive(true);
+            //TheButton.SetActive(true);
             //TheOriginLight.SetActive(false);
 
         }
