@@ -143,6 +143,11 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("소년 키보드2 상태")]
     private KeyboardRPC bKeyBoard2;
 
+    [Header("유리 뿌셨을때 소년지하실에 생기는것들")]
+    [SerializeField]
+    [Tooltip("생성되는 오브젝트들")]
+    private GameObject[] somethings;
+
     private bool keyboardSucess = false;
     private bool checkIsMine = false;
     private bool recorderOn = true;
@@ -350,11 +355,18 @@ public class NetworkManager : MonoBehaviourPun
     [PunRPC]
     private void GlassSucessRPC()
     {
-        // 소년에게서 나레이션 재생
+        // 소년 지하실에 생성해야 하는것들
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            foreach(GameObject go in somethings)
+            {
+                go.SetActive(true);
+            }
+        }
 
 
-        // 서로 보이스 끊김
-        if (recorderOn)
+            // 서로 보이스 끊김
+            if (recorderOn)
         {
             recorder.RecordingEnabled = false;
             recorderOn = false;
