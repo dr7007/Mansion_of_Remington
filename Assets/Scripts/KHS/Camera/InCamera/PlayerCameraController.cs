@@ -60,7 +60,6 @@ public class PlayerCameraController : MonoBehaviour
     {
         if(other?.GetComponent<toyBlockPuzzle>())
         {
-            Debug.Log("탐지범위 내");
             toyBlockTrigger = other.gameObject;
         }
     }
@@ -69,7 +68,6 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (other?.GetComponent<toyBlockPuzzle>())
         {
-            Debug.Log("탐지범위 나감");
             toyBlockTrigger = null;
         }
     }
@@ -121,15 +119,16 @@ public class PlayerCameraController : MonoBehaviour
     {
         if (onCamera)
         {
-            if(toyBlockTrigger != null)
+            if (toyBlockTrigger != null)
             {
-                Debug.Log("포인트 찾음");
                 toyBlockTrigger.GetComponent<toyBlockPuzzle>().OnPhoto();
                 return;
             }
-            Debug.Log("OnRCapture");
-            CaptureCallback?.Invoke();
-
+            else
+            {
+                Debug.Log("OnRCapture");
+                CaptureCallback?.Invoke();
+            }
         }
         else
         {

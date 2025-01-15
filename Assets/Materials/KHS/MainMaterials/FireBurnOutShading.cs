@@ -7,24 +7,33 @@ public class FireBurnOutShading : MonoBehaviour
     public float burnSpeed = 0.01f;
     private float threshold = 0.5f;
 
+    private void Awake()
+    {
+        burnMaterial = GetComponent<MeshRenderer>().material;
+    }
     private void Start()
     {
-        InitializeMaterial();
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            StartCoroutine(FireBurnEffectCoroutine());
-        }
-    }
-    public void InitializeMaterial()
-    {
-        threshold = 0.5f; // 초기 Threshold 값 설정
-        burnMaterial.SetFloat("_Threshold", threshold); // Material 초기화
+        InitializeMaterial(0.5f);
     }
 
-    private IEnumerator FireBurnEffectCoroutine()
+    public void InitializeMaterial(float _threshold)
+    {
+        threshold = _threshold; // 초기 Threshold 값 설정
+        burnMaterial.SetFloat("_Threshold", _threshold); // Material 초기화
+    }
+
+    public void FireFadeOut()
+    {
+        InitializeMaterial(0.5f);
+        StartCoroutine(FireBurnOutEffectCoroutine());
+    }
+    public void FireFadeIn()
+    {
+        InitializeMaterial(-0.5f);
+        StartCoroutine(FireBurnInEffectCoroutine());
+    }
+
+    private IEnumerator FireBurnOutEffectCoroutine()
     {
         while (threshold > -0.5f)
         {
@@ -32,9 +41,14 @@ public class FireBurnOutShading : MonoBehaviour
             burnMaterial.SetFloat("_Threshold", threshold);
             yield return null;
         }
-        if(threshold <= -0.5f)
+    }
+    private IEnumerator FireBurnInEffectCoroutine()
+    {
+        while (threshold < 0.5f)
         {
-            gameObject.SetActive(false);
+            threshold += burnSpeed;
+            burnMaterial.SetFloat("_Threshold", threshold);
+            yield return null;
         }
     }
 }

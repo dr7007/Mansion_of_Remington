@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GPhotoResult : MonoBehaviour
@@ -6,7 +7,8 @@ public class GPhotoResult : MonoBehaviour
     private MeshRenderer meshRenderer = null;
     private BoxCollider boxCollider = null;
     private GResponse resTrigger = null;
-    private Rigidbody rb = null;
+    private FireBurnOutShading matEffect = null;
+    
 
     private void Awake()
     {
@@ -14,24 +16,25 @@ public class GPhotoResult : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         boxCollider = GetComponent<BoxCollider>();
         resTrigger = GetComponent<GResponse>();
-        rb = GetComponent<Rigidbody>();
+        matEffect = GetComponent<FireBurnOutShading>();
     }
     private void Start()
     {
         meshRenderer.enabled = false;
         boxCollider.enabled = false;
-        rb.useGravity = false;
         resTrigger.OnResponseCallback = CreatePhoto;
     }
     private void CreatePhoto(bool _State)
     {
         Debug.Log(_State);
-        if(_State)
+        if (_State)
         {
-            //mat.EnableKeyword("_EMISSION");
             meshRenderer.enabled = true;
             boxCollider.enabled = true;
-            rb.useGravity = true;
+            if (matEffect != null)
+            {
+                matEffect.FireFadeIn();
+            }
         }
     }
 }

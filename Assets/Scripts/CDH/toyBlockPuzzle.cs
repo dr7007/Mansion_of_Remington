@@ -1,58 +1,64 @@
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class toyBlockPuzzle : MonoBehaviour
 {
     [SerializeField]
-    Camera cm;
+    private Camera cm;
+    public GameObject toyBlockGo;
+    public float threshold = 0.83f;
 
     private GCondition conTrigger;
     private bool isActive = false;
-    void Start()
+    private void Start()
     {
         conTrigger = GetComponent<GCondition>();
         isActive = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
-            if(isChacksi() == true)
-            {
-                Debug.Log("시야 확정");
-                isActive = true;
-            }
-            else
-            {
-                isActive = false;
-            }
+            Debug.Log("포인트 진입");
+            isActive = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            Debug.Log("포인트 탈출");
+            isActive = false;
         }
     }
 
-    bool isChacksi()
+    private bool isChacksi()
     {
-        float cmYPosition = cm.transform.position.y;
-        float cmYRotation = cm.transform.rotation.eulerAngles.y;
+        float dotProduct = Vector3.Dot(cm.transform.forward, (toyBlockGo.transform.position - cm.transform.position).normalized);
 
-        if ((cmYPosition >=1.2f && cmYPosition <= 1.5f) && (cmYRotation >= 25f && cmYRotation <= 37f))
+        if (dotProduct >= threshold)
         {
+            //Debug.Log("On dotProduct : "+ dotProduct);
             return true;
         }
-
-        return false;
+        else
+        {
+            //Debug.Log("OFF dotProduct : "+ dotProduct);
+            return false;
+        }
     }
 
     public void OnPhoto()
     {
-        if(isActive)
+        if(isActive && isChacksi())
         {
+            Debug.Log("각도 맞음");
             conTrigger.OnSolved(true);
+        }
+        else
+        {
+            Debug.Log("각도 안맞음");
         }
     }
 }
