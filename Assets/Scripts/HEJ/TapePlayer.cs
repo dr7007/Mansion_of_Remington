@@ -6,6 +6,7 @@ public class TapePlayer : MonoBehaviour
     public Tape tape = null;
     public VideoClip[] clips;
     public VideoPlayer videoPlayer;
+    public int repoterEndNum = 0;
 
     private void OnTapesVideoCallback(Tape tape)
     {
@@ -28,6 +29,8 @@ public class TapePlayer : MonoBehaviour
     private void OnVideoEnd(VideoPlayer vd)
     {
         Destroy(tape.gameObject);
+        ++repoterEndNum;
+        PlayerPrefs.SetInt("REN",repoterEndNum);
     }
 
     
