@@ -45,11 +45,17 @@ public class ShakeFunction : MonoBehaviour
 
     void Update()
     {
+        // 오브젝트의 로컬 Up 벡터를 세계 공간으로 변환
+        Vector3 worldUp = transform.up;
+
+        // worldUp 벡터가 -Y 방향(아래쪽)과 얼마나 일치하는지 계산
+        float dotProduct = Vector3.Dot(worldUp, Vector3.down);
+
         if (curnum == 7) return;
 
         if(grab.isSelected)
         {
-            transform.rotation = Quaternion.Euler(0f,0f,0f);
+            // transform.rotation = Quaternion.Euler(0f,0f,0f);
         }
         else
         {
@@ -65,7 +71,7 @@ public class ShakeFunction : MonoBehaviour
         Vector3 leftVelocity = (leftPosition - lastLeftPosition) / Time.deltaTime;
 
         // 양손 흔들림 동기화 확인
-        if (rightVelocity.magnitude > shakeThreshold && leftVelocity.magnitude > shakeThreshold)
+        if (rightVelocity.magnitude > shakeThreshold && leftVelocity.magnitude > shakeThreshold && dotProduct <= -0.9f)
         {
             TheTime += Time.deltaTime;
 
@@ -114,6 +120,7 @@ public class ShakeFunction : MonoBehaviour
     void SetActive()
     {
         toys[curnum].SetActive(true);
+        toys[curnum].transform.parent = null;
         curnum++;
     }
 

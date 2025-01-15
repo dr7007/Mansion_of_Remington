@@ -35,6 +35,7 @@ public class AnimalCheck : MonoBehaviour
                 // 뭔가 이벤트가 일어나도록?
                 solve.OnSolved(true);
 
+                board.SetActive(true);
                 monkey.curGO.SetActive(false);
                 mouse.curGO.SetActive(false);
             }

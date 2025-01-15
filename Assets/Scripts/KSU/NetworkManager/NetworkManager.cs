@@ -94,6 +94,9 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("기자쪽 망치")]
     private GameObject wHammer;
+    [SerializeField]
+    [Tooltip("기자쪽 마네킹후 책")]
+    private GameObject womanTBook;
 
 
     [Header("책 4권 생성 관련")]
@@ -116,8 +119,8 @@ public class NetworkManager : MonoBehaviourPun
     [Tooltip("소년 힌트 1")]
     private GameObject boyHint1;
     [SerializeField]
-    [Tooltip("기자 힌트 1")]
-    private GameObject womanHint1;
+    [Tooltip("기자 책1")]
+    private GameObject womanBook1;
     [SerializeField]
     [Tooltip("기자 힌트 2")]
     private GameObject womanHint2;
@@ -139,6 +142,11 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("소년 키보드2 상태")]
     private KeyboardRPC bKeyBoard2;
+
+    [Header("유리 뿌셨을때 소년지하실에 생기는것들")]
+    [SerializeField]
+    [Tooltip("생성되는 오브젝트들")]
+    private GameObject[] somethings;
 
     private bool keyboardSucess = false;
     private bool checkIsMine = false;
@@ -323,6 +331,7 @@ public class NetworkManager : MonoBehaviourPun
         {
             // 소년일때 -> 책5권 활성화 + 힌트 1개 활성화
             boyBook1.SetActive(true);
+            boyBook1.transform.parent = null;
             boyBook2.SetActive(true);
             boyBook3.SetActive(true);
             boyBook4.SetActive(true);
@@ -338,7 +347,7 @@ public class NetworkManager : MonoBehaviourPun
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             // 기자일때 -> 힌트 2개를 기자 위치에
-            // womanHint1.SetActive(true);
+            womanTBook.SetActive(true);
             // womanHint2.SetActive(true);
         }
     }
@@ -346,11 +355,18 @@ public class NetworkManager : MonoBehaviourPun
     [PunRPC]
     private void GlassSucessRPC()
     {
-        // 소년에게서 나레이션 재생
+        // 소년 지하실에 생성해야 하는것들
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            foreach(GameObject go in somethings)
+            {
+                go.SetActive(true);
+            }
+        }
 
 
-        // 서로 보이스 끊김
-        if (recorderOn)
+            // 서로 보이스 끊김
+            if (recorderOn)
         {
             recorder.RecordingEnabled = false;
             recorderOn = false;
@@ -395,7 +411,7 @@ public class NetworkManager : MonoBehaviourPun
     [PunRPC]
     private void Book1TransportRPC()
     {
-        if (book1 != null) book2.SetActive(true);
+        if (book1 != null) book1.SetActive(true);
     }
 
     [PunRPC]

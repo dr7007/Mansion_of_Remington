@@ -40,6 +40,7 @@ public class InventoryMove : MonoBehaviour
     void ToggleUI()
     {
         isUIVisible = !isUIVisible;
+        uiElement.transform.parent = null;
 
         if (isUIVisible)
         {

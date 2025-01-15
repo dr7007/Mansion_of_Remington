@@ -5,6 +5,7 @@ public class LuckPictureController : MonoBehaviour
     
     [SerializeField] private GameObject LuckPlane;
     [SerializeField] private GameObject LuckPicture;
+    [SerializeField] private GameObject LuckTagPlace;
 
 
     private void OnTriggerEnter(Collider other)
@@ -13,6 +14,7 @@ public class LuckPictureController : MonoBehaviour
         {
             LuckPlane.SetActive(false);
             LuckPicture.SetActive(false);
+            LuckTagPlace.SetActive(false);
         }
     }
 

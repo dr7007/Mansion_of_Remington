@@ -5,6 +5,7 @@ public class BongManager : MonoBehaviour
     [SerializeField] private BongController bongcontroller;
     [SerializeField] private PictureBongController picturebongcontroller;
     [SerializeField] private GameObject BongPlane;
+    [SerializeField] private GameObject BongTagPlace;
     [SerializeField] private GameObject BongPicture;
 
     public bool TheResult = false;
@@ -31,6 +32,7 @@ public class BongManager : MonoBehaviour
         {
             BongPlane.SetActive(false);
             BongPicture.SetActive(false);
+            BongTagPlace.SetActive(false);
         }
     }
 

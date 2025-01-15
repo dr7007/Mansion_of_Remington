@@ -56,12 +56,21 @@ public class PlayerCameraController : MonoBehaviour
         onCamera = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other?.GetComponent<toyBlockPuzzle>())
         {
             Debug.Log("탐지범위 내");
             toyBlockTrigger = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other?.GetComponent<toyBlockPuzzle>())
+        {
+            Debug.Log("탐지범위 나감");
+            toyBlockTrigger = null;
         }
     }
 
