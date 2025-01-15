@@ -178,8 +178,11 @@ public class CameraFrustumCollider : MonoBehaviour
         {
             Debug.Log("Capture On");
             onTriggerCap[0].GetComponent<GeneratePhoto>().OnPhoto();
-            onTriggerCap[0].gameObject.SetActive(false);
-            onTriggerCap.RemoveAt(0);
+            if (!onTriggerCap[0].GetComponent<NoUnactiveObj>())
+            {
+                onTriggerCap[0].gameObject.SetActive(false);
+                onTriggerCap.RemoveAt(0);
+            }
         }
         else
         {
