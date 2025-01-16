@@ -13,9 +13,11 @@ public class BigTile : MonoBehaviour
     {
         if (board.currentIdx == 20)
         {
-            Material mat = gameObject.GetComponent<Renderer>().material;
-            mat.EnableKeyword("_EMISSION");
-            mat.SetColor("_EmissionColor", Color.red * 60f);
+            //Material mat = gameObject.GetComponent<Renderer>().material;
+            //mat.EnableKeyword("_EMISSION");
+            //mat.SetColor("_EmissionColor", Color.red * 60f);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.oldDoor);
+
 
             // 초기화 하는 코드
             board.Reset();
@@ -30,9 +32,9 @@ public class BigTile : MonoBehaviour
         // 번호와 이름이 일치할때
         if (board.paths[board.currentIdx-1].ToString() == gameObject.name)
         {
-            Material mat = gameObject.GetComponent<Renderer>().material;
-            mat.EnableKeyword("_EMISSION");
-            mat.SetColor("_EmissionColor", Color.green * 60f);
+            //Material mat = gameObject.GetComponent<Renderer>().material;
+            //mat.EnableKeyword("_EMISSION");
+            //mat.SetColor("_EmissionColor", Color.green * 60f);
 
 
             // 맞게 들어감을 알리는 코드 (순서를 인자로)

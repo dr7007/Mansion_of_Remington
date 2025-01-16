@@ -48,6 +48,7 @@ public class Mane : MonoBehaviour
             t += Time.deltaTime;
             updateRot.y = Mathf.Lerp(yStart, yEnd, t);
             transform.localRotation = Quaternion.Euler(updateRot);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.mannequin);
             yield return null;
         }
 
@@ -55,6 +56,8 @@ public class Mane : MonoBehaviour
         {
             updateRot.y = 0f;
             transform.localRotation = Quaternion.Euler(updateRot);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.mannequin);
+
         }
 
         isRotate = false;

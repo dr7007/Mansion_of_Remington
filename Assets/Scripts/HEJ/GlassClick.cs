@@ -24,7 +24,7 @@ public class GlassClick : MonoBehaviour
         if (other.gameObject.tag == "Hammer")
         {
             Debug.Log("À¯¸® ±úÁü È£ÃâµÊ.");
-
+            AudioManager.instance.PlaySfx(AudioManager.sfx.glass);
             OnClickProcess();
         }
     }
