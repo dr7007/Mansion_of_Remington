@@ -7,25 +7,33 @@ using UnityEngine;
 public class ChangeTextColor : MonoBehaviour
 {
     private HookAttach hookAttach;
+    private GuideLine guideLine;
     private TextMeshPro textMeshPro;
     public int characterIndex;
-    public ChainReset chainReset;
     public List<ChainJudge> chainJudges;
 
     private void Awake()
     {
-        hookAttach = FindAnyObjectByType<HookAttach>();
+        hookAttach = GetComponentInParent<ChainTextDet>().HookReference;
+        guideLine = GetComponentInParent<ChainTextDet>().GuideLine;
     }
     private void Start()
     {
-        hookAttach.HookArrivedCallback += ChainCallbackInit;
+        if (hookAttach != null)
+        {
+            hookAttach.HookArrivedCallback += ChainCallbackInit;
+        }
+        if(guideLine != null)
+        {
+            guideLine.GuideArrivedCallback += ChainCallbackUpdate;
+        }
+        
     }
 
     private void ChainCallbackInit()
     {
         Debug.Log("체인 콜백들 연결");
-        chainReset = FindAnyObjectByType<ChainReset>();
-        chainJudges = chainReset.GetComponentsInChildren<ChainJudge>().ToList();
+        chainJudges = hookAttach.ropeGo.GetComponentsInChildren<ChainJudge>().ToList();
         chainJudges.RemoveAt(0);
 
         foreach (ChainJudge cj in chainJudges)
@@ -33,6 +41,20 @@ public class ChangeTextColor : MonoBehaviour
             cj.ChainJudgeInCallback += ChangeCharacterColor;
             cj.ChainJudgeOutCallback += ChangeCharacterColor;
         }
+        chainJudges.Clear();
+    }
+
+    private void ChainCallbackUpdate()
+    {
+        chainJudges = guideLine.nextChainGo.GetComponentsInChildren<ChainJudge>().ToList();
+        chainJudges.RemoveAt(0);
+
+        foreach (ChainJudge cj in chainJudges)
+        {
+            cj.ChainJudgeInCallback += ChangeCharacterColor;
+            cj.ChainJudgeOutCallback += ChangeCharacterColor;
+        }
+        
     }
     public void Initialize(TextMeshPro _textMeshPro, int _characterIndex)
     {

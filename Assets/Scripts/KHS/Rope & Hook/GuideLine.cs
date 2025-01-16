@@ -4,16 +4,25 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class GuideLine : MonoBehaviour
 {
+    public delegate void GuideArrivedDelegate();
 
-    private float lerptime = 0f;
+    private GuideArrivedDelegate guideArrivedCallback = null;
+    public GuideArrivedDelegate GuideArrivedCallback
+    {
+        get { return guideArrivedCallback; }
+        set { guideArrivedCallback = value; }
+    }
+
     private Transform targetTr = null;
-    public TextComparer textCom = null;
     public GameObject nextChainGo = null;
     private bool isdetect = false;
+    private bool isprecallback = false;
 
     private void Start()
     {
         isdetect = false;
+        isprecallback = false;
+
     }
     private void OnTriggerEnter(Collider _collider)
     {
@@ -66,6 +75,10 @@ public class GuideLine : MonoBehaviour
 
         Debug.Log("End!!!");
         nextChainGo?.SetActive(true);
-        
+        if (!isprecallback)
+        {
+            GuideArrivedCallback?.Invoke();
+            isprecallback = true;
+        }
     }
 }

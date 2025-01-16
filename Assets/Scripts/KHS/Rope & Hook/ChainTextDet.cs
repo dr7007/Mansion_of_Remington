@@ -9,6 +9,18 @@ public class ChainTextDet : MonoBehaviour
     public Vector3 colVec = Vector3.zero;   // 글자 Collider 사이즈
     public string onLight = string.Empty;   // 불이 들어온 글자 조합.
 
+    public HookAttach hookAttach = null;
+    public GuideLine guideLine = null;
+
+    public HookAttach HookReference
+    {
+        get { return hookAttach; }
+    }
+    public GuideLine GuideLine
+    {
+        get { return guideLine; }
+    }
+
     void Start()
     {
         GenerateCharacterColliders();

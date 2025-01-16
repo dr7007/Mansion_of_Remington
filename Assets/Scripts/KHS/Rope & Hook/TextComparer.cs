@@ -49,7 +49,6 @@ public class TextComparer : MonoBehaviour
             tmp.text = compareStr + "!=" + answerStr;
             Debug.Log("Different!");
             // 투명판 콜백 추가 (일단 되는지 확인 위한 부분)
-            StartCoroutine(opendoor.AnimateDoors());
         }
         compareStr = string.Empty;
     }
