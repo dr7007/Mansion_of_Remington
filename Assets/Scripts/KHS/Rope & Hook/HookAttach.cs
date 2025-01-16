@@ -20,8 +20,7 @@ public class HookAttach : MonoBehaviour
     private Vector3 onRopePos = Vector3.zero;
     [SerializeField]
     private float lerpratio = 0.02f;
-    [SerializeField]
-    private GameObject ropeGo = null;
+    public GameObject ropeGo = null;
 
     [SerializeField]
     public bool activeTrigger = false;

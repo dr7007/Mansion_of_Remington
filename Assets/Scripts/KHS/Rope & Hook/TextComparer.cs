@@ -38,12 +38,14 @@ public class TextComparer : MonoBehaviour
             Debug.Log(compareStr + " : " + answerStr);
             tmp.text = compareStr + "=" + answerStr;
             Debug.Log("Same!");
+            // 투명판 콜백 추가 (원래 통과조건)
         }
         else
         {
             Debug.Log(compareStr + " : " + answerStr);
             tmp.text = compareStr + "!=" + answerStr;
             Debug.Log("Different!");
+            // 투명판 콜백 추가 (일단 되는지 확인 위한 부분)
         }
         compareStr = string.Empty;
     }

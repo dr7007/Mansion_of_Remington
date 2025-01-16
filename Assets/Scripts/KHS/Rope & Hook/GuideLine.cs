@@ -4,18 +4,42 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class GuideLine : MonoBehaviour
 {
+
     private float lerptime = 0f;
     private Transform targetTr = null;
     public TextComparer textCom = null;
+    public GameObject nextChainGo = null;
+    private bool isdetect = false;
 
-
+    private void Start()
+    {
+        isdetect = false;
+    }
     private void OnTriggerEnter(Collider _collider)
     {
-        if (_collider.name == "ChainLinkEnd")
+        if(_collider.name == "ChainLinkEnd" && _collider.GetComponent<XRGrabInteractable>().isSelected)
         {
+            _collider.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
+        }
+    }
+    private void OnTriggerStay(Collider _collider)
+    {
+        if (_collider.name == "ChainLinkEnd" && !_collider.GetComponent<XRGrabInteractable>().isSelected && !isdetect)
+        {
+            isdetect=true;
             targetTr = _collider.transform;
             _collider.GetComponent<Rigidbody>().isKinematic = true;
+            _collider.GetComponent<MeshRenderer>().material.DisableKeyword("_EMISSION");
             StartCoroutine(PositionMove());
+        }
+    }
+    private void OnTriggerExit(Collider _collider)
+    {
+        if(_collider.name == "ChainLinkEnd")
+        {
+            isdetect = false;
+            nextChainGo?.SetActive(false);
+            _collider.GetComponent<MeshRenderer>().material.DisableKeyword("_EMISSION");
         }
     }
 
@@ -41,6 +65,7 @@ public class GuideLine : MonoBehaviour
         }
 
         Debug.Log("End!!!");
-        textCom.ComparePressed();
+        nextChainGo?.SetActive(true);
+        
     }
 }

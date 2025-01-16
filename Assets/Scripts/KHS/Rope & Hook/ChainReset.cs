@@ -26,7 +26,11 @@ public class ChainReset : MonoBehaviour
         // 초기 위치와 회전 값 저장
         initialPositions = new Vector3[chainLinks.Count];
         initialRotations = new Quaternion[chainLinks.Count];
-        hookAttach.HookArrivedCallback += RecordInitialize;
+        RecordInitialize();
+        if (hookAttach != null)
+        {
+            hookAttach.HookArrivedCallback += RecordInitialize;
+        }
     }
 
     public void Update()
