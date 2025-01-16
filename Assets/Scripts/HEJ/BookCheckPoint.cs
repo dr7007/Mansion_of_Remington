@@ -16,7 +16,7 @@ public class BookCheckPoint : MonoBehaviour
     {
         bool isHit = false;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 0.2f))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, rayDistance, 1 << LayerMask.NameToLayer("Interaction")))
         {
             isHit = true;
 
