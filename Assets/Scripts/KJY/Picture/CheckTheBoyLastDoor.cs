@@ -12,12 +12,27 @@ public class CheckTheBoyLastDoor : MonoBehaviour
     [SerializeField] private GameObject DoorPicture3;
 
     [SerializeField] private GameObject RealDoor;
+
+    private FireBurnOutShading realDoorEffect;
+    private FireBurnOutShading canvasEffect;
+    public FireBurnOutShadingUI[] canvasUIEffects;
     
 
     [SerializeField]
     private int CurIdx = 0;
     private bool Once = false;
 
+    private void Awake()
+    {
+        RealDoor.SetActive(true);
+        realDoorEffect = RealDoor.GetComponent<FireBurnOutShading>();
+        canvasEffect = GetComponent<FireBurnOutShading>();
+        canvasUIEffects = GetComponentsInChildren<FireBurnOutShadingUI>();
+    }
+    private void Start()
+    {
+        RealDoor.SetActive(false);
+    }
     private void Update()
     {
         if(CurIdx == 3 && !Once)
@@ -49,10 +64,19 @@ public class CheckTheBoyLastDoor : MonoBehaviour
             ++CurIdx;
         }
     }
-    private IEnumerator TrueEndingEffect()
+    private void TrueEndingEffect()
+    {
+        StartCoroutine(TrueEndingEffectCoroutine());
+    }
+    private IEnumerator TrueEndingEffectCoroutine()
     {
         RealDoor.SetActive(true);
-        RealDoor.GetComponent<FireBurnOutShading>().FireFadeIn();
         yield return null;
+        canvasEffect.FireFadeOut();
+        realDoorEffect.FireFadeIn();
+        foreach(FireBurnOutShadingUI fUI in canvasUIEffects)
+        {
+            fUI.FireFadeOut();
+        }
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class FireBurnOutShading : MonoBehaviour
+public class FireBurnOutShadingUI : MonoBehaviour
 {
     public Material[] burnMaterials;
     public float burnSpeed = 0.01f;
@@ -19,7 +19,7 @@ public class FireBurnOutShading : MonoBehaviour
         {
             burnSound.Stop();
         }
-        InitializeMaterial(0.5f);
+        InitializeMaterial(1f);
     }
 
     public void InitializeMaterial(float _threshold)
@@ -33,12 +33,12 @@ public class FireBurnOutShading : MonoBehaviour
 
     public void FireFadeOut()
     {
-        InitializeMaterial(0.5f);
+        InitializeMaterial(1f);
         StartCoroutine(FireBurnOutEffectCoroutine());
     }
     public void FireFadeIn()
     {
-        InitializeMaterial(-0.5f);
+        InitializeMaterial(-1f);
         StartCoroutine(FireBurnInEffectCoroutine());
     }
 
@@ -48,9 +48,9 @@ public class FireBurnOutShading : MonoBehaviour
         {
             burnSound.Play();
         }
-        while (threshold > -0.5f)
+        while (threshold > -1f)
         {
-            threshold -= burnSpeed;
+            threshold -= burnSpeed * 2f;
             foreach (Material mat in burnMaterials)
             {
                 mat.SetFloat("_Threshold", threshold);
@@ -70,9 +70,9 @@ public class FireBurnOutShading : MonoBehaviour
         {
             burnSound.Play();
         }
-        while (threshold < 0.5f)
+        while (threshold < 1f)
         {
-            threshold += burnSpeed;
+            threshold += burnSpeed * 2f;
             foreach (Material mat in burnMaterials)
             {
                 mat.SetFloat("_Threshold", threshold);
