@@ -37,6 +37,8 @@ public class ShakeFunction : MonoBehaviour
     private float TheTime = 0f;
     private float timeLimit = 0.5f;
 
+    private bool Once = false;
+
     void Start()
     {
         lastRightPosition = Vector3.zero;
@@ -51,7 +53,13 @@ public class ShakeFunction : MonoBehaviour
         // worldUp 벡터가 -Y 방향(아래쪽)과 얼마나 일치하는지 계산
         float dotProduct = Vector3.Dot(worldUp, Vector3.down);
 
-        if (curnum == 7) return;
+        if (curnum == toys.Length && !Once)
+        {
+            transform.gameObject.SetActive(false);
+            Once = true;
+        }
+
+        if (curnum == toys.Length) return;
 
         if(grab.isSelected)
         {

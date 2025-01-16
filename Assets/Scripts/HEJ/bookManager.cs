@@ -20,6 +20,14 @@ public class bookManager : MonoBehaviour
             bookCheckPoint.onCheckedCallback += OnCheckedCallback;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            onAniamtionCallback?.Invoke();
+        }
+    }
+
     private void OnCheckedCallback()
     {
         Debug.Log("°á°ú ®G!");

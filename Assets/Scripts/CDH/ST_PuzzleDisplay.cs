@@ -61,6 +61,12 @@ public class ST_PuzzleDisplay : MonoBehaviour
 
 		// set the scale of the entire puzzle object as set in the inspector.
 		this.transform.localScale = PuzzleScale;
+
+		if (Input.GetKeyDown(KeyCode.O))
+		{
+            onArt.SetActive(true);
+            offArt.SetActive(false);
+        }
 	}
 
 	public Vector3 GetTargetLocation(ST_PuzzleTile thisTile)
