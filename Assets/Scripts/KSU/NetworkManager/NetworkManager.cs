@@ -210,11 +210,13 @@ public class NetworkManager : MonoBehaviourPun
     private bool recorderOn = true;
     private int enterPlayerNum;
     private int endOpeningVideoNum;
+    private int playerSpwanCnt;
 
     private void Awake()
     {
         enterPlayerNum = 0;
         endOpeningVideoNum = 0;
+        playerSpwanCnt = 0;
     }
 
     private void Start()
@@ -537,6 +539,8 @@ public class NetworkManager : MonoBehaviourPun
 
             // boy 설정
             photonView.RPC("SetBoy", RpcTarget.AllBuffered, boy.GetComponent<PhotonView>().ViewID);
+
+            playerSpwanCnt++;
         }
         else if(PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") && PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
@@ -550,6 +554,8 @@ public class NetworkManager : MonoBehaviourPun
 
             // woman 설정
             photonView.RPC("SetWoman", RpcTarget.AllBuffered, woman.GetComponent<PhotonView>().ViewID);
+
+            playerSpwanCnt++;
         }
     }
 
@@ -674,7 +680,10 @@ public class NetworkManager : MonoBehaviourPun
                 }
 
                 // 플레이어를 생성
-                InstantiatePlayer();
+                if (playerSpwanCnt == 0)
+                {
+                    InstantiatePlayer();
+                }
 
                 break;
             }
@@ -705,7 +714,6 @@ public class NetworkManager : MonoBehaviourPun
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
             woman.SetActive(false);
-
             womanCam.SetActive(true);
 
             if (tapePlayer.repoterEndNum <= 1)

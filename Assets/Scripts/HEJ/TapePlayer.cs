@@ -14,7 +14,8 @@ public class TapePlayer : MonoBehaviour
 
         videoPlayer.clip = clips[tape.TapeNum];
         videoPlayer.Play();
-       videoPlayer.loopPointReached += OnVideoEnd;
+        videoPlayer.loopPointReached += OnVideoEnd;
+        ++repoterEndNum;
     }
 
     private void OnTriggerEnter(Collider _collider)
@@ -29,7 +30,6 @@ public class TapePlayer : MonoBehaviour
     private void OnVideoEnd(VideoPlayer vd)
     {
         Destroy(tape.gameObject);
-        ++repoterEndNum;
         PlayerPrefs.SetInt("REN",repoterEndNum);
     }
 
