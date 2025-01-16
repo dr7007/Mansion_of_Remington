@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CheckTheBoyLastDoor : MonoBehaviour
@@ -11,7 +12,9 @@ public class CheckTheBoyLastDoor : MonoBehaviour
     [SerializeField] private GameObject DoorPicture3;
 
     [SerializeField] private GameObject RealDoor;
+    
 
+    [SerializeField]
     private int CurIdx = 0;
     private bool Once = false;
 
@@ -19,8 +22,7 @@ public class CheckTheBoyLastDoor : MonoBehaviour
     {
         if(CurIdx == 3 && !Once)
         {
-            //¿£µù
-            RealDoor.SetActive(true);
+            TrueEndingEffect();
             Once = true;
         }
     }
@@ -47,5 +49,10 @@ public class CheckTheBoyLastDoor : MonoBehaviour
             ++CurIdx;
         }
     }
-
+    private IEnumerator TrueEndingEffect()
+    {
+        RealDoor.SetActive(true);
+        RealDoor.GetComponent<FireBurnOutShading>().FireFadeIn();
+        yield return null;
+    }
 }
