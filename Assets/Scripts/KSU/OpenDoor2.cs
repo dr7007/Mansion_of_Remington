@@ -6,15 +6,9 @@ public class OpenDoor2 : MonoBehaviour
     public Transform lDoor;
     public Transform rDoor;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            StartCoroutine(AnimateDoors());
-        }
-    }
 
-    private IEnumerator AnimateDoors()
+
+    public IEnumerator AnimateDoors()
     {
         // 애니메이션을 위한 초기 상태와 목표 상태 설정
         float startRotation = 0f;  // 시작 회전 값

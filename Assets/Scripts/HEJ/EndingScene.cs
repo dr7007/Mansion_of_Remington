@@ -24,7 +24,20 @@ public class EndingScene : MonoBehaviour
     private void Update()
     {
 
-        if(num == 1)
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            num = 1;
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            num = 2;
+        }
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            num = 3;
+        }
+
+        if (num == 1)
         {
             videoPlayer.clip = clips[0];
             videoPlayer.Play();
@@ -41,7 +54,6 @@ public class EndingScene : MonoBehaviour
             videoPlayer.clip = clips[2];
             videoPlayer.Play();
             videoPlayer.loopPointReached += OnVideoEnd;
-
         }
     }
 

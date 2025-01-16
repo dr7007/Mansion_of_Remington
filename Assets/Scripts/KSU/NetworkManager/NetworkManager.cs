@@ -2,6 +2,8 @@ using System.Collections;
 using Photon.Pun;
 using Photon.Voice.Unity;
 using UnityEngine;
+using UnityEngine.Video;
+using static NetworkManager;
 
 public class NetworkManager : MonoBehaviourPun
 {
@@ -147,10 +149,73 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("생성되는 오브젝트들")]
     private GameObject[] somethings;
+    [SerializeField]
+    [Tooltip("기자쪽 생성(마지막 퍼즐)")]
+    private GameObject keypad;
+    [SerializeField]
+    [Tooltip("소년방 들어갈수 있는 boxcollder")]
+    private BoxCollider wBoyRoom;
+
+    [Header("플레이어 오프닝 및 엔딩 카메라")]
+    [SerializeField]
+    [Tooltip("소년 카메라")]
+    private GameObject boyCam;
+    [SerializeField]
+    [Tooltip("기자 카메라")]
+    private GameObject womanCam;
+
+    [Header("비디오 클립들")]
+    [SerializeField]
+    [Tooltip("소년쪽 영상 재생 VideoPlayer")]
+    private VideoPlayer boyVideoPlayer;
+    [SerializeField]
+    [Tooltip("기자쪽 영상 재생 VideoPlayer")]
+    private VideoPlayer womanVideoPlayer;
+    [SerializeField]
+    [Tooltip("소년 오프닝 클립")]
+    private VideoClip boyVideo1;
+    [SerializeField]
+    [Tooltip("소년 해피엔딩 클립")]
+    private VideoClip boyVideo2;
+    [SerializeField]
+    [Tooltip("소년 배드엔딩 클립")]
+    private VideoClip boyVideo3;
+    [SerializeField]
+    [Tooltip("기자 오프닝 클립")]
+    private VideoClip womanVideo1;
+    [SerializeField]
+    [Tooltip("기자 테이프 1개이하 클립")]
+    private VideoClip womanVideo2;
+    [SerializeField]
+    [Tooltip("기자 테이프 2개 클립")]
+    private VideoClip womanVideo3;
+    [SerializeField]
+    [Tooltip("기자 테이프 3개 클립")]
+    private VideoClip womanVideo4;
+    [SerializeField]
+    [Tooltip("테이프 클립 갯수 For 기자엔딩")]
+    private TapePlayer tapePlayer;
+
+    [Header("소년 엔딩 bool값")]
+    public bool boyBadEnding = false;
+    public bool boyHappyEnding = false;
+
+    // 엔딩 될때 networkManager의 딜리게이트를 호출하면됨.
+    public delegate void EndingDelegate();
+    public EndingDelegate endingDelegate;
+
 
     private bool keyboardSucess = false;
     private bool checkIsMine = false;
     private bool recorderOn = true;
+    private int enterPlayerNum;
+    private int endOpeningVideoNum;
+
+    private void Awake()
+    {
+        enterPlayerNum = 0;
+        endOpeningVideoNum = 0;
+    }
 
     private void Start()
     {
@@ -186,9 +251,18 @@ public class NetworkManager : MonoBehaviourPun
         book2Result.OnResponseCallback += Book2Transport;
         puseResult.OnResponseCallback += FuseTransport;
 
+        // 플레이어 비디오 끝났을때 호출
+        boyVideoPlayer.loopPointReached += OnVideoEnd;
+        womanVideoPlayer.loopPointReached += OnVideoEnd;
 
-        // 플레이어 생성
-        StartCoroutine(InstantiatePlayerCoroutine());
+        endingDelegate += EndingCallback;
+
+
+        // 둘다 들어왔는지 check
+        CheckEnterScene();
+
+        // 코루틴 실행(둘다 들어오면 오프닝씬 재생되도록)
+        StartCoroutine(EnterTwoPlayer());
     }
 
     private void Update()
@@ -254,7 +328,7 @@ public class NetworkManager : MonoBehaviourPun
 
     private void GlassSucess()
     {
-        photonView.RPC("GlassSucessRPC", RpcTarget.Others);
+        photonView.RPC("GlassSucessRPC", RpcTarget.AllBuffered);
     }
 
     private void KeyboardSucess()
@@ -362,11 +436,17 @@ public class NetworkManager : MonoBehaviourPun
             {
                 go.SetActive(true);
             }
+        } 
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
+        {
+            keypad.SetActive(true);
+            wBoyRoom.enabled = false;
         }
 
 
-            // 서로 보이스 끊김
-            if (recorderOn)
+
+        // 서로 보이스 끊김
+        if (recorderOn)
         {
             recorder.RecordingEnabled = false;
             recorderOn = false;
@@ -425,6 +505,18 @@ public class NetworkManager : MonoBehaviourPun
     {
         if (fuse != null) fuse.SetActive(true);
     }
+
+    [PunRPC]
+    private void CheckEnterSceneRPC()
+    {
+        enterPlayerNum++;
+    }
+
+    [PunRPC]
+    private void EndOpeningVideoRPC()
+    {
+        endOpeningVideoNum++;
+    }
     #endregion
 
     // 플레이어를 소환하는 함수
@@ -462,17 +554,175 @@ public class NetworkManager : MonoBehaviourPun
     }
 
     // 바로 생성하면 역할군 설정하는 시간때문에 오류가 나서 매프레임 들어왔는지 확인후에 생성
-    private IEnumerator InstantiatePlayerCoroutine()
+    private IEnumerator EnterTwoPlayer()
     {
         while (true)
         {
             if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Role") == true)
             {
-                InstantiatePlayer();
+                SetOpeningCam();
                 break;
             }
 
             yield return null;
+        }
+    }
+
+    // 해당 씬에 플레이어가 2명 왔는지 확인하는 함수
+    private void CheckEnterScene()
+    {
+        photonView.RPC("CheckEnterSceneRPC", RpcTarget.AllBuffered);
+    }
+
+    // 역할에 따른 오프닝 캠을 On
+    private void SetOpeningCam()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            // 소년쪽 카메라를 On 시킴
+            boyCam.SetActive(true);
+        }
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
+        {
+            // 기자쪽 카메라를 On 시킴
+            womanCam.SetActive(true);
+        }
+
+        StartCoroutine(StartOpeningVideoCoroutine());
+    }
+
+    // 2명다 들어왔을때 비디오를 실행시키는 함수
+    private IEnumerator StartOpeningVideoCoroutine()
+    {
+        while (true)
+        {
+            if (enterPlayerNum == 2)
+            {
+                yield return new WaitForSeconds(1f);
+
+                StartOpeningVideo();
+
+                break;
+            }
+
+            yield return null;
+        }
+    }
+
+    // 비디오 시작하는 함수
+    private void StartOpeningVideo()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            // 소년쪽 비디오 재생
+            boyVideoPlayer.clip = boyVideo1;
+            boyVideoPlayer.Play();
+        }
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
+        {
+            // 기자쪽 비디오 재생
+            womanVideoPlayer.clip = womanVideo1;
+            womanVideoPlayer.Play();
+        }
+    }
+
+    // 비디오가 끝났을때 호출되는 콜백함수
+    private void OnVideoEnd(VideoPlayer vd)
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            // 오프닝 영상이라면
+            if (boyVideoPlayer.clip == boyVideo1)
+            {
+                // 오프닝 영상이 끝났다고 서버에 콜백
+                photonView.RPC("EndOpeningVideoRPC", RpcTarget.AllBuffered);
+            }
+
+            // 소년쪽 비디오 재생멈춤
+            boyVideoPlayer.Stop();
+        }
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
+        {
+            if (womanVideoPlayer.clip == womanVideo1)
+            {
+                // 오프닝 영상이 끝났다고 서버에 콜백
+                photonView.RPC("EndOpeningVideoRPC", RpcTarget.AllBuffered);
+            }
+
+            // 기자쪽 비디오 재생멈춤
+            womanVideoPlayer.Stop();
+        }
+
+        StartCoroutine(EndVideoCoroutine());
+    }
+
+    // 비디오가 둘다 끝났을때를 실행되는 함수
+    private IEnumerator EndVideoCoroutine()
+    {
+        while (true)
+        {
+            if (endOpeningVideoNum == 2)
+            {
+                // 켜놨던 캠을 끄고
+                if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+                {
+                    boyCam.SetActive(false);
+                }
+                else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
+                {
+                    womanCam.SetActive(false);
+                }
+
+                // 플레이어를 생성
+                InstantiatePlayer();
+
+                break;
+            }
+
+            yield return null;
+        }
+    }
+
+    private void EndingCallback()
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Boy")
+        {
+            boy.SetActive(false);
+            boyCam.SetActive(true); 
+
+            // 소년 해피엔딩 세팅
+            if (boyBadEnding)
+            {
+                boyVideoPlayer.clip = boyVideo3;
+                boyVideoPlayer.Play();
+            }  // 소년 배드엔딩 세팅
+            else if (boyHappyEnding)
+            {
+                boyVideoPlayer.clip = boyVideo2;
+                boyVideoPlayer.Play();
+            }
+        }
+        else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
+        {
+            woman.SetActive(false);
+
+            womanCam.SetActive(true);
+
+            if (tapePlayer.repoterEndNum <= 1)
+            {
+                womanVideoPlayer.clip = womanVideo2;
+                womanVideoPlayer.Play();
+            }
+            else if (tapePlayer.repoterEndNum == 2)
+            {
+                womanVideoPlayer.clip = womanVideo3;
+                womanVideoPlayer.Play();
+            }
+            else if (tapePlayer.repoterEndNum == 3)
+            {
+                womanVideoPlayer.clip = womanVideo4;
+                womanVideoPlayer.Play();
+            }
         }
     }
 }

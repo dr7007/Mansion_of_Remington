@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TextComparer : MonoBehaviour
 {
+    public OpenDoor2 opendoor;
+
     public List<ChainTextDet> chainDetList = null;
     [SerializeField]
     private string compareStr = null;
@@ -39,6 +41,7 @@ public class TextComparer : MonoBehaviour
             tmp.text = compareStr + "=" + answerStr;
             Debug.Log("Same!");
             // 투명판 콜백 추가 (원래 통과조건)
+            StartCoroutine(opendoor.AnimateDoors());
         }
         else
         {
@@ -46,6 +49,7 @@ public class TextComparer : MonoBehaviour
             tmp.text = compareStr + "!=" + answerStr;
             Debug.Log("Different!");
             // 투명판 콜백 추가 (일단 되는지 확인 위한 부분)
+            StartCoroutine(opendoor.AnimateDoors());
         }
         compareStr = string.Empty;
     }

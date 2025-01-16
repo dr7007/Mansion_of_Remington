@@ -10,14 +10,18 @@ public class CheckTheBoyLastDoor : MonoBehaviour
     [SerializeField] private GameObject DoorPicture2;
     [SerializeField] private GameObject DoorPicture3;
 
-    private int CurIdx = 0;
+    [SerializeField] private GameObject RealDoor;
 
+    private int CurIdx = 0;
+    private bool Once = false;
 
     private void Update()
     {
-        if(CurIdx >= 3)
+        if(CurIdx == 3 && !Once)
         {
             //¿£µù
+            RealDoor.SetActive(true);
+            Once = true;
         }
     }
 
