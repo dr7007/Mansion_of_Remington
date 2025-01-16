@@ -155,6 +155,12 @@ public class NetworkManager : MonoBehaviourPun
     [SerializeField]
     [Tooltip("소년방 들어갈수 있는 boxcollder")]
     private BoxCollider wBoyRoom;
+    [SerializeField]
+    [Tooltip("소년방 잠긴 왼쪽문")]
+    private ChangeDoorY Left;
+    [SerializeField]
+    [Tooltip("소년방 잠긴 오른쪽문")]
+    private ChangeDoorY Right;
 
     [Header("플레이어 오프닝 및 엔딩 카메라")]
     [SerializeField]
@@ -438,6 +444,9 @@ public class NetworkManager : MonoBehaviourPun
             {
                 go.SetActive(true);
             }
+
+            Left.enabled = true;
+            Right.enabled = true;
         } 
         else if (PhotonNetwork.LocalPlayer.CustomProperties["Role"].ToString() == "Woman")
         {
