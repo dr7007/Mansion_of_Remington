@@ -27,7 +27,6 @@ public class CheckTheBoyLastDoor : MonoBehaviour
         RealDoor.SetActive(true);
         realDoorEffect = RealDoor.GetComponent<FireBurnOutShading>();
         canvasEffect = GetComponent<FireBurnOutShading>();
-        canvasUIEffects = GetComponentsInChildren<FireBurnOutShadingUI>();
     }
     private void Start()
     {
