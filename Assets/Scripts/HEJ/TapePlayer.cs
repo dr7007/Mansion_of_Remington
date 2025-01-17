@@ -21,8 +21,11 @@ public class TapePlayer : MonoBehaviour
     private void OnTriggerEnter(Collider _collider)
     {
         tape = _collider.GetComponent<Tape>();
+        AudioManager.instance.PlaySfx(AudioManager.sfx.tape);
         if (tape != null)
         {
+            
+
             tape.OnVideoClickCallback = OnTapesVideoCallback;
         }
     }

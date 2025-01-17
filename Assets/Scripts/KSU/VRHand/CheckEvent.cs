@@ -15,6 +15,8 @@ public class CheckEvent : MonoBehaviour
     // ±×·¦ÇßÀ»¶§ È£ÃâµÊ.
     public void GrabOn(SelectEnterEventArgs args)
     {
+        AudioManager.instance.PlaySfx(AudioManager.sfx.grap);
+
         Debug.Log("GrabOn È£ÃâµÊ : " + args.interactableObject.transform.name);
         string hand = args.interactorObject.handedness.ToString();
 

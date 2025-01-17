@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
-    public enum sfx { boyscream, chain, door, glass, grap, inventory, keyboard, mannequin, picture, sendpicture, puzzle, succes, Noise, stab, oldDoor }
+    public enum sfx { boyscream, chain, door, glass, grap, inventory, keyboard, mannequin, picture, sendpicture, puzzle, succes, Noise, stab, oldDoor, chess, tape, drop}
 
 
     void Awake()

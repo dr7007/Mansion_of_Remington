@@ -16,7 +16,7 @@ public class BigTile : MonoBehaviour
             //Material mat = gameObject.GetComponent<Renderer>().material;
             //mat.EnableKeyword("_EMISSION");
             //mat.SetColor("_EmissionColor", Color.red * 60f);
-            AudioManager.instance.PlaySfx(AudioManager.sfx.oldDoor);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.chess);
 
 
             // 초기화 하는 코드
@@ -35,7 +35,7 @@ public class BigTile : MonoBehaviour
             //Material mat = gameObject.GetComponent<Renderer>().material;
             //mat.EnableKeyword("_EMISSION");
             //mat.SetColor("_EmissionColor", Color.green * 60f);
-
+            AudioManager.instance.PlaySfx(AudioManager.sfx.succes);
 
             // 맞게 들어감을 알리는 코드 (순서를 인자로)
             ChangeSmallBoardCorrect(gameObject.name);
@@ -44,9 +44,11 @@ public class BigTile : MonoBehaviour
         }
         else
         {
-            Material mat = gameObject.GetComponent<Renderer>().material;
-            mat.EnableKeyword("_EMISSION");
-            mat.SetColor("_EmissionColor", Color.red * 60f);
+            //Material mat = gameObject.GetComponent<Renderer>().material;
+            //mat.EnableKeyword("_EMISSION");
+            //mat.SetColor("_EmissionColor", Color.red * 60f);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.chess);
+
 
             // 초기화 하는 코드
             board.Reset();

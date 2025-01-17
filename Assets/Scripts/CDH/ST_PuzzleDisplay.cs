@@ -242,8 +242,10 @@ public class ST_PuzzleDisplay : MonoBehaviour
 				
 		// if we are still complete then all the tiles are correct.
 		if(Complete)
-		{
-			Debug.Log("Puzzle Complete!");
+		{			
+
+            AudioManager.instance.PlaySfx(AudioManager.sfx.succes);
+
             onArt.SetActive(true);
             offArt.SetActive(false);
         }

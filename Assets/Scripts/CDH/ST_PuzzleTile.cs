@@ -42,7 +42,8 @@ public class ST_PuzzleTile : MonoBehaviour
 		{
 			// lerp towards our target.
 			this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, TargetPosition, 10.0f * Time.deltaTime);
-			yield return null;
+            AudioManager.instance.PlaySfx(AudioManager.sfx.puzzle);
+            yield return null;
 		}
 
 		// after each move check if we are now in the correct location.
