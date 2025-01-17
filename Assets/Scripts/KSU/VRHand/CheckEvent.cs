@@ -48,6 +48,8 @@ public class CheckEvent : MonoBehaviour
     // ±×·¦ ³õ¾ÒÀ»¶§ È£ÃâµÊ.
     public void GrabOff(SelectExitEventArgs args)
     {
+        AudioManager.instance.PlaySfx(AudioManager.sfx.drop);
+
         Debug.Log("GrabOff È£ÃâµÊ" + args.interactorObject.handedness.ToString());
         string hand = args.interactorObject.handedness.ToString();
 

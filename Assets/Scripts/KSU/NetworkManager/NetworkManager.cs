@@ -400,6 +400,8 @@ public class NetworkManager : MonoBehaviourPun
         if (wChain != null)
         {
             wChain.SetActive(true);
+            AudioManager.instance.PlaySfx(AudioManager.sfx.dropchain);
+
         }
     }
 
