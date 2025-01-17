@@ -178,7 +178,12 @@ public class CameraFrustumCollider : MonoBehaviour
         {
             Debug.Log("Capture On");
             onTriggerCap[0].GetComponent<GeneratePhoto>().OnPhoto();
-            if (!onTriggerCap[0].GetComponent<NoUnactiveObj>())
+            if (onTriggerCap[0].GetComponent<FireBurnOutShadingChain>() != null)
+            {
+                onTriggerCap[0].GetComponent<FireBurnOutShadingChain>().FireFadeOut();
+                onTriggerCap.RemoveAt(0);
+            }
+            else if (!onTriggerCap[0].GetComponent<NoUnactiveObj>())
             {
                 onTriggerCap[0].gameObject.SetActive(false);
                 onTriggerCap.RemoveAt(0);
