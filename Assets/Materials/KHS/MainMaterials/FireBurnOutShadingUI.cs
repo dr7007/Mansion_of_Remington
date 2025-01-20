@@ -5,7 +5,7 @@ public class FireBurnOutShadingUI : MonoBehaviour
 {
     public Material[] burnMaterials;
     public float burnSpeed = 0.01f;
-    private float threshold = 0.5f;
+    private float threshold = 1f;
     private AudioSource burnSound;
 
     private void Awake()

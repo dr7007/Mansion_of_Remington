@@ -69,6 +69,7 @@ public class FireBurnOutShadingChain : MonoBehaviour
             threshold -= burnSpeed;
             foreach (Material mat in burnMaterials)
             {
+                mat.EnableKeyword("_EffectOn");
                 mat.SetFloat("_Threshold", threshold);
             }
             yield return null;
@@ -76,6 +77,10 @@ public class FireBurnOutShadingChain : MonoBehaviour
         if (burnSound != null)
         {
             burnSound.Stop();
+        }
+        foreach (Material mat in burnMaterials)
+        {
+            mat.DisableKeyword("_EffectOn");
         }
         yield return new WaitForSeconds(1.0f);
         gameObject.SetActive(false);
@@ -91,6 +96,7 @@ public class FireBurnOutShadingChain : MonoBehaviour
             threshold += burnSpeed;
             foreach (Material mat in burnMaterials)
             {
+                mat.EnableKeyword("_EffectOn");
                 mat.SetFloat("_Threshold", threshold);
             }
             yield return null;
@@ -98,6 +104,10 @@ public class FireBurnOutShadingChain : MonoBehaviour
         if (burnSound != null)
         {
             burnSound.Stop();
+        }
+        foreach (Material mat in burnMaterials)
+        {
+            mat.DisableKeyword("_EffectOn");
         }
     }
 }

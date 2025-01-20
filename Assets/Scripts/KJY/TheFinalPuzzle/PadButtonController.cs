@@ -81,12 +81,14 @@ public class PadButtonController : MonoBehaviour
     public void FirstBTN()
     {
         CurResult1.Add("H");
+        mats[0].DisableKeyword("_EffectOn");
         mats[0].EnableKeyword("_EMISSION");
     }
 
     public void SecondBTN()
     {
         CurResult1.Add("A");
+        mats[1].DisableKeyword("_EffectOn");
         mats[1].EnableKeyword("_EMISSION");
     }
 
@@ -94,6 +96,7 @@ public class PadButtonController : MonoBehaviour
     {
 
         CurResult1.Add("D");
+        mats[2].DisableKeyword("_EffectOn");
         mats[2].EnableKeyword("_EMISSION");
     }
 
@@ -101,6 +104,7 @@ public class PadButtonController : MonoBehaviour
     {
 
         CurResult1.Add("M");
+        mats[3].DisableKeyword("_EffectOn");
         mats[3].EnableKeyword("_EMISSION");
     }
     //HADMTYLQS
@@ -109,6 +113,7 @@ public class PadButtonController : MonoBehaviour
     {
 
         CurResult1.Add("T");
+        mats[4].DisableKeyword("_EffectOn");
         mats[4].EnableKeyword("_EMISSION");
     }
 
@@ -116,6 +121,7 @@ public class PadButtonController : MonoBehaviour
     {
 
         CurResult1.Add("Y");
+        mats[5].DisableKeyword("_EffectOn");
         mats[5].EnableKeyword("_EMISSION");
 
     }
@@ -123,6 +129,7 @@ public class PadButtonController : MonoBehaviour
     public void SeventhBTN()
     {
         CurResult1.Add("L");
+        mats[6].DisableKeyword("_EffectOn");
         mats[6].EnableKeyword("_EMISSION");
     }
 
@@ -130,12 +137,14 @@ public class PadButtonController : MonoBehaviour
     {
 
         CurResult1.Add("Q");
+        mats[7].DisableKeyword("_EffectOn");
         mats[7].EnableKeyword("_EMISSION");
     }
     public void NinthBTN()
     {
 
         CurResult1.Add("S");
+        mats[8].DisableKeyword("_EffectOn");
         mats[8].EnableKeyword("_EMISSION");
     }
 
@@ -143,6 +152,7 @@ public class PadButtonController : MonoBehaviour
     {
         foreach(Material mat in mats)
         {
+            mat.DisableKeyword("_EffectOn");
             mat.DisableKeyword("_EMISSION");
         }
     }

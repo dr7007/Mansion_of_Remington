@@ -459,16 +459,16 @@ public class NetworkManager : MonoBehaviourPun
 
 
         // ¼­·Î º¸ÀÌ½º ²÷±è
-        if (recorderOn)
-        {
-            recorder.RecordingEnabled = false;
-            recorderOn = false;
-        }
-        else
-        {
-            recorder.RecordingEnabled = true;
-            recorderOn = true;
-        }
+        //if (recorderOn)
+        //{
+        //    recorder.RecordingEnabled = false;
+        //    recorderOn = false;
+        //}
+        //else
+        //{
+        //    recorder.RecordingEnabled = true;
+        //    recorderOn = true;
+        //}
 
     }
 
