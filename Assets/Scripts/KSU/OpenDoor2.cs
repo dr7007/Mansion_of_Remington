@@ -6,7 +6,13 @@ public class OpenDoor2 : MonoBehaviour
     public Transform lDoor;
     public Transform rDoor;
 
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            StartCoroutine(AnimateDoors());
+        }
+    }
 
     public IEnumerator AnimateDoors()
     {

@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PadButtonController : MonoBehaviour
@@ -9,6 +11,12 @@ public class PadButtonController : MonoBehaviour
     [SerializeField] private GameObject PadPuzzle;
     [SerializeField] private AudioClip audioClips;
 
+    private FireBurnOutShading lastDoorEffect;
+    private FireBurnOutShadingChain padPuzzleEffect;
+    private Canvas[] canvases;
+
+    public bool debugST;
+
 
     List<string> FinalResult = new List<string> { "L", "A", "S", "T" };
     [SerializeField] private List<string> CurResult1 = new List<string>();
@@ -17,9 +25,16 @@ public class PadButtonController : MonoBehaviour
 
     public Material[] mats;
 
+    private void Awake()
+    {
+        lastDoorEffect = LastDoor.GetComponent<FireBurnOutShading>();
+        padPuzzleEffect = PadPuzzle.GetComponent<FireBurnOutShadingChain>();
+        canvases = GetComponentsInChildren<Canvas>();
+    }
     private void Start()
     {
         ResetColor();
+        
     }
 
 
@@ -35,7 +50,10 @@ public class PadButtonController : MonoBehaviour
                 CheckTheResult();
             }
         }
-
+        if (debugST && Input.GetKeyDown(KeyCode.L))
+        {
+            IfCan();
+        }
 
     }
 
@@ -57,11 +75,7 @@ public class PadButtonController : MonoBehaviour
 
     private void IfCan()
     {
-        LastDoor.SetActive(true);
-        PadPuzzle.SetActive(false);
-        AudioClip Door = audioClips;
-        GetComponent<AudioSource>().Stop();
-        GetComponent<AudioSource>().PlayOneShot(Door, 0.8f);
+        StartCoroutine(ReporterTrueEndingCoroutine());
     }
 
     public void FirstBTN()
@@ -131,5 +145,20 @@ public class PadButtonController : MonoBehaviour
         {
             mat.DisableKeyword("_EMISSION");
         }
+    }
+
+    private IEnumerator ReporterTrueEndingCoroutine()
+    {
+        LastDoor.SetActive(true);
+        foreach(Canvas can in canvases)
+        {
+            can.gameObject.SetActive(false);
+        }
+        yield return null;
+        lastDoorEffect.FireFadeIn();
+        padPuzzleEffect.FireFadeOut();
+        AudioClip Door = audioClips;
+        GetComponent<AudioSource>().Stop();
+        GetComponent<AudioSource>().PlayOneShot(Door, 0.8f);
     }
 }

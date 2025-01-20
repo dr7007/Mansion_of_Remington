@@ -16,7 +16,7 @@ public class Cube2Sound : MonoBehaviour
     public AudioClip failure; 
 
     //Á¤´ä
-    public string[] Result = { "dog", "dog", "dog", "dog", "dog" };
+    public string[] Result = { "dog", "monkey", "dog", "mouse", "rabbit" };
     private string[] InputResult = new string[5];
 
 

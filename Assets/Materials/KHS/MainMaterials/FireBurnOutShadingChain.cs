@@ -21,7 +21,7 @@ public class FireBurnOutShadingChain : MonoBehaviour
     {
         foreach (MeshRenderer ren in renderers)
         {
-            burnMaterials.Add(ren.material);
+            burnMaterials.AddRange(ren.materials);
         }
         if (burnSound != null)
         {
